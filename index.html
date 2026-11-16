@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>פתקי תמונות</title>
+<title>Notesapp</title>
 <meta name="theme-color" content="#0d6b5e">
 <meta name="description" content="תיעוד בתמונות והערות בסגנון צ׳אט, עם ייצוא ל-PDF">
 <link rel="manifest" href="manifest.webmanifest">
@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="פתקי תמונות">
+<meta name="apple-mobile-web-app-title" content="Notesapp">
 <script src="lib/jspdf.umd.min.js"></script>
 <style>
 @font-face{font-family:'Heebo';font-weight:400;font-display:swap;src:url(fonts/heebo-hebrew-400-normal.woff2) format('woff2');unicode-range:U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
@@ -1223,7 +1223,7 @@ $('#listMenuBtn').addEventListener('click', async ()=>{
   if(navigator.share&&/^https?:/.test(location.protocol)) mItems.push({label:'שליחת קישור לאפליקציה',icon:'share',value:'shareapp'});
   const a=await sheet(mItems);
   if(a==='install'){ installApp(); return; }
-  if(a==='shareapp'){ try{ await navigator.share({title:'פתקי תמונות',text:'אפליקציית פתקי תמונות — פתח בדפדפן והוסף למסך הבית:',url:location.href.split('#')[0]}); }catch(e){} return; }
+  if(a==='shareapp'){ try{ await navigator.share({title:'Notesapp',text:'Notesapp — פתקי תמונות — פתח בדפדפן והוסף למסך הבית:',url:location.href.split('#')[0]}); }catch(e){} return; }
   if(a==='backup'){
     busy(true,'מכין גיבוי…');
     try{ const d=await S.store.exportAll(); const blob=new Blob([JSON.stringify(d)],{type:'application/json'});

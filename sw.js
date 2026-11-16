@@ -1,4 +1,4 @@
-const CACHE='photo-notes-v2';
+const CACHE='photo-notes-v3';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./lib/jspdf.umd.min.js',
  './icons/icon-192.png','./icons/icon-512.png','./icons/apple-touch-icon.png',
  './fonts/heebo-hebrew-400-normal.woff2','./fonts/heebo-hebrew-500-normal.woff2','./fonts/heebo-hebrew-700-normal.woff2',
