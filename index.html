@@ -182,6 +182,43 @@ button{font-family:inherit;cursor:pointer}
 .save-chip.dirty{background:#ffb300;border-color:#ffb300;color:#3b2a00}
 .icon-btn.has-dot{position:relative}
 .icon-btn .dot{position:absolute;top:8px;left:8px;width:10px;height:10px;border-radius:50%;background:#ffb300;box-shadow:0 0 0 2px var(--bar)}
+.st-row{display:flex;flex-wrap:wrap;gap:5px;padding:5px 6px 0;align-items:center}
+.bubble.textonly .st-row{padding:5px 0 0}
+.chip{display:inline-flex;align-items:center;gap:4px;border:0;border-radius:12px;padding:2px 9px;font-size:12px;font-weight:500;line-height:1.6;cursor:pointer;font-family:inherit}
+.chip svg{width:13px;height:13px}
+.st-open{background:#fde4e2;color:#a3221b}
+.st-progress{background:#fff0c7;color:#7a5200}
+.st-done{background:#d8f1e2;color:#16683c}
+.chip.info{background:rgba(255,255,255,.75);color:#33424b}
+.chip.late{background:#a3221b;color:#fff}
+.filters{flex:none;display:flex;gap:6px;padding:8px 10px;overflow-x:auto;background:#f6f4f0;border-bottom:1px solid var(--line)}
+.filters button{flex:none;border:1px solid #d9d3c9;background:#fff;color:#33424b;border-radius:16px;padding:5px 12px;font-size:13px;font-family:inherit;white-space:nowrap}
+.filters button.on{background:var(--bar);border-color:var(--bar);color:#fff}
+.filters button b{font-weight:700;margin-inline-start:3px}
+.card-st{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.card-st span{font-size:11px;border-radius:9px;padding:1px 7px;font-weight:500}
+.seg4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:6px}
+.seg4 button{border:2px solid #e3ddd3;background:#fff;border-radius:10px;padding:9px 4px;font-size:14px;font-weight:500;font-family:inherit;color:#33424b}
+.seg4 button.on.s-none{border-color:#8a969d;background:#eef0f1}
+.seg4 button.on.s-open{border-color:#d93c3c;background:#fde4e2;color:#a3221b}
+.seg4 button.on.s-progress{border-color:#e0a100;background:#fff0c7;color:#7a5200}
+.seg4 button.on.s-done{border-color:#1f9d55;background:#d8f1e2;color:#16683c}
+.quick{display:flex;gap:6px;flex-wrap:wrap;margin:-6px 0 12px}
+.quick button{border:1px solid #d9d3c9;background:#fff;border-radius:14px;padding:4px 10px;font-size:12.5px;font-family:inherit;color:#33424b}
+.dlg input[type=date]{direction:rtl}
+.dlg select{width:100%;border:1px solid #d6d0c6;border-radius:10px;padding:9px 10px;font:inherit;font-size:15px;background:#fff}
+.chip.tr{background:#ece6fb;color:#4b2fa0}
+.trades{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.trades button{border:1.5px solid #ddd5f3;background:#fff;color:#4b2fa0;border-radius:14px;padding:4px 11px;font-size:13px;font-family:inherit}
+.trades button.on{background:#5b3cc4;border-color:#5b3cc4;color:#fff}
+.pv-trades{display:flex;gap:6px;overflow-x:auto;padding:2px 12px 6px;align-items:center}
+.pv-trades button{flex:none;border:1px solid #3d4a52;background:#1b252b;color:#d8dee2;border-radius:14px;padding:5px 11px;font-size:13px;font-family:inherit}
+.pv-trades button.on{background:#7b5ce0;border-color:#7b5ce0;color:#fff}
+.pv-trades .lbl{flex:none;font-size:12px;color:#8696a0}
+.pv-trades .all{background:transparent;border-style:dashed}
+.filters .sep{flex:none;width:1px;background:#d9d3c9;margin:2px 2px}
+.filters button.trf{border-color:#ddd5f3;color:#4b2fa0}
+.filters button.trf.on{background:#5b3cc4;border-color:#5b3cc4;color:#fff}
 /* ---- PWA: safe areas (iPhone notch / home bar) + install hint ---- */
 :root{--st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px)}
 html,body{overscroll-behavior:none}
@@ -229,6 +266,7 @@ body{background:var(--bar)}
       <button id="pdfBtn" class="pdf-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>ייצוא</button>
       <button id="noteMenuBtn" class="icon-btn" aria-label="תפריט"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></button>
     </header>
+    <div id="filters" class="filters hidden"></div>
     <div id="feed" class="feed"></div>
     <div id="dropHint" class="drop-hint hidden">שחרר כאן כדי להוסיף תמונות</div>
     <footer class="composer">
@@ -254,6 +292,7 @@ body{background:var(--bar)}
   </div>
   <div class="pv-stage"><img id="pvImg" alt=""></div>
   <div class="pv-thumbs" id="pvThumbs"></div>
+  <div class="pv-trades" id="pvTrades"></div>
   <div class="pv-bottom">
     <textarea id="pvCaption" rows="1" placeholder="הוסף כיתוב לתמונה…"></textarea>
     <button id="pvSend" class="send" aria-label="שליחה"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.4 20.4l17.4-7.5c.8-.4.8-1.5 0-1.8L3.4 3.6c-.7-.3-1.4.3-1.2 1l1.9 6.4 9.2 1-9.2 1-1.9 6.4c-.2.7.5 1.3 1.2 1z"/></svg></button>
@@ -332,6 +371,7 @@ const ICON = {
   share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></svg>',
   backup:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>',
   restore:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V9M7 14l5-5 5 5M5 3h14"/></svg>',
+  flag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4h11l-2 4 2 4H5"/></svg>',
   draw:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg>',
   phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg>',
   chev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>',
@@ -357,6 +397,13 @@ function saveFile(blob,name){
   const u=URL.createObjectURL(blob); const a=document.createElement('a');
   a.href=u; a.download=name; document.body.appendChild(a); a.click(); a.remove();
   setTimeout(()=>URL.revokeObjectURL(u),60000);
+}
+async function shareFiles(list,title){
+  try{
+    const fs=list.map(f=>new File([f.blob],f.name,{type:f.blob.type||'application/octet-stream'}));
+    if(navigator.canShare&&navigator.canShare({files:fs})){ await navigator.share({files:fs,title}); return true; }
+  }catch(e){ if(e&&e.name==='AbortError') return true; }
+  return false;
 }
 async function shareFile(blob,name,title){
   try{
@@ -417,9 +464,9 @@ async function makeLocalStore(){
     async createNote(title){ const id=genId(), t=Date.now(); await put('notes',{id,title,createdAt:t,updatedAt:t,lastText:'',thumbId:null,count:0}); emitNotes(); return id; },
     async updateNote(id,patch){ const n=await get('notes',id); if(!n) return; await put('notes',clean({...n,...patch,modAt:Date.now()})); emitNotes(); },
     async deleteNote(id){ await removeNote(id,true); emitNotes(); },
-    async addEntry(noteId,{text,blob,w,h,origBlob,ow,oh,ops,rot,createdAt}){ let imageId=null,origId=null; if(blob){ imageId=genId(); await put('blobs',blob,imageId); }
+    async addEntry(noteId,{text,blob,w,h,origBlob,ow,oh,ops,rot,trade,createdAt}){ let imageId=null,origId=null; if(blob){ imageId=genId(); await put('blobs',blob,imageId); }
       if(origBlob){ origId=genId(); await put('blobs',origBlob,origId); }
-      await put('entries',{id:genId(),noteId,text:text||'',imageId,w:w||null,h:h||null,origId,ow:ow||null,oh:oh||null,ops:ops&&ops.length?ops:null,rot:rot||0,createdAt}); emitEntries(noteId); return {imageId}; },
+      await put('entries',{id:genId(),noteId,text:text||'',imageId,w:w||null,h:h||null,origId,ow:ow||null,oh:oh||null,ops:ops&&ops.length?ops:null,rot:rot||0,trade:trade||null,createdAt}); emitEntries(noteId); return {imageId}; },
     async setImage(noteId,id,r){
       const e=await get('entries',id); if(!e) return {};
       const oldId=e.imageId;
@@ -465,8 +512,105 @@ async function makeLocalStore(){
   };
 }
 
+/* ---------- status / assignee / due ---------- */
+const STATUS={open:{label:'פתוח',cls:'st-open',pdf:'#c62828',fill:'#fde4e2',word:'C62828'},progress:{label:'בטיפול',cls:'st-progress',pdf:'#9a6a00',fill:'#fff0c7',word:'9A6A00'},done:{label:'סגור',cls:'st-done',pdf:'#1f7a45',fill:'#d8f1e2',word:'1F7A45'}};
+const todayISO=()=>{ const d=new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); };
+const addDaysISO=n=>{ const d=new Date(); d.setDate(d.getDate()+n); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); };
+const fmtDue=iso=>{ if(!iso) return ''; const [y,m,d]=iso.split('-'); return d+'.'+m+'.'+y.slice(2); };
+const isLate=e=>!!(e.due&&e.status!=='done'&&e.due<todayISO());
+const hasTrack=e=>!!(e.status||e.assignee||e.due||e.trade);
+const DEFAULT_TRADES=['טיח','ריצוף','אלומיניום','חשמל','אינסטלציה','איטום','צבע','גבס','נגרות','מסגרות','מיזוג','כללי'];
+function tradeList(){ let l=[]; try{ l=JSON.parse(LS.get('pn-trades')||'[]'); }catch(e){}
+  const set=new Set(l); S.entries.forEach(e=>{ if(e.trade) set.add(e.trade); }); DEFAULT_TRADES.forEach(t=>set.add(t)); return [...set]; }
+function rememberTrade(t){ if(!t) return; let l=[]; try{ l=JSON.parse(LS.get('pn-trades')||'[]'); }catch(e){} l=[t,...l.filter(x=>x!==t)].slice(0,40); LS.set('pn-trades',JSON.stringify(l)); }
+const TAG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.3"/></svg>';
+const NO_TRADE='ללא שיוך';
+const tradeOf=e=>e.trade||NO_TRADE;
+function statusCounts(list){ const c={open:0,progress:0,done:0,none:0,late:0}; for(const e of list){ c[e.status||'none']++; if(isLate(e)) c.late++; } return c; }
+const CAL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>';
+const USR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>';
+function trackHTML(e){
+  if(!hasTrack(e)) return '';
+  let h='<div class="st-row">';
+  if(e.trade) h+=`<button class="chip tr" data-act="status">${TAG}${esc(e.trade)}</button>`;
+  if(e.status) h+=`<button class="chip ${STATUS[e.status].cls}" data-act="status">${STATUS[e.status].label}</button>`;
+  if(e.assignee) h+=`<button class="chip info" data-act="status">${USR}${esc(e.assignee)}</button>`;
+  if(e.due) h+=`<button class="chip ${isLate(e)?'late':'info'}" data-act="status">${CAL}${isLate(e)?'באיחור · ':''}${fmtDue(e.due)}</button>`;
+  return h+'</div>';
+}
+function knownAssignees(){
+  const set=new Set(); try{ JSON.parse(LS.get('pn-assignees')||'[]').forEach(x=>set.add(x)); }catch(e){}
+  S.entries.forEach(e=>{ if(e.assignee) set.add(e.assignee); });
+  return [...set].slice(0,40);
+}
+function rememberAssignee(name){ if(!name) return; let l=[]; try{ l=JSON.parse(LS.get('pn-assignees')||'[]'); }catch(e){} l=[name,...l.filter(x=>x!==name)].slice(0,40); LS.set('pn-assignees',JSON.stringify(l)); }
+function statusDialog(e){
+  return new Promise(resolve=>{
+    let st=e.status||null;
+    const m=$('#modal');
+    const names=knownAssignees();
+    let tr=e.trade||'';
+    const trades=tradeList();
+    m.innerHTML=`<div class="dlg" role="dialog"><h3>קבלן, סטטוס ויעד</h3>
+      <label class="fl">קבלן / תחום</label>
+      <div class="trades" id="stTrades">${trades.slice(0,16).map(t=>`<button data-t="${esc(t)}">${esc(t)}</button>`).join('')}</div>
+      <input id="stTrade" list="stTrList" value="${esc(tr)}" placeholder="או הקלד שם קבלן / תחום אחר" autocomplete="off">
+      <datalist id="stTrList">${trades.map(n=>`<option value="${esc(n)}">`).join('')}</datalist>
+      <label class="fl">סטטוס</label>
+      <div class="seg4" id="stSeg">${[['','ללא','s-none'],['open','פתוח','s-open'],['progress','בטיפול','s-progress'],['done','סגור','s-done']].map(([v,l,c])=>`<button data-v="${v}" class="${c}">${l}</button>`).join('')}</div>
+      <label class="fl">אחראי</label>
+      <input id="stAs" list="stAsList" value="${esc(e.assignee||'')}" placeholder="שם קבלן / איש צוות" autocomplete="off">
+      <datalist id="stAsList">${names.map(n=>`<option value="${esc(n)}">`).join('')}</datalist>
+      <label class="fl">תאריך יעד</label>
+      <input id="stDue" type="date" value="${esc(e.due||'')}">
+      <div class="quick">${[['היום',0],['מחר',1],['עוד 3 ימים',3],['עוד שבוע',7],['עוד שבועיים',14]].map(([l,n])=>`<button data-d="${n}">${l}</button>`).join('')}<button data-d="x">ללא תאריך</button></div>
+      <div class="dlg-actions"><button class="btn primary" id="stOk">שמירה</button><button class="btn ghost" id="stCancel">ביטול</button></div></div>`;
+    m.classList.remove('hidden');
+    const sync=()=>m.querySelectorAll('#stSeg button').forEach(b=>b.classList.toggle('on',(b.dataset.v||null)===st));
+    const syncT=()=>m.querySelectorAll('#stTrades button').forEach(b=>b.classList.toggle('on',b.dataset.t===$('#stTrade').value.trim()));
+    syncT(); $('#stTrade').addEventListener('input',syncT);
+    $('#stTrades').onclick=ev=>{ const b=ev.target.closest('button'); if(!b) return; $('#stTrade').value=$('#stTrade').value.trim()===b.dataset.t?'':b.dataset.t; syncT(); };
+    sync();
+    $('#stSeg').onclick=ev=>{ const b=ev.target.closest('button'); if(b){ st=b.dataset.v||null; sync(); } };
+    m.querySelector('.quick').onclick=ev=>{ const b=ev.target.closest('button'); if(!b) return; $('#stDue').value=b.dataset.d==='x'?'':addDaysISO(+b.dataset.d); };
+    const done=v=>{ m.classList.add('hidden'); m.innerHTML=''; resolve(v); };
+    $('#stCancel').onclick=()=>done(null);
+    m.onclick=ev=>{ if(ev.target===m) done(null); };
+    $('#stOk').onclick=()=>{ const as=$('#stAs').value.trim(); done({status:st,assignee:as||null,due:$('#stDue').value||null,trade:$('#stTrade').value.trim()||null}); };
+  });
+}
+async function editStatus(e){
+  const r=await statusDialog(e); if(!r) return;
+  if(r.status===(e.status||null)&&r.assignee===(e.assignee||null)&&r.due===(e.due||null)&&r.trade===(e.trade||null)) return;
+  rememberAssignee(r.assignee); rememberTrade(r.trade);
+  const patch={...r,statusAt:Date.now(),editedAt:Date.now()};
+  if(r.status==='done'&&e.status!=='done') patch.closedAt=Date.now();
+  try{
+    await S.store.updateEntry(S.noteId,e.id,patch);
+    const list=S.entries.map(x=>x.id===e.id?{...x,...r}:x); const c=statusCounts(list);
+    S.store.updateNote(S.noteId,{openCount:c.open,progressCount:c.progress,doneCount:c.done,lateCount:c.late}).catch(()=>{});
+  }catch(err){ toast('השמירה נכשלה'); }
+}
+function renderFilters(){
+  const bar=$('#filters'); const any=S.entries.some(hasTrack);
+  if(!any){ bar.classList.add('hidden'); if(S.filter!=='all'){ S.filter='all'; } return; }
+  bar.classList.remove('hidden');
+  const c=statusCounts(S.entries);
+  const opts=[['all','הכול',S.entries.length],['active','לא סגורים',c.open+c.progress],['open','פתוחים',c.open],['progress','בטיפול',c.progress],['done','סגורים',c.done]];
+  if(c.late) opts.push(['late','באיחור',c.late]);
+  if(c.none) opts.push(['none','ללא סטטוס',c.none]);
+  let html=opts.map(([k,l,n])=>`<button data-f="${k}" class="${S.filter===k?'on':''}">${l}<b>${n}</b></button>`).join('');
+  const tc={}; S.entries.forEach(e=>{ const t=tradeOf(e); tc[t]=(tc[t]||0)+1; });
+  const tks=Object.keys(tc).sort((a,b)=>a===NO_TRADE?1:b===NO_TRADE?-1:a.localeCompare(b,'he'));
+  if(tks.length>1||(tks.length===1&&tks[0]!==NO_TRADE)){ html+='<span class="sep"></span>'+[['all','כל הקבלנים',S.entries.length],...tks.map(t=>[t,t,tc[t]])].map(([k,l,n])=>`<button class="trf ${S.trade===k?'on':''}" data-tr="${esc(k)}">${esc(l)}<b>${n}</b></button>`).join(''); }
+  else S.trade='all';
+  bar.innerHTML=html;
+}
+const passFilter=(e,f)=>f==='all'||(f==='active'&&(e.status==='open'||e.status==='progress'))||(f==='late'&&isLate(e))||(f==='none'&&!e.status)||e.status===f;
+$('#filters').addEventListener('click',ev=>{ const b=ev.target.closest('button'); if(!b) return; if(b.dataset.tr!=null) S.trade=b.dataset.tr; else S.filter=b.dataset.f; S.stick=true; renderFilters(); renderFeed(); });
+
 /* ---------- state ---------- */
-const S={store:null, downloads:null, notes:[], notesLoaded:false, entries:[], entriesLoaded:false, pending:[], noteId:null, unsubE:null, query:'', pv:{items:[],idx:0}, stick:true};
+const S={store:null, downloads:null, notes:[], notesLoaded:false, entries:[], entriesLoaded:false, pending:[], noteId:null, unsubE:null, query:'', pv:{items:[],idx:0}, stick:true, filter:'all', trade:'all'};
 const curNote=()=>S.notes.find(n=>n.id===S.noteId);
 
 /* ---------- list view ---------- */
@@ -481,7 +625,7 @@ function renderList(){
       <div class="card-thumb" ${n.thumbSrc?`style="background-image:url('${esc(n.thumbSrc)}')"`:''}>${n.thumbSrc?'':ICON.note}</div>
       <div class="card-body"><div class="card-title">${esc(n.title||'ללא שם')}</div>
       <div class="card-text">${esc(n.lastText||'')}</div>
-      <div class="card-meta"><span>${listDate(n.updatedAt||n.createdAt)}</span><span>${n.count?n.count+' רשומות':''}</span></div></div></div>`).join('')
+      <div class="card-meta"><span>${listDate(n.updatedAt||n.createdAt)}</span><span>${n.count?n.count+' רשומות':''}</span></div>${(n.openCount||n.progressCount)?`<div class="card-st">${n.openCount?`<span class="st-open">${n.openCount} פתוחים</span>`:''}${n.progressCount?`<span class="st-progress">${n.progressCount} בטיפול</span>`:''}</div>`:''}</div></div>`).join('')
     || (S.notes.length?`<div class="loading" style="grid-column:1/-1">לא נמצאו פתקים</div>`:'');
 }
 $('#notesGrid').addEventListener('click',e=>{ const c=e.target.closest('.card'); if(c) go(c.dataset.id); });
@@ -504,7 +648,7 @@ window.addEventListener('hashchange',route);
 
 function openNote(id){
   if(S.unsubE){ S.unsubE(); S.unsubE=null; }
-  S.noteId=id; S.entries=[]; S.entriesLoaded=false; S.pending=[]; S.stick=true;
+  S.noteId=id; S.entries=[]; S.entriesLoaded=false; S.pending=[]; S.stick=true; S.filter='all'; S.trade='all'; S.trade='all';
   $('#listView').classList.add('hidden'); $('#noteView').classList.remove('hidden');
   renderHead(); renderFeed();
   let timer=setTimeout(()=>{ if(!S.entriesLoaded){ $('#feed').innerHTML='<div class="feed-empty">לא ניתן להתחבר לנתונים כרגע. נסה שוב בעוד רגע.</div>'; } },10000);
@@ -536,6 +680,7 @@ function bubbleHTML(e,{pending=false,failed=false}={}){
   return `<div class="msg"><div class="${cls}" data-id="${esc(e.id||'')}" data-pid="${esc(e.pid||'')}">
     ${hasImg?`<img src="${esc(e._src)}" style="${ratio}" loading="lazy" alt="">`:''}
     ${hasTxt?`<div class="txt">${esc(e.text)}</div>`:''}
+    ${pending?'':trackHTML(e)}
     ${failed?'<div class="failed-note">השליחה נכשלה — הקש לנסות שוב</div>':''}
     <div class="meta">${fmtTime(e.createdAt)}${e.editedAt?' · נערך':''}${pending?' ⏳':' ✓✓'}</div>
     ${pending&&!failed&&hasImg?'<div class="spin"><div class="spinner sm"></div></div>':''}
@@ -546,7 +691,10 @@ function renderFeed(){
   const f=$('#feed');
   const nearBottom=f.scrollHeight-f.scrollTop-f.clientHeight<120;
   if(!S.entriesLoaded && !S.pending.length){ f.innerHTML='<div class="loading">טוען…</div>'; return; }
-  const all=[...S.entries.map(e=>({e})),...S.pending.map(p=>({e:p,pending:true,failed:p.failed}))];
+  renderFilters();
+  const shown=S.entries.filter(e=>passFilter(e,S.filter)&&(S.trade==='all'||tradeOf(e)===S.trade));
+  const all=[...shown.map(e=>({e})),...(S.filter==='all'&&S.trade==='all'?S.pending.map(p=>({e:p,pending:true,failed:p.failed})):[])];
+  if(!all.length&&S.entries.length){ f.innerHTML='<div class="feed-empty">אין רשומות בסינון הזה.</div>'; return; }
   if(!all.length){ f.innerHTML='<div class="feed-empty">הפתק ריק.<br>צרף תמונה (או צלם) והוסף לה כיתוב — כל שליחה מתווספת לפתק.<br>בסיום: <b>ייצוא</b> למעלה — PDF או Word.</div>'; return; }
   let html='', last=null;
   for(const it of all){ const k=dayKey(it.e.createdAt); if(k!==last){ html+=`<div class="day"><span>${esc(dayLabel(it.e.createdAt))}</span></div>`; last=k; } html+=bubbleHTML(it.e,it); }
@@ -560,8 +708,10 @@ $('#feed').addEventListener('click', async ev=>{
   if(b.classList.contains('failed')){ const p=S.pending.find(x=>x.pid===b.dataset.pid); if(p){ p.failed=false; renderFeed(); sendOne(p); } return; }
   const e=S.entries.find(x=>x.id===b.dataset.id); if(!e) return;
   if(ev.target.tagName==='IMG'){ openLightbox(e); return; }
+  if(ev.target.closest('[data-act="status"]')){ editStatus(e); return; }
   if(ev.target.closest('.more')){
     const items=[{label:e._src?'עריכת כיתוב':'עריכת הערה',icon:'edit',value:'edit'}];
+    items.push({label:'קבלן, סטטוס, אחראי ויעד',icon:'flag',value:'status'});
     if(e._src) items.push({label:'סימון וציור על התמונה',icon:'draw',value:'draw'});
     if(e.text) items.push({label:'העתקת טקסט',icon:'copy',value:'copy'});
     if(e._src) items.push({label:'שמירת התמונה',icon:'img',value:'saveimg'});
@@ -572,6 +722,7 @@ $('#feed').addEventListener('click', async ev=>{
       if(v===null||v===e.text) return;
       try{ await S.store.updateEntry(S.noteId,e.id,{text:v,editedAt:Date.now()}); if(isLast(e)) S.store.updateNote(S.noteId,{lastText:v||'📷 תמונה'}).catch(()=>{}); }
       catch(err){ toast('השמירה נכשלה'); }
+    } else if(a==='status'){ editStatus(e);
     } else if(a==='draw'){
       const r=await openEditor({src:e._orig||e._src,ops:e.ops||[],rot:e.rot||0});
       if(!r||(r.reset&&!e.origId)) return;
@@ -587,7 +738,7 @@ $('#feed').addEventListener('click', async ev=>{
     } else if(a==='del'){
       const ok=await ask({title:'למחוק את הרשומה?',message:e._src?'התמונה והכיתוב יימחקו מהפתק.':'ההערה תימחק מהפתק.',okText:'מחיקה',danger:true});
       if(!ok) return;
-      try{ await S.store.deleteEntry(S.noteId,e); S.store.updateNote(S.noteId,{count:Math.max(0,S.entries.length-1),...(isLast(e)?lastPatch(S.entries.filter(x=>x.id!==e.id)):{})}).catch(()=>{}); }
+      try{ await S.store.deleteEntry(S.noteId,e); const sc=statusCounts(S.entries.filter(x=>x.id!==e.id)); S.store.updateNote(S.noteId,{openCount:sc.open,progressCount:sc.progress,doneCount:sc.done,lateCount:sc.late,count:Math.max(0,S.entries.length-1),...(isLast(e)?lastPatch(S.entries.filter(x=>x.id!==e.id)):{})}).catch(()=>{}); }
       catch(err){ toast('המחיקה נכשלה'); }
     }
   }
@@ -630,7 +781,7 @@ mi.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.shiftKey&&matchMedia('
 $('#sendBtn').addEventListener('click',sendText);
 async function sendText(){
   const text=mi.value.trim(); if(!text||!S.noteId) return;
-  mi.value=''; autoGrow(mi); $('#sendBtn').disabled=true; S.stick=true;
+  mi.value=''; autoGrow(mi); $('#sendBtn').disabled=true; S.stick=true; S.filter='all'; S.trade='all';
   const p={pid:genId(),text,createdAt:Date.now(),noteId:S.noteId}; S.pending.push(p); renderFeed();
   await sendOne(p);
 }
@@ -640,7 +791,8 @@ async function sendOne(p){
     if(p.file){ const c=p.orig||await compress(p.file); p.orig=c;
       if(p.flat){ blob=p.flat.blob; w=p.flat.w; h=p.flat.h; extra={origBlob:c.blob,ow:c.w,oh:c.h,ops:p.ops,rot:p.rot}; }
       else { blob=c.blob; w=c.w; h=c.h; } }
-    const r=await S.store.addEntry(p.noteId,{text:p.text,blob,w,h,...extra,createdAt:p.createdAt});
+    if(p.trade) rememberTrade(p.trade);
+    const r=await S.store.addEntry(p.noteId,{text:p.text,blob,w,h,...extra,trade:p.trade||null,createdAt:p.createdAt});
     S.pending=S.pending.filter(x=>x!==p);
     const patch={updatedAt:Date.now(),lastText:p.text||'📷 תמונה'};
     if(r&&r.imageId) patch.thumbId=r.imageId;
@@ -680,9 +832,23 @@ function addFiles(files){
   S.pv.items.push(...items); S.pv.idx=S.pv.items.length-items.length;
   $('#preview').classList.remove('hidden'); renderPv();
 }
+function renderPvTrades(){
+  const it=S.pv.items[S.pv.idx]; if(!it) return;
+  const tl=tradeList().slice(0,14);
+  $('#pvTrades').innerHTML='<span class="lbl">קבלן/תחום:</span>'+tl.map(t=>`<button data-t="${esc(t)}" class="${it.trade===t?'on':''}">${esc(t)}</button>`).join('')+`<button data-t="__other">אחר…</button>`+(S.pv.items.length>1&&it.trade?`<button class="all" data-t="__all">החל על כל התמונות</button>`:'');
+}
+$('#pvTrades').addEventListener('click', async ev=>{
+  const b=ev.target.closest('button'); if(!b) return; const it=S.pv.items[S.pv.idx]; if(!it) return;
+  const t=b.dataset.t;
+  if(t==='__all'){ S.pv.items.forEach(x=>x.trade=it.trade); toast('הוחל על כל התמונות'); }
+  else if(t==='__other'){ const v=await ask({title:'קבלן / תחום',input:'',okText:'אישור'}); if(v&&v.trim()){ it.trade=v.trim(); rememberTrade(it.trade); } }
+  else it.trade=it.trade===t?null:t;
+  renderPvTrades();
+});
 function renderPv(){
   const {items,idx}=S.pv; const it=items[idx]; if(!it){ closePv(); return; }
   $('#pvImg').src=it.flatUrl||it.url; $('#pvCaption').value=it.caption; autoGrow($('#pvCaption'));
+  renderPvTrades();
   $('#pvCount').textContent=items.length>1?`${idx+1} / ${items.length}`:'';
   $('#pvThumbs').innerHTML=(items.length>1?items.map((x,i)=>`<div class="th ${i===idx?'on':''}" data-i="${i}" style="background-image:url('${x.flatUrl||x.url}')"></div>`).join(''):'')+'<button class="add" id="pvAdd" aria-label="הוסף">+</button>';
 }
@@ -702,9 +868,9 @@ $('#pvEdit').addEventListener('click', async ()=>{
 });
 $('#pvRemove').addEventListener('click',()=>{ const it=S.pv.items.splice(S.pv.idx,1)[0]; if(it) URL.revokeObjectURL(it.url); S.pv.idx=Math.min(S.pv.idx,S.pv.items.length-1); renderPv(); });
 $('#pvSend').addEventListener('click', async ()=>{
-  const items=S.pv.items.slice(); closePv(false); S.stick=true;
+  const items=S.pv.items.slice(); closePv(false); S.stick=true; S.filter='all'; S.trade='all';
   const base=Date.now();
-  const ps=items.map((it,i)=>({pid:genId(),file:it.file,orig:it.orig,flat:it.flat,ops:it.ops,rot:it.rot,_src:it.flatUrl||it.url,text:it.caption.trim(),createdAt:base+i,noteId:S.noteId}));
+  const ps=items.map((it,i)=>({pid:genId(),trade:it.trade||null,file:it.file,orig:it.orig,flat:it.flat,ops:it.ops,rot:it.rot,_src:it.flatUrl||it.url,text:it.caption.trim(),createdAt:base+i,noteId:S.noteId}));
   S.pending.push(...ps); renderFeed();
   for(const p of ps) await sendOne(p);
 });
@@ -897,11 +1063,16 @@ function exportDialog(note){
       <label class="fl">הוכן ע״י — לא חובה</label><input type="text" id="exBy" value="${esc(p.by||'')}">
       <label class="chk"><input type="checkbox" id="exNums" ${p.nums?'checked':''}> מספור רשומות</label>
       <label class="chk"><input type="checkbox" id="exDates" ${p.dates?'checked':''}> הצגת תאריך ושעה</label>
-      <label class="chk" id="exColsRow"><input type="checkbox" id="exCols" ${p.cols?'checked':''}> עמודות למילוי: אחראי · תאריך יעד · סטטוס</label>
+      <label class="chk" id="exColsRow"><input type="checkbox" id="exCols" ${p.cols?'checked':''}> עמודות אחראי · תאריך יעד · סטטוס</label>
+      ${S.entries.some(e=>e.trade)?(()=>{ const tc={}; S.entries.forEach(e=>{ const t=tradeOf(e); tc[t]=(tc[t]||0)+1; }); const tks=Object.keys(tc).sort((a,b)=>a===NO_TRADE?1:b===NO_TRADE?-1:a.localeCompare(b,'he'));
+        return `<label class="fl">קבלן / תחום</label><select id="exTrade"><option value="all">כל הקבלנים (${S.entries.length})</option>${tks.map(t=>`<option value="${esc(t)}">${esc(t)} (${tc[t]})</option>`).join('')}</select>
+        <div id="exSplitWrap"><label class="fl">חלוקה</label><select id="exSplit"><option value="none" ${p.split==='none'?'selected':''}>קובץ אחד, לפי הסדר</option><option value="group" ${(p.split||'group')==='group'?'selected':''}>קובץ אחד, מחולק לפי קבלן (כל קבלן מעמוד חדש)</option><option value="files" ${p.split==='files'?'selected':''}>קובץ נפרד לכל קבלן</option></select></div>`; })():''}
+      ${S.entries.some(hasTrack)?`<label class="fl">אילו רשומות לייצא</label><select id="exWhich">${[['all','הכול'],['active','רק לא סגורים (פתוח + בטיפול)'],['open','רק פתוחים'],['done','רק סגורים'],['late','רק באיחור']].map(([v,l])=>`<option value="${v}" ${(p.which||'all')===v?'selected':''}>${l} (${S.entries.filter(e=>passFilter(e,v)).length})</option>`).join('')}</select>`:''}
       <div class="dlg-actions"><button class="btn primary" id="exGo">ייצוא</button><button class="btn ghost" id="exCancel">ביטול</button></div></div>`;
     m.classList.remove('hidden');
     const sync=()=>{ m.querySelectorAll('#exFmt button').forEach(b=>b.classList.toggle('on',b.dataset.v===p.fmt)); m.querySelectorAll('#exTpl .tpl').forEach(b=>b.classList.toggle('on',b.dataset.v===p.tpl)); $('#exColsRow').classList.toggle('hidden',p.tpl!=='table'); $('#exGo').textContent=p.fmt==='pdf'?'ייצוא ל-PDF':'ייצוא ל-Word'; };
     sync();
+    if($('#exTrade')){ const sw=()=>$('#exSplitWrap').classList.toggle('hidden',$('#exTrade').value!=='all'); $('#exTrade').onchange=sw; sw(); }
     $('#exFmt').onclick=e=>{ const b=e.target.closest('button'); if(b){ p.fmt=b.dataset.v; sync(); } };
     $('#exTpl').onclick=e=>{ const b=e.target.closest('.tpl'); if(b){ p.tpl=b.dataset.v; sync(); } };
     const done=v=>{ m.classList.add('hidden'); m.innerHTML=''; resolve(v); };
@@ -909,8 +1080,8 @@ function exportDialog(note){
     m.onclick=e=>{ if(e.target===m) done(null); };
     $('#exGo').onclick=()=>{
       const o={fmt:p.fmt,tpl:p.tpl,title:$('#exTitle').value.trim()||note.title||'פתק',details:$('#exDetails').value.trim(),by:$('#exBy').value.trim(),
-        nums:$('#exNums').checked,dates:$('#exDates').checked,cols:$('#exCols').checked};
-      savePrefs({fmt:o.fmt,tpl:o.tpl,by:o.by,nums:o.nums,dates:o.dates,cols:o.cols});
+        nums:$('#exNums').checked,dates:$('#exDates').checked,cols:$('#exCols').checked,which:$('#exWhich')?$('#exWhich').value:'all',trade:$('#exTrade')?$('#exTrade').value:'all',split:$('#exTrade')?$('#exSplit').value:'none'};
+      savePrefs({fmt:o.fmt,tpl:o.tpl,by:o.by,nums:o.nums,dates:o.dates,cols:o.cols,which:o.which,split:o.split});
       done(o);
     };
   });
@@ -921,18 +1092,32 @@ async function exportNote(){
   const o=await exportDialog(n); if(!o) return;
   if((o.details||'')!==(n.details||'')) S.store.updateNote(n.id,{details:o.details}).catch(()=>{});
   busy(true,o.fmt==='pdf'?'מכין PDF…':'מכין קובץ Word…');
-  const entries=S.entries.map(e=>({...e}));
-  let blob;
-  try{ blob=o.fmt==='pdf'?await buildPdf(n,entries,o):await buildDocx(n,entries,o); }
-  catch(e){ busy(false); toast('יצירת הקובץ נכשלה'); console.error(e); return; }
+  let entries=S.entries.map((e,i)=>({...e,_n:i+1})).filter(e=>passFilter(e,o.which||'all'));
+  if(o.trade&&o.trade!=='all'){ entries=entries.filter(e=>tradeOf(e)===o.trade); o.title=o.title+' — '+o.trade; }
+  if(!entries.length){ busy(false); toast('אין רשומות לייצוא בבחירה הזו'); return; }
+  const groupsOf=list=>{ const m=new Map(); list.forEach(e=>{ const t=tradeOf(e); if(!m.has(t)) m.set(t,[]); m.get(t).push(e); });
+    return [...m.entries()].sort((a,b)=>a[0]===NO_TRADE?1:b[0]===NO_TRADE?-1:a[0].localeCompare(b[0],'he')).map(([name,entries])=>({name,entries})); };
+  const ext=o.fmt==='pdf'?'.pdf':'.docx';
+  const fname=t=>((t||'פתק').replace(/[\\/:*?"<>|#]+/g,' ').trim()||'פתק')+ext;
+  const files=[];
+  try{
+    if(o.trade==='all'&&o.split==='files'){
+      const gs=groupsOf(entries);
+      for(let k=0;k<gs.length;k++){ const g=gs[k]; const oo={...o,title:o.title+' — '+g.name};
+        busy(true,`מכין קובץ ${k+1} מתוך ${gs.length} — ${g.name}`);
+        const bl=o.fmt==='pdf'?await buildPdf(n,g.entries,oo):await buildDocx(n,g.entries,oo); files.push({blob:bl,name:fname(oo.title)}); }
+    } else {
+      if(o.trade==='all'&&o.split==='group'&&entries.some(e=>e.trade)) o.groups=groupsOf(entries);
+      const bl=o.fmt==='pdf'?await buildPdf(n,entries,o):await buildDocx(n,entries,o); files.push({blob:bl,name:fname(o.title)});
+    }
+  }catch(e){ busy(false); toast('יצירת הקובץ נכשלה'); console.error(e); return; }
   busy(false);
-  const name=((o.title||'פתק').replace(/[\\/:*?"<>|#]+/g,' ').trim()||'פתק')+(o.fmt==='pdf'?'.pdf':'.docx');
   const items=[];
-  if(canShareFiles()) items.push({label:'שיתוף (וואטסאפ, מייל…)',icon:'share',value:'share'});
-  items.push({label:'שמירה למכשיר',icon:'pdf',value:'save'});
+  if(canShareFiles()) items.push({label:files.length>1?`שיתוף ${files.length} הקבצים (וואטסאפ, מייל…)`:'שיתוף (וואטסאפ, מייל…)',icon:'share',value:'share'});
+  items.push({label:files.length>1?`שמירת ${files.length} הקבצים למכשיר`:'שמירה למכשיר',icon:'pdf',value:'save'});
   const a=items.length>1?await sheet(items):'save';
-  if(a==='share'){ if(!(await shareFile(blob,name,o.title))) saveFile(blob,name); }
-  else if(a==='save'){ saveFile(blob,name); toast('הקובץ נשמר בהורדות'); }
+  if(a==='share'){ if(!(await shareFiles(files,o.title))) for(const f of files){ saveFile(f.blob,f.name); await new Promise(r=>setTimeout(r,500)); } }
+  else if(a==='save'){ for(const f of files){ saveFile(f.blob,f.name); await new Promise(r=>setTimeout(r,500)); } toast(files.length>1?`${files.length} קבצים נשמרו בהורדות`:'הקובץ נשמר בהורדות'); }
 }
 
 /* ---------- shared layout helpers ---------- */
@@ -964,6 +1149,7 @@ function headerInfo(note,entries,o){
   const parts=[];
   if(o.dates) parts.push(dayKey(first)===dayKey(last)?fmtDate(first):`${fmtDate(first)} – ${fmtDate(last)}`);
   parts.push(`${entries.length} רשומות${imgs?`, ${imgs} תמונות`:''}`);
+  if(entries.some(hasTrack)){ const c=statusCounts(entries); const s=[c.open?`${c.open} פתוחים`:'',c.progress?`${c.progress} בטיפול`:'',c.done?`${c.done} סגורים`:'',c.late?`${c.late} באיחור`:''].filter(Boolean).join(', '); if(s) parts.push(s); }
   if(o.by) parts.push('הוכן ע״י '+o.by);
   parts.push('הופק '+fmtDate(now));
   return parts.join('  ·  ');
@@ -980,6 +1166,8 @@ async function buildPdf(note,entries,o){
   const newPage=()=>{ pg=[]; pages.push(pg); y=M; if(onNew) onNew(); };
   const need=h=>{ if(y+h>BOTTOM&&y>M+(onNew?60:1)) newPage(); };
   const T=(text,font,color,x,yy,a='right')=>pg.push({t:'text',font,color,text,x,y:yy,a});
+  const trackTxt=e=>[o.groups?'':(e.trade||''),e.status?STATUS[e.status].label:'',e.assignee?'אחראי: '+e.assignee:'',e.due?(isLate(e)?'באיחור · ':'')+'יעד: '+fmtDue(e.due):''].filter(Boolean).join('  ·  ');
+  const trackColor=e=>isLate(e)?'#c62828':e.status?STATUS[e.status].pdf:'#33424b';
 
   // header
   for(const l of wrapText(o.title,F.title,CW)){ T(l,F.title,'#111b21',W-M,y+46); y+=62; }
@@ -987,6 +1175,7 @@ async function buildPdf(note,entries,o){
   for(const l of wrapText(headerInfo(note,entries,o),F.sub,CW)){ T(l,F.sub,'#667781',W-M,y+26); y+=36; }
   y+=12; pg.push({t:'rect',x:M,y,w:CW,h:4,color:'#1aa37a'}); y+=36;
 
+  const layoutList=entries=>{
   if(o.tpl==='grid'){
     const GAP=30, colW=(CW-GAP)/2, P=18, inW=colW-2*P, IMGH=400, LH=37;
     for(let i=0;i<entries.length;i+=2){
@@ -994,9 +1183,10 @@ async function buildPdf(note,entries,o){
         const idx=i+j, b=e._src?fitBox(e.w,e.h,inW,IMGH):null;
         let lines=e.text&&e.text.trim()?wrapText(e.text.trim(),F.cell,inW):[];
         if(lines.length>10){ lines=lines.slice(0,10); lines[9]+='…'; }
-        const meta=[o.nums?`#${idx+1}`:'',o.dates?fmtDate(e.createdAt)+' '+fmtTime(e.createdAt):''].filter(Boolean).join('  ·  ');
-        const h=P+(meta?34:0)+(b?IMGH+(lines.length?14:0):0)+lines.length*LH+P;
-        return {e,b,lines,meta,h};
+        const meta=[o.nums?`#${e._n||idx+1}`:'',o.dates?fmtDate(e.createdAt)+' '+fmtTime(e.createdAt):''].filter(Boolean).join('  ·  ');
+        const tr=hasTrack(e)?trackTxt(e):'';
+        const h=P+(meta?34:0)+(b?IMGH+(lines.length||tr?14:0):0)+lines.length*LH+(tr?36:0)+P;
+        return {e,b,lines,meta,h,tr};
       });
       const rowH=Math.max(...cells.map(c=>c.h));
       need(rowH);
@@ -1006,6 +1196,7 @@ async function buildPdf(note,entries,o){
         let yy=y+P;
         if(c.meta){ T(c.meta,F.meta,'#0d6b5e',cx+colW-P,yy+24); yy+=34; }
         if(c.b){ pg.push({t:'img',e:c.e,x:cx+P+(inW-c.b.w)/2,y:yy+(IMGH-c.b.h)/2,w:c.b.w,h:c.b.h,r:10}); yy+=IMGH+14; }
+        if(c.tr){ T(c.tr,'700 22px Heebo, Arial',trackColor(c.e),cx+colW-P,yy+26); yy+=36; }
         for(const l of c.lines){ if(l) T(l,F.cell,'#111b21',cx+colW-P,yy+27); yy+=LH; }
       });
       y+=rowH+GAP;
@@ -1015,7 +1206,7 @@ async function buildPdf(note,entries,o){
     if(o.nums) cols.push({k:'num',w:66,h:'#'});
     cols.push({k:'img',w:o.cols?300:340,h:'תמונה'});
     cols.push({k:'desc',w:0,h:'תיאור'});
-    if(o.cols) cols.push({k:'x',w:150,h:'אחראי'},{k:'x',w:135,h:'תאריך יעד'},{k:'x',w:125,h:'סטטוס'});
+    if(o.cols) cols.push({k:'as',w:150,h:'אחראי'},{k:'due',w:135,h:'תאריך יעד'},{k:'st',w:125,h:'סטטוס'});
     const dsc=cols.find(c=>c.k==='desc'); dsc.w=CW-cols.reduce((s,c)=>s+c.w,0);
     let xr=W-M; for(const c of cols){ c.x=xr-c.w; xr=c.x; }
     const HR=54, P=14, LH=36;
@@ -1031,14 +1222,17 @@ async function buildPdf(note,entries,o){
       let lines=e.text&&e.text.trim()?wrapText(e.text.trim(),F.cell,dsc.w-2*P):[];
       const maxL=Math.floor((maxBody-(meta?32:0))/LH);
       if(lines.length>maxL){ lines=lines.slice(0,maxL); lines[maxL-1]+='…'; }
-      const rowH=Math.max(b?b.h+2*P:0,2*P+(meta?32:0)+lines.length*LH,84);
+      const rowH=Math.max(b?b.h+2*P:0,2*P+(meta?32:0)+(!o.cols&&hasTrack(e)&&trackTxt(e)?34:0)+(o.cols&&e.trade&&!o.groups?34:0)+lines.length*LH,84,o.cols&&e.assignee?2*P+Math.min(4,wrapText(e.assignee,F.cell,135-2*P).length)*LH:0);
       need(rowH);
       if(i%2) pg.push({t:'rect',x:M,y,w:CW,h:rowH,color:'#f7f5f1'});
       for(const c of cols){
         pg.push({t:'srect',x:c.x,y,w:c.w,h:rowH,color:'#d6d0c6'});
-        if(c.k==='num') T(String(i+1),F.num,'#0d6b5e',c.x+c.w/2,y+P+30,'center');
+        if(c.k==='num') T(String(e._n||i+1),F.num,'#0d6b5e',c.x+c.w/2,y+P+30,'center');
         else if(c.k==='img'&&b) pg.push({t:'img',e,x:c.x+(c.w-b.w)/2,y:y+(rowH-b.h)/2,w:b.w,h:b.h,r:6});
-        else if(c.k==='desc'){ let yy=y+P; if(meta){ T(meta,F.meta,'#667781',c.x+c.w-P,yy+22); yy+=32; } for(const l of lines){ if(l) T(l,F.cell,'#111b21',c.x+c.w-P,yy+27); yy+=LH; } }
+        else if(c.k==='desc'){ let yy=y+P; if(meta){ T(meta,F.meta,'#667781',c.x+c.w-P,yy+22); yy+=32; } if(o.cols&&e.trade&&!o.groups){ T(e.trade,'700 21px Heebo, Arial','#4b2fa0',c.x+c.w-P,yy+24); yy+=34; } if(!o.cols&&hasTrack(e)&&trackTxt(e)){ T(trackTxt(e),'700 21px Heebo, Arial',trackColor(e),c.x+c.w-P,yy+24); yy+=34; } for(const l of lines){ if(l) T(l,F.cell,'#111b21',c.x+c.w-P,yy+27); yy+=LH; } }
+        else if(c.k==='as'&&e.assignee){ wrapText(e.assignee,F.cell,c.w-2*P).slice(0,4).forEach((l,k)=>T(l,F.cell,'#111b21',c.x+c.w/2,y+P+27+k*LH,'center')); }
+        else if(c.k==='due'&&e.due){ T(fmtDue(e.due),F.cell,isLate(e)?'#c62828':'#111b21',c.x+c.w/2,y+P+27,'center'); if(isLate(e)) T('באיחור','700 20px Heebo, Arial','#c62828',c.x+c.w/2,y+P+60,'center'); }
+        else if(c.k==='st'&&e.status){ const S0=STATUS[e.status]; pg.push({t:'rr',x:c.x+10,y:y+P,w:c.w-20,h:40,r:20,fill:S0.fill}); T(S0.label,'700 22px Heebo, Arial',S0.pdf,c.x+c.w/2,y+P+28,'center'); }
       }
       y+=rowH;
     });
@@ -1047,15 +1241,29 @@ async function buildPdf(note,entries,o){
     entries.forEach((e,i)=>{
       const b=e._src?fitBox(e.w,e.h,CW,700):null, lines=e.text&&e.text.trim()?wrapText(e.text.trim(),F.body,CW):[];
       const newDay=o.dates&&dayKey(e.createdAt)!==lastDay;
-      const meta=[o.nums?`#${i+1}`:'',o.dates?fmtTime(e.createdAt):''].filter(Boolean).join('  ·  ');
-      need((newDay?72:0)+(meta?38:0)+(b?b.h+20:0)+Math.min(lines.length,2)*LH);
+      const meta=[o.nums?`#${e._n||i+1}`:'',o.dates?fmtTime(e.createdAt):''].filter(Boolean).join('  ·  ');
+      const tr=hasTrack(e)?trackTxt(e):'';
+      need((newDay?72:0)+(meta?38:0)+(tr?40:0)+(b?b.h+20:0)+Math.min(lines.length,2)*LH);
       if(newDay){ pg.push({t:'pill',text:fullDay(e.createdAt),y}); y+=72; lastDay=dayKey(e.createdAt); }
       if(meta){ T(meta,F.meta,'#667781',W-M,y+24); y+=38; }
+      if(tr){ T(tr,'700 25px Heebo, Arial',trackColor(e),W-M,y+28); y+=40; }
       if(b){ pg.push({t:'img',e,x:W-M-b.w,y,w:b.w,h:b.h,r:14}); y+=b.h+20; }
       for(const l of lines){ need(LH); if(l) T(l,F.body,'#111b21',W-M,y+32); y+=LH; }
       y+=22; if(y+40<BOTTOM) pg.push({t:'rect',x:M+CW*.3,y,w:CW*.7,h:2,color:'#e6e1d8'}); y+=36;
     });
   }
+
+    onNew=null;
+  };
+  if(o.groups){
+    o.groups.forEach((g,gi)=>{
+      if(gi>0) newPage(); else need(240);
+      pg.push({t:'rr',x:M,y,w:CW,h:70,r:14,fill:'#efeafc'});
+      T('קבלן / תחום: '+g.name,'700 32px Heebo, Arial','#4b2fa0',W-M-24,y+46);
+      const gc=statusCounts(g.entries); T([`${g.entries.length} רשומות`,gc.open?`${gc.open} פתוחים`:'',gc.progress?`${gc.progress} בטיפול`:'',gc.late?`${gc.late} באיחור`:''].filter(Boolean).join('  ·  '),'500 22px Heebo, Arial','#5b4a8a',M+24,y+44,'left');
+      y+=96; layoutList(g.entries);
+    });
+  } else layoutList(entries);
 
   // draw
   const total=pages.length;
@@ -1140,12 +1348,17 @@ async function buildDocx(note,entries,o){
   const borders=(c,sz=4)=>`<w:tblBorders>${['top','left','bottom','right','insideH','insideV'].map(s=>`<w:${s} w:val="single" w:sz="${sz}" w:space="0" w:color="${c}"/>`).join('')}</w:tblBorders>`;
   const tc=(w,inner,{fill=null,vAlign='top'}={})=>`<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/>${fill?`<w:shd w:val="clear" w:color="auto" w:fill="${fill}"/>`:''}<w:vAlign w:val="${vAlign}"/></w:tcPr>${inner||'<w:p><w:pPr><w:bidi/></w:pPr></w:p>'}</w:tc>`;
   const TOTAL=9638;
+  const trackRuns=(e,sz)=>{ const parts=[]; if(e.trade&&!o.groups) parts.push(run(e.trade,{b:true,sz,color:'4B2FA0'})); if(e.status) parts.push(run(STATUS[e.status].label,{b:true,sz,color:STATUS[e.status].word}));
+    if(e.assignee) parts.push(run('אחראי: '+e.assignee,{sz,color:'33424B'}));
+    if(e.due) parts.push(run((isLate(e)?'באיחור · ':'')+'יעד: '+fmtDue(e.due),{b:isLate(e),sz,color:isLate(e)?'C62828':'33424B'}));
+    return parts.join(run('  ·  ',{sz,color:'8A969D'})); };
 
   let body='';
   body+=para(run(o.title,{b:true,sz:36}),{after:60});
   if(o.details) body+=para(run(o.details,{sz:24,color:'33424B'}),{after:40});
   body+=para(run(headerInfo(note,entries,o),{sz:18,color:'667781'}),{after:280,border:{sz:12,color:'1AA37A'}});
 
+  const bodyFor=async entries=>{ let body='';
   if(o.tpl==='grid'){
     const cw=TOTAL/2;
     let rows='';
@@ -1153,10 +1366,11 @@ async function buildDocx(note,entries,o){
       let cells='';
       for(let j=0;j<2;j++){
         const e=entries[i+j]; if(!e){ cells+=tc(cw,''); continue; }
-        const meta=[o.nums?`#${i+j+1}`:'',o.dates?fmtDate(e.createdAt)+' '+fmtTime(e.createdAt):''].filter(Boolean).join('  ·  ');
+        const meta=[o.nums?`#${e._n||i+j+1}`:'',o.dates?fmtDate(e.createdAt)+' '+fmtTime(e.createdAt):''].filter(Boolean).join('  ·  ');
         let inner='';
         if(meta) inner+=para(run(meta,{b:true,sz:18,color:'0D6B5E'}),{after:60});
         if(e._src) inner+=para(await pic(e,7.7,6.2),{jc:'center',after:80});
+        if(hasTrack(e)) inner+=para(trackRuns(e,18),{after:40});
         if(e.text&&e.text.trim()) inner+=para(run(e.text.trim(),{sz:20}),{after:60});
         cells+=tc(cw,inner||'');
       }
@@ -1169,15 +1383,18 @@ async function buildDocx(note,entries,o){
     if(o.nums) cols.push({k:'num',w:600,h:'#'});
     cols.push({k:'img',w:o.cols?2600:3100,h:'תמונה'});
     cols.push({k:'desc',w:0,h:'תיאור'});
-    if(o.cols) cols.push({k:'x',w:1150,h:'אחראי'},{k:'x',w:1100,h:'תאריך יעד'},{k:'x',w:1000,h:'סטטוס'});
+    if(o.cols) cols.push({k:'as',w:1150,h:'אחראי'},{k:'due',w:1100,h:'תאריך יעד'},{k:'st',w:1000,h:'סטטוס'});
     const d=cols.find(c=>c.k==='desc'); d.w=TOTAL-cols.reduce((s,c)=>s+c.w,0);
     let rows=`<w:tr><w:trPr><w:tblHeader/><w:cantSplit/></w:trPr>${cols.map(c=>tc(c.w,para(run(c.h,{b:true,sz:20,color:'FFFFFF'}),{jc:'center',after:0}),{fill:'0D6B5E',vAlign:'center'})).join('')}</w:tr>`;
     for(let i=0;i<entries.length;i++){
       const e=entries[i]; let cells='';
       for(const c of cols){
-        if(c.k==='num') cells+=tc(c.w,para(run(String(i+1),{b:true,sz:22,color:'0D6B5E'}),{jc:'center',after:0}),{vAlign:'center',fill:i%2?'F7F5F1':null});
+        if(c.k==='num') cells+=tc(c.w,para(run(String(e._n||i+1),{b:true,sz:22,color:'0D6B5E'}),{jc:'center',after:0}),{vAlign:'center',fill:i%2?'F7F5F1':null});
         else if(c.k==='img') cells+=tc(c.w,e._src?para(await pic(e,(c.w-240)/TW_CM,5.2),{jc:'center',after:0}):'',{vAlign:'center',fill:i%2?'F7F5F1':null});
-        else if(c.k==='desc'){ let inner=''; if(o.dates) inner+=para(run(fmtDate(e.createdAt)+'  '+fmtTime(e.createdAt),{sz:16,color:'667781'}),{after:40}); if(e.text&&e.text.trim()) inner+=para(run(e.text.trim(),{sz:20}),{after:0}); cells+=tc(c.w,inner,{fill:i%2?'F7F5F1':null}); }
+        else if(c.k==='desc'){ let inner=''; if(o.dates) inner+=para(run(fmtDate(e.createdAt)+'  '+fmtTime(e.createdAt),{sz:16,color:'667781'}),{after:40}); if(!o.cols&&hasTrack(e)) inner+=para(trackRuns(e,18),{after:40}); if(e.text&&e.text.trim()) inner+=para(run(e.text.trim(),{sz:20}),{after:0}); cells+=tc(c.w,inner,{fill:i%2?'F7F5F1':null}); }
+        else if(c.k==='as') cells+=tc(c.w,e.assignee?para(run(e.assignee,{sz:20}),{jc:'center',after:0}):'',{vAlign:'center',fill:i%2?'F7F5F1':null});
+        else if(c.k==='due') cells+=tc(c.w,e.due?para(run(fmtDue(e.due)+(isLate(e)?'\nבאיחור':''),{b:isLate(e),sz:20,color:isLate(e)?'C62828':null}),{jc:'center',after:0}):'',{vAlign:'center',fill:i%2?'F7F5F1':null});
+        else if(c.k==='st') cells+=tc(c.w,e.status?para(run(STATUS[e.status].label,{b:true,sz:20,color:STATUS[e.status].word}),{jc:'center',after:0}):'',{vAlign:'center',fill:e.status?STATUS[e.status].fill.slice(1).toUpperCase():(i%2?'F7F5F1':null)});
         else cells+=tc(c.w,'',{fill:i%2?'F7F5F1':null});
       }
       rows+=`<w:tr><w:trPr><w:cantSplit/></w:trPr>${cells}</w:tr>`;
@@ -1189,14 +1406,22 @@ async function buildDocx(note,entries,o){
     for(let i=0;i<entries.length;i++){
       const e=entries[i], hasT=!!(e.text&&e.text.trim());
       if(o.dates&&dayKey(e.createdAt)!==lastDay){ body+=para(run(fullDay(e.createdAt),{b:true,sz:22,color:'0D6B5E'}),{before:200,after:100,keep:true}); lastDay=dayKey(e.createdAt); }
-      const meta=[o.nums?`#${i+1}`:'',o.dates?fmtTime(e.createdAt):''].filter(Boolean).join('  ·  ');
+      const meta=[o.nums?`#${e._n||i+1}`:'',o.dates?fmtTime(e.createdAt):''].filter(Boolean).join('  ·  ');
       if(meta) body+=para(run(meta,{sz:18,color:'667781'}),{after:40,keep:true});
+      if(hasTrack(e)) body+=para(trackRuns(e,20),{after:60,keep:true});
       if(e._src) body+=para(await pic(e,16,11.5),{after:80,keep:hasT});
       if(hasT) body+=para(run(e.text.trim(),{sz:22}),{after:80});
       body+=para('',{after:200,border:{sz:4,color:'E6E1D8'}});
       busy(true,`מכין קובץ Word… ${i+1}/${entries.length}`);
     }
   }
+    return body; };
+  if(o.groups){
+    for(let gi=0;gi<o.groups.length;gi++){ const g=o.groups[gi]; const gc=statusCounts(g.entries);
+      if(gi>0) body+='<w:p><w:r><w:br w:type="page"/></w:r></w:p>';
+      body+=`<w:p><w:pPr><w:shd w:val="clear" w:color="auto" w:fill="EFEAFC"/><w:spacing w:before="60" w:after="160"/><w:bidi/></w:pPr>${run('קבלן / תחום: '+g.name,{b:true,sz:30,color:'4B2FA0'})}${run('   ·   '+[`${g.entries.length} רשומות`,gc.open?`${gc.open} פתוחים`:'',gc.progress?`${gc.progress} בטיפול`:'',gc.late?`${gc.late} באיחור`:''].filter(Boolean).join(' · '),{sz:20,color:'5B4A8A'})}</w:p>`;
+      body+=await bodyFor(g.entries); }
+  } else body+=await bodyFor(entries);
   const NS='xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"';
   const HEAD='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n';
   const doc=`${HEAD}<w:document ${NS}><w:body>${body}<w:sectPr><w:footerReference w:type="default" r:id="rIdFooter"/><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134" w:header="567" w:footer="567" w:gutter="0"/><w:bidi/></w:sectPr></w:body></w:document>`;
