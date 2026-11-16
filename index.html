@@ -24,16 +24,14 @@
 :root{
   --bar:#0d6b5e; --bar-2:#0a5a4f; --accent:#1aa37a; --chat:#efe7dd; --bubble:#dcf7c8;
   --ink:#111b21; --muted:#667781; --line:#e3ddd3; --card:#fff; --danger:#d93c3c;
-  --st:env(safe-area-inset-top,0px); --sb:env(safe-area-inset-bottom,0px);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;height:100%;font-family:'Heebo',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:var(--ink);background:#d8d3cb;overscroll-behavior:none}
-body{background:var(--bar)}
+html,body{margin:0;height:100%;font-family:'Heebo',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:var(--ink);background:#d8d3cb}
 button{font-family:inherit;cursor:pointer}
 .hidden{display:none!important}
-#app{height:100vh;height:100dvh;max-width:880px;margin:0 auto;background:#f6f4f0;position:relative;overflow:hidden;box-shadow:0 0 40px rgba(0,0,0,.12)}
+#app{height:100dvh;max-width:880px;margin:0 auto;background:#f6f4f0;position:relative;overflow:hidden;box-shadow:0 0 40px rgba(0,0,0,.12)}
 .view{position:absolute;inset:0;display:flex;flex-direction:column}
-.bar{flex:none;display:flex;align-items:center;gap:6px;min-height:calc(58px + var(--st));padding:calc(6px + var(--st)) 10px 6px;background:var(--bar);color:#fff}
+.bar{flex:none;display:flex;align-items:center;gap:6px;min-height:58px;padding:6px 10px;background:var(--bar);color:#fff}
 .bar-title{font-size:19px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bar-sub{font-size:12.5px;opacity:.82;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bar-main{flex:1;min-width:0;padding:2px 4px;border-radius:8px;cursor:pointer}
@@ -46,18 +44,11 @@ button{font-family:inherit;cursor:pointer}
 .pdf-btn svg{width:18px;height:18px}
 .pdf-btn:hover{background:rgba(255,255,255,.12)}
 
-/* install hint */
-.install{margin:10px 14px 0;background:#fff8dc;border:1px solid #f0e2a8;border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.5;color:#54500f;display:flex;gap:10px;align-items:flex-start}
-.install b{color:#3c3a10}
-.install .x{flex:none;border:0;background:none;font-size:20px;line-height:1;color:#8a8450;padding:0 2px}
-.install .ib{display:inline-block;vertical-align:-3px;width:16px;height:16px}
-.install .go{margin-top:6px;border:0;background:var(--accent);color:#fff;border-radius:16px;padding:6px 14px;font-size:14px}
-
 /* list */
 .search-wrap{padding:12px 14px 4px}
-#search{width:100%;border:1px solid var(--line);background:#fff;border-radius:22px;padding:10px 16px;font:inherit;font-size:16px;outline:none;-webkit-appearance:none}
+#search{width:100%;border:1px solid var(--line);background:#fff;border-radius:22px;padding:10px 16px;font:inherit;font-size:15px;outline:none}
 #search:focus{border-color:var(--accent)}
-.grid{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:10px 14px calc(100px + var(--sb));display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;align-content:start}
+.grid{flex:1;overflow:auto;padding:10px 14px 100px;display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;align-content:start}
 .card{background:var(--card);border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer;display:flex;flex-direction:column;transition:transform .12s}
 .card:active{transform:scale(.98)}
 .card-thumb{aspect-ratio:4/3;background:#ece6dc center/cover no-repeat;display:grid;place-items:center;color:#b3a998}
@@ -66,13 +57,13 @@ button{font-family:inherit;cursor:pointer}
 .card-title{font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .card-text{font-size:13px;color:var(--muted);margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em;line-height:1.3}
 .card-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:6px}
-.empty{position:absolute;inset:180px 20px auto;text-align:center;color:var(--muted)}
+.empty{position:absolute;inset:130px 20px auto;text-align:center;color:var(--muted)}
 .empty b{display:block;color:var(--ink);font-size:18px;margin-bottom:6px}
-.fab{position:absolute;bottom:calc(22px + var(--sb));left:22px;width:60px;height:60px;border-radius:50%;border:0;background:var(--accent);color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.25);display:grid;place-items:center}
+.fab{position:absolute;bottom:22px;left:22px;width:60px;height:60px;border-radius:50%;border:0;background:var(--accent);color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.25);display:grid;place-items:center}
 .fab svg{width:28px;height:28px}
 
 /* feed */
-.feed{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 16px;background-color:var(--chat);
+.feed{flex:1;overflow-y:auto;padding:10px 12px 16px;background-color:var(--chat);
   background-image:radial-gradient(rgba(0,0,0,.035) 1px,transparent 1.2px);background-size:18px 18px}
 .day{display:flex;justify-content:center;margin:12px 0 8px;position:sticky;top:4px;z-index:2}
 .day span{background:#fff;color:#54656f;font-size:12.5px;padding:5px 12px;border-radius:8px;box-shadow:0 1px 1px rgba(0,0,0,.08)}
@@ -88,7 +79,7 @@ button{font-family:inherit;cursor:pointer}
 .more{position:absolute;top:4px;left:4px;width:28px;height:28px;border:0;border-radius:50%;background:rgba(255,255,255,.75);color:#54656f;display:grid;place-items:center;opacity:0;transition:opacity .15s}
 .more svg{width:16px;height:16px}
 .bubble:hover .more,.bubble:focus-within .more{opacity:1}
-@media (hover:none){.more{opacity:.85}.bubble.textonly{padding-left:36px}}
+@media (hover:none){.more{opacity:.85}}
 .pending{opacity:.75}
 .pending .spin{position:absolute;inset:0;display:grid;place-items:center}
 .failed{outline:2px solid var(--danger);cursor:pointer}
@@ -96,7 +87,7 @@ button{font-family:inherit;cursor:pointer}
 .feed-empty{margin:40px auto;max-width:300px;text-align:center;background:#fff8dc;color:#54656f;border-radius:10px;padding:14px;font-size:14px;line-height:1.5}
 
 /* composer */
-.composer{flex:none;display:flex;align-items:flex-end;gap:6px;padding:8px 8px calc(8px + var(--sb));background:#f0ece6;border-top:1px solid var(--line)}
+.composer{flex:none;display:flex;align-items:flex-end;gap:6px;padding:8px;background:#f0ece6;border-top:1px solid var(--line)}
 .inwrap{flex:1;display:flex;align-items:flex-end;background:#fff;border-radius:24px;padding:3px 4px;min-height:46px}
 .inwrap .icon-btn{color:#54656f;width:40px;height:40px}
 .inwrap .icon-btn:hover{background:#f1f1f1}
@@ -107,7 +98,7 @@ button{font-family:inherit;cursor:pointer}
 
 /* overlays */
 .overlay{position:fixed;inset:0;z-index:50}
-.preview{background:#0b141a;color:#fff;display:flex;flex-direction:column;padding-top:var(--st);padding-bottom:var(--sb)}
+.preview{background:#0b141a;color:#fff;display:flex;flex-direction:column}
 .pv-top{display:flex;align-items:center;gap:8px;padding:8px 10px}
 .pv-top span{flex:1;text-align:center;font-size:14px;opacity:.8}
 .pv-stage{flex:1;min-height:0;display:grid;place-items:center;padding:6px}
@@ -120,11 +111,11 @@ button{font-family:inherit;cursor:pointer}
 .pv-bottom textarea{flex:1;background:#202c33;color:#fff;border:0;border-radius:22px;padding:12px 16px;font:inherit;font-size:16px;resize:none;outline:none;max-height:120px}
 .lightbox{background:rgba(0,0,0,.92);display:grid;place-items:center;cursor:zoom-out}
 .lightbox img{max-width:100vw;max-height:88vh;object-fit:contain}
-.lightbox .lb-cap{position:absolute;bottom:0;left:0;right:0;color:#fff;padding:14px 18px calc(22px + var(--sb));background:linear-gradient(transparent,rgba(0,0,0,.75));white-space:pre-wrap;font-size:15px;text-align:center}
+.lightbox .lb-cap{position:absolute;bottom:0;left:0;right:0;color:#fff;padding:14px 18px 22px;background:linear-gradient(transparent,rgba(0,0,0,.75));white-space:pre-wrap;font-size:15px;text-align:center}
 .modal{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.45);display:grid;place-items:center;padding:20px}
 .dlg{background:#fff;border-radius:16px;width:min(420px,100%);padding:20px;box-shadow:0 10px 40px rgba(0,0,0,.3)}
 .dlg h3{margin:0 0 8px;font-size:18px}
-.dlg p{margin:0 0 12px;color:#54656f;font-size:14.5px;line-height:1.5;white-space:pre-line}
+.dlg p{margin:0 0 12px;color:#54656f;font-size:14.5px;line-height:1.5}
 .dlg input,.dlg textarea{width:100%;border:1px solid #d6d0c6;border-radius:10px;padding:10px 12px;font:inherit;font-size:16px;outline:none;margin-bottom:14px}
 .dlg textarea{min-height:110px;resize:vertical}
 .dlg input:focus,.dlg textarea:focus{border-color:var(--accent)}
@@ -134,13 +125,13 @@ button{font-family:inherit;cursor:pointer}
 .btn.ghost{background:#eef0f1;color:#33424b}
 .btn.danger{background:var(--danger);color:#fff}
 .sheet-back{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.35);display:flex;align-items:flex-end;justify-content:center}
-.sheet{background:#fff;width:min(880px,100%);border-radius:16px 16px 0 0;padding:8px 0 calc(14px + var(--sb))}
+.sheet{background:#fff;width:min(880px,100%);border-radius:16px 16px 0 0;padding:8px 0 14px}
 .sheet button{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;padding:14px 22px;font-size:16px;text-align:start;color:var(--ink)}
 .sheet button:hover{background:#f4f4f4}
 .sheet button.danger{color:var(--danger)}
 .sheet button svg{width:21px;height:21px;color:#54656f}
 .sheet button.danger svg{color:var(--danger)}
-#toast{position:fixed;bottom:calc(90px + var(--sb));left:50%;transform:translateX(-50%) translateY(20px);background:#323739;color:#fff;padding:10px 18px;border-radius:22px;font-size:14px;z-index:90;opacity:0;pointer-events:none;transition:.2s;max-width:90vw;text-align:center}
+#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:#323739;color:#fff;padding:10px 18px;border-radius:22px;font-size:14px;z-index:90;opacity:0;pointer-events:none;transition:.2s;max-width:90vw;text-align:center}
 #toast.on{opacity:1;transform:translateX(-50%)}
 .busy{position:fixed;inset:0;z-index:95;background:rgba(255,255,255,.82);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-size:16px;color:#33424b}
 .spinner{width:38px;height:38px;border-radius:50%;border:4px solid #cfe5dd;border-top-color:var(--accent);animation:sp 0.8s linear infinite}
@@ -148,6 +139,70 @@ button{font-family:inherit;cursor:pointer}
 @keyframes sp{to{transform:rotate(360deg)}}
 .drop-hint{position:absolute;inset:58px 0 62px;background:rgba(26,163,122,.15);border:3px dashed var(--accent);display:grid;place-items:center;font-size:18px;color:var(--bar);z-index:5;pointer-events:none}
 .loading{padding:40px;text-align:center;color:var(--muted)}
+.editor{background:#0f1417;color:#fff;display:flex;flex-direction:column;z-index:56}
+.ed-top{display:flex;align-items:center;gap:2px;padding:8px}
+.ed-top .flex{flex:1}
+.ed-top .icon-btn:disabled{opacity:.35}
+.ed-top .btn{margin-inline-start:6px}
+.ed-txtbtn{border:0;background:transparent;color:#e9edef;font-size:14px;padding:8px 10px;border-radius:10px}
+.ed-txtbtn:hover{background:rgba(255,255,255,.1)}
+.ed-stage{flex:1;min-height:0;display:grid;place-items:center;padding:8px;overflow:hidden}
+#edCanvas{touch-action:none;background:#222;box-shadow:0 0 0 1px #333;cursor:crosshair;display:block}
+.ed-tools{display:flex;gap:6px;overflow-x:auto;padding:6px 10px;justify-content:safe center}
+.ed-tools button{flex:none;width:48px;height:52px;border-radius:12px;border:0;background:#232a2e;color:#e9edef;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10.5px;padding:4px 0}
+.ed-tools button svg{width:22px;height:22px}
+.ed-tools button .gl{font-size:19px;font-weight:700;line-height:22px;height:22px}
+.ed-tools button.on{background:var(--accent)}
+.ed-opts{display:flex;gap:10px;align-items:center;justify-content:center;padding:6px 8px 16px;flex-wrap:wrap}
+.sw{width:30px;height:30px;border-radius:50%;border:3px solid #0f1417;box-shadow:0 0 0 2px #3a4246;cursor:pointer;padding:0}
+.sw.on{box-shadow:0 0 0 3px #fff}
+.wd{width:40px;height:34px;border-radius:10px;border:0;background:#232a2e;display:grid;place-items:center;padding:0}
+.wd i{display:block;background:#e9edef;border-radius:4px;width:20px}
+.wd.on{background:var(--accent)}
+.sep{width:1px;height:26px;background:#3a4246}
+/* export dialog */
+.dlg.exp{width:min(520px,100%);max-height:92dvh;overflow:auto}
+.fl{display:block;font-size:13px;color:#54656f;margin:12px 0 6px;font-weight:500}
+.seg{display:flex;background:#eef0f1;border-radius:12px;padding:3px;gap:3px}
+.seg button{flex:1;border:0;background:transparent;border-radius:9px;padding:9px;font-size:15px;font-weight:500;color:#33424b}
+.seg button.on{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12);color:var(--bar)}
+.tpls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tpl{border:2px solid #e3ddd3;border-radius:12px;background:#fff;padding:8px 6px;text-align:center;font-size:13px;color:#33424b}
+.tpl svg{width:100%;height:58px;display:block;margin-bottom:4px}
+.tpl b{display:block;font-size:14px}
+.tpl small{display:block;color:#7a868d;font-size:11.5px;line-height:1.3;margin-top:2px}
+.tpl.on{border-color:var(--accent);background:#f1faf6}
+.dlg.exp input[type=text]{margin-bottom:0}
+.chk{display:flex;align-items:center;gap:8px;font-size:14.5px;margin:10px 0 0;color:#33424b}
+.chk input{width:18px;height:18px;accent-color:var(--accent);margin:0}
+.dlg.exp .dlg-actions{margin-top:18px}
+.save-chip{margin-inline-start:auto;display:flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.45);background:transparent;color:#fff;border-radius:18px;padding:6px 12px;font-size:13.5px;font-weight:500;white-space:nowrap}
+.save-chip svg{width:17px;height:17px}
+.save-chip:hover{background:rgba(255,255,255,.12)}
+.save-chip.dirty{background:#ffb300;border-color:#ffb300;color:#3b2a00}
+.icon-btn.has-dot{position:relative}
+.icon-btn .dot{position:absolute;top:8px;left:8px;width:10px;height:10px;border-radius:50%;background:#ffb300;box-shadow:0 0 0 2px var(--bar)}
+/* ---- PWA: safe areas (iPhone notch / home bar) + install hint ---- */
+:root{--st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px)}
+html,body{overscroll-behavior:none}
+body{background:var(--bar)}
+#app{height:100vh;height:100dvh}
+.bar{min-height:calc(58px + var(--st));padding-top:calc(6px + var(--st))}
+.grid{-webkit-overflow-scrolling:touch;padding-bottom:calc(100px + var(--sb))}
+.feed{-webkit-overflow-scrolling:touch}
+.fab{bottom:calc(22px + var(--sb))}
+.composer{padding-bottom:calc(8px + var(--sb))}
+.preview,.editor{padding-top:var(--st);padding-bottom:var(--sb)}
+.lightbox .lb-cap{padding-bottom:calc(22px + var(--sb))}
+.sheet{padding-bottom:calc(14px + var(--sb))}
+#toast{bottom:calc(90px + var(--sb))}
+#search{font-size:16px;-webkit-appearance:none}
+@media (hover:none){.bubble.textonly{padding-left:36px}}
+.install{margin:10px 14px 0;background:#fff8dc;border:1px solid #f0e2a8;border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.5;color:#54500f;display:flex;gap:10px;align-items:flex-start}
+.install b{color:#3c3a10}
+.install .x{flex:none;border:0;background:none;font-size:20px;line-height:1;color:#8a8450;padding:0 2px}
+.install .ib{display:inline-block;vertical-align:-3px;width:16px;height:16px}
+.install .go{margin-top:6px;border:0;background:var(--accent);color:#fff;border-radius:16px;padding:6px 14px;font-size:14px}
 </style>
 </head>
 <body>
@@ -156,7 +211,7 @@ button{font-family:inherit;cursor:pointer}
   <section id="listView" class="view">
     <header class="bar">
       <div class="bar-title" style="padding-inline-start:6px">הפתקים שלי</div>
-      <span id="syncBadge" class="badge">טוען…</span>
+      <span id="syncBadge" class="badge">💾 נשמר במכשיר</span>
       <button id="listMenuBtn" class="icon-btn" aria-label="תפריט"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></button>
     </header>
     <div id="installHint" class="install hidden"></div>
@@ -164,7 +219,6 @@ button{font-family:inherit;cursor:pointer}
     <div id="notesGrid" class="grid"><div class="loading" style="grid-column:1/-1">טוען…</div></div>
     <div id="emptyList" class="empty hidden"><b>עוד אין פתקים</b>לחץ על + כדי לפתוח פתק חדש, ואז פשוט שלח תמונות והערות — כמו בצ׳אט.</div>
     <button id="fabNew" class="fab" aria-label="פתק חדש"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
-    <input type="file" id="restoreInput" accept=".json,application/json" hidden>
   </section>
 
   <!-- פתק פתוח -->
@@ -172,7 +226,7 @@ button{font-family:inherit;cursor:pointer}
     <header class="bar">
       <button id="backBtn" class="icon-btn" aria-label="חזרה"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       <div class="bar-main" id="noteHead" title="שינוי שם"><div id="noteTitle" class="bar-title"></div><div id="noteSub" class="bar-sub"></div></div>
-      <button id="pdfBtn" class="pdf-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>PDF</button>
+      <button id="pdfBtn" class="pdf-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>ייצוא</button>
       <button id="noteMenuBtn" class="icon-btn" aria-label="תפריט"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></button>
     </header>
     <div id="feed" class="feed"></div>
@@ -195,6 +249,7 @@ button{font-family:inherit;cursor:pointer}
   <div class="pv-top">
     <button id="pvClose" class="icon-btn" aria-label="ביטול"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <span id="pvCount"></span>
+    <button id="pvEdit" class="icon-btn" aria-label="סימון על התמונה" title="סימון וציור"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg></button>
     <button id="pvRemove" class="icon-btn" aria-label="הסר תמונה"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg></button>
   </div>
   <div class="pv-stage"><img id="pvImg" alt=""></div>
@@ -205,7 +260,24 @@ button{font-family:inherit;cursor:pointer}
   </div>
 </div>
 
+<!-- עורך תמונה -->
+<div id="editor" class="overlay editor hidden">
+  <div class="ed-top">
+    <button id="edCancel" class="icon-btn" aria-label="ביטול"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <button id="edUndo" class="icon-btn" aria-label="בטל" title="בטל"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7l5 5-5 5"/><path d="M20 12H9a5 5 0 0 0 0 10h2"/></svg></button>
+    <button id="edRedo" class="icon-btn" aria-label="בצע שוב" title="בצע שוב"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7l-5 5 5 5"/><path d="M4 12h11a5 5 0 0 1 0 10h-2"/></svg></button>
+    <button id="edRotate" class="icon-btn" aria-label="סיבוב" title="סיבוב 90°"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg></button>
+    <button id="edClear" class="ed-txtbtn">ניקוי סימונים</button>
+    <span class="flex"></span>
+    <button id="edDone" class="btn primary">סיום</button>
+  </div>
+  <div class="ed-stage" id="edStage"><canvas id="edCanvas"></canvas></div>
+  <div class="ed-tools" id="edTools"></div>
+  <div class="ed-opts" id="edOpts"></div>
+</div>
+
 <div id="lightbox" class="overlay lightbox hidden"><img id="lbImg" alt=""><div id="lbCap" class="lb-cap"></div></div>
+<input type="file" id="restoreInput" accept=".json,.html,.htm,application/json,text/html" hidden>
 <div id="modal" class="modal hidden"></div>
 <div id="sheetBack" class="sheet-back hidden"><div id="sheet" class="sheet"></div></div>
 <div id="toast"></div>
@@ -230,8 +302,6 @@ function dayLabel(t){
 }
 const listDate = t => dayKey(t)===dayKey(Date.now()) ? fmtTime(t) : fmtDate(t);
 const genId = () => Date.now().toString(36)+Math.random().toString(36).slice(2,9);
-const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
-const isStandalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone===true;
 
 /* ---------- UI helpers ---------- */
 let toastT;
@@ -259,9 +329,11 @@ const ICON = {
   pdf:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>',
   copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>',
   img:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>',
-  up:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V9M7 14l5-5 5 5M5 3h14"/></svg>',
+  share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></svg>',
+  backup:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>',
+  restore:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V9M7 14l5-5 5 5M5 3h14"/></svg>',
+  draw:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg>',
   phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg>',
-  share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M8 7l4-4 4 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>',
   chev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>',
   note:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h5"/></svg>'
 };
@@ -275,24 +347,37 @@ function sheet(items){
     back.onclick=e=>{ if(e.target===back) done(null); };
   });
 }
-function loadImg(src){
-  return new Promise((res,rej)=>{ const im=new Image(); im.onload=()=>res(im); im.onerror=()=>rej(new Error('image')); im.src=src; });
+function loadImg(src, cors){
+  return new Promise((res,rej)=>{ const im=new Image(); if(cors) im.crossOrigin='anonymous'; im.onload=()=>res(im); im.onerror=()=>rej(new Error('image')); im.src=src; });
 }
 
-/* ---------- saving files (share sheet on phones, download elsewhere) ---------- */
-async function saveFile(blob, filename){
-  const type=blob.type||(filename.endsWith('.pdf')?'application/pdf':filename.endsWith('.json')?'application/json':'image/jpeg');
-  let file=null; try{ file=new File([blob],filename,{type}); }catch(e){}
-  const touch=matchMedia('(pointer:coarse)').matches;
-  if(file && touch && navigator.canShare && navigator.canShare({files:[file]})){
-    try{ await navigator.share({files:[file],title:filename}); return true; }
-    catch(e){ if(e && e.name==='AbortError') return false; /* fall through to download */ }
-  }
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a'); a.href=url; a.download=filename; a.rel='noopener';
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),60000);
-  return true;
+
+/* ---------- save / share (offline) ---------- */
+function saveFile(blob,name){
+  const u=URL.createObjectURL(blob); const a=document.createElement('a');
+  a.href=u; a.download=name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(u),60000);
+}
+async function shareFile(blob,name,title){
+  try{
+    const f=new File([blob],name,{type:blob.type||'application/octet-stream'});
+    if(navigator.canShare&&navigator.canShare({files:[f]})){ await navigator.share({files:[f],title}); return true; }
+  }catch(e){ if(e&&e.name==='AbortError') return true; }
+  return false;
+}
+const canShareFiles=()=>{ try{ return !!(navigator.canShare&&navigator.canShare({files:[new File(['x'],'x.pdf',{type:'application/pdf'})]})); }catch(e){ return false; } };
+
+/* ---------- dirty state & tombstones ---------- */
+const LS={get:k=>{ try{ return localStorage.getItem(k); }catch(e){ return null; } },set:(k,v)=>{ try{ v==null?localStorage.removeItem(k):localStorage.setItem(k,v); }catch(e){} }};
+const getTomb=()=>{ try{ return JSON.parse(LS.get('pn-deleted')||'{}'); }catch(e){ return {}; } };
+const setTomb=t=>LS.set('pn-deleted',JSON.stringify(t));
+let dirtyT=0;
+function markDirty(){ LS.set('pn-dirty','1'); clearTimeout(dirtyT); dirtyT=setTimeout(refreshDirty,50); }
+const isDirty=()=>LS.get('pn-dirty')==='1';
+function refreshDirty(){
+  const d=isDirty();
+  const b=document.getElementById('saveList'); if(b){ b.classList.toggle('dirty',d); document.getElementById('saveListTxt').textContent=d?'יש שינויים — שמור':'✓ נשמר'; }
+  const dot=document.getElementById('saveNoteDot'); if(dot) dot.classList.toggle('hidden',!d);
 }
 
 /* ---------- local store (IndexedDB, fallback memory) ---------- */
@@ -308,48 +393,80 @@ async function makeLocalStore(){
   const op=(store,mode,fn)=>new Promise((res,rej)=>{ const t=idb.transaction([store],mode); const p=rq(fn(t.objectStore(store))); let v; p.then(x=>v=x,()=>{}); t.oncomplete=()=>res(v); t.onerror=()=>rej(t.error); t.onabort=()=>rej(t.error); });
   const all=s=>idb?op(s,'readonly',o=>o.getAll()):Promise.resolve([...mem[s].values()].map(x=>x instanceof Blob?x:{...x}));
   const get=(s,k)=>idb?op(s,'readonly',o=>o.get(k)):Promise.resolve(mem[s].get(k));
-  const put=(s,v,k)=>idb?op(s,'readwrite',o=>k!==undefined?o.put(v,k):o.put(v)):(mem[s].set(k!==undefined?k:v.id,v),Promise.resolve());
-  const del=(s,k)=>idb?op(s,'readwrite',o=>o.delete(k)):(mem[s].delete(k),Promise.resolve());
+  let quiet=false;
+  const put0=(s,v,k)=>idb?op(s,'readwrite',o=>k!==undefined?o.put(v,k):o.put(v)):(mem[s].set(k!==undefined?k:v.id,v),Promise.resolve());
+  const put=(s,v,k)=>{ if(!quiet) markDirty(); return put0(s,v,k); };
+  const del0=(s,k)=>idb?op(s,'readwrite',o=>o.delete(k)):(mem[s].delete(k),Promise.resolve());
+  const del=(s,k)=>{ if(!quiet) markDirty(); return del0(s,k); };
   const urls=new Map();
+  async function delBlob(id){ if(!id) return; if(urls.has(id)){ URL.revokeObjectURL(urls.get(id)); urls.delete(id); } await del('blobs',id); }
   async function blobUrl(id){ if(!id) return null; if(urls.has(id)) return urls.get(id); const b=await get('blobs',id); if(!b) return null; const u=URL.createObjectURL(b); urls.set(id,u); return u; }
   const noteL=new Set(), entL=new Map();
+  async function removeNote(id,mark){ const t=getTomb(); const es=(await all('entries')).filter(e=>e.noteId===id);
+    for(const e of es){ await delBlob(e.imageId); await delBlob(e.origId); await del('entries',e.id); if(mark) t[e.id]=Date.now(); }
+    await del('notes',id); if(mark){ t[id]=Date.now(); setTomb(t); } }
   async function emitNotes(){ const ns=await all('notes'); for(const n of ns) n.thumbSrc=await blobUrl(n.thumbId); noteL.forEach(cb=>cb(ns,{fromCache:false})); }
   async function emitEntries(noteId){ const set=entL.get(noteId); if(!set||!set.size) return;
     const es=(await all('entries')).filter(e=>e.noteId===noteId).sort((a,b)=>a.createdAt-b.createdAt);
-    for(const e of es) e._src=await blobUrl(e.imageId); set.forEach(cb=>cb(es,{fromCache:false})); }
-  const clean=o=>{ const c={...o}; delete c._src; delete c.thumbSrc; return c; };
-  const toDataUrl=b=>new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=()=>rej(r.error); r.readAsDataURL(b); });
+    for(const e of es){ e._src=await blobUrl(e.imageId); e._orig=e.origId?await blobUrl(e.origId):null; } set.forEach(cb=>cb(es,{fromCache:false})); }
+  const clean=o=>{ const c={...o}; delete c._src; delete c._orig; delete c.thumbSrc; return c; };
   return {
     kind: idb?'local':'memory', canImages:true,
     watchNotes(cb){ noteL.add(cb); emitNotes(); return ()=>noteL.delete(cb); },
     watchEntries(noteId,cb){ if(!entL.has(noteId)) entL.set(noteId,new Set()); entL.get(noteId).add(cb); emitEntries(noteId); return ()=>entL.get(noteId).delete(cb); },
     async createNote(title){ const id=genId(), t=Date.now(); await put('notes',{id,title,createdAt:t,updatedAt:t,lastText:'',thumbId:null,count:0}); emitNotes(); return id; },
-    async updateNote(id,patch){ const n=await get('notes',id); if(!n) return; await put('notes',clean({...n,...patch})); emitNotes(); },
-    async deleteNote(id){ const es=(await all('entries')).filter(e=>e.noteId===id); for(const e of es){ if(e.imageId) await del('blobs',e.imageId); await del('entries',e.id); } await del('notes',id); emitNotes(); },
-    async addEntry(noteId,{text,blob,w,h,createdAt}){ let imageId=null; if(blob){ imageId=genId(); await put('blobs',blob,imageId); }
-      await put('entries',{id:genId(),noteId,text:text||'',imageId,w:w||null,h:h||null,createdAt}); emitEntries(noteId); return {imageId}; },
+    async updateNote(id,patch){ const n=await get('notes',id); if(!n) return; await put('notes',clean({...n,...patch,modAt:Date.now()})); emitNotes(); },
+    async deleteNote(id){ await removeNote(id,true); emitNotes(); },
+    async addEntry(noteId,{text,blob,w,h,origBlob,ow,oh,ops,rot,createdAt}){ let imageId=null,origId=null; if(blob){ imageId=genId(); await put('blobs',blob,imageId); }
+      if(origBlob){ origId=genId(); await put('blobs',origBlob,origId); }
+      await put('entries',{id:genId(),noteId,text:text||'',imageId,w:w||null,h:h||null,origId,ow:ow||null,oh:oh||null,ops:ops&&ops.length?ops:null,rot:rot||0,createdAt}); emitEntries(noteId); return {imageId}; },
+    async setImage(noteId,id,r){
+      const e=await get('entries',id); if(!e) return {};
+      const oldId=e.imageId;
+      if(r.reset){ if(!e.origId) return {imageId:oldId,oldId};
+        if(oldId!==e.origId) await delBlob(oldId);
+        await put('entries',clean({...e,imageId:e.origId,origId:null,w:e.ow||e.w,h:e.oh||e.h,ow:null,oh:null,ops:null,rot:0,editedAt:Date.now()}));
+        emitEntries(noteId); return {imageId:e.origId,oldId}; }
+      const newId=genId(); await put('blobs',r.blob,newId);
+      let origId=e.origId, ow=e.ow, oh=e.oh;
+      if(!origId){ origId=oldId; ow=e.w; oh=e.h; } else if(oldId&&oldId!==origId) await delBlob(oldId);
+      await put('entries',clean({...e,imageId:newId,origId,ow,oh,w:r.w,h:r.h,ops:r.ops,rot:r.rot,editedAt:Date.now()}));
+      emitEntries(noteId); return {imageId:newId,oldId}; },
     async updateEntry(noteId,id,patch){ const e=await get('entries',id); if(!e) return; await put('entries',clean({...e,...patch})); emitEntries(noteId); },
-    async deleteEntry(noteId,e){ if(e.imageId) await del('blobs',e.imageId); await del('entries',e.id); emitEntries(noteId); },
-    /* backup: one JSON file with all notes, entries and images */
-    async exportAll(onProgress){
+    async deleteEntry(noteId,e){ await delBlob(e.imageId); await delBlob(e.origId); await del('entries',e.id); const t=getTomb(); t[e.id]=Date.now(); setTomb(t); emitEntries(noteId); },
+    async exportAll(){
+      const toB64=b=>new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=()=>rej(r.error); r.readAsDataURL(b); });
       const notes=(await all('notes')).map(clean), entries=(await all('entries')).map(clean), blobs={};
-      const ids=entries.map(e=>e.imageId).filter(Boolean);
-      let i=0; for(const id of ids){ const b=await get('blobs',id); if(b) blobs[id]=await toDataUrl(b); onProgress&&onProgress(++i,ids.length); }
-      return {app:'photo-notes',v:1,exportedAt:Date.now(),notes,entries,blobs};
+      for(const e of entries){ for(const k of [e.imageId,e.origId]){ if(k){ const b=await get('blobs',k); if(b) blobs[k]=await toB64(b); } } }
+      return {app:'photo-notes',version:1,exportedAt:Date.now(),notes,entries,blobs};
     },
-    async importAll(data,onProgress){
-      if(!data||data.app!=='photo-notes'||!Array.isArray(data.notes)) throw new Error('format');
-      const ids=Object.keys(data.blobs||{}); let i=0;
-      for(const id of ids){ const r=await fetch(data.blobs[id]); await put('blobs',await r.blob(),id); onProgress&&onProgress(++i,ids.length); }
-      for(const e of data.entries||[]) await put('entries',e);
-      for(const n of data.notes) await put('notes',n);
-      emitNotes(); return data.notes.length;
+    async importAll(data,{fromFile=false}={}){
+      if(!data||data.app!=='photo-notes') throw new Error('format');
+      quiet=fromFile;
+      try{
+        const tomb=getTomb(), ft=data.deleted||{};
+        for(const id in ft){ if(tomb[id]) continue; tomb[id]=ft[id];
+          if(await get('notes',id)) await removeNote(id,false);
+          else { const e=await get('entries',id); if(e){ await delBlob(e.imageId); await delBlob(e.origId); await del('entries',id); } } }
+        setTomb(tomb);
+        const ver=x=>Math.max(x.modAt||0,x.updatedAt||0,x.editedAt||0,x.createdAt||0);
+        let added=0, updated=0;
+        for(const n of data.notes||[]){ if(tomb[n.id]) continue; const ex=await get('notes',n.id);
+          if(!ex){ await put('notes',n); added++; } else if(ver(n)>ver(ex)){ await put('notes',{...n,thumbId:n.thumbId}); updated++; } }
+        for(const e of data.entries||[]){ if(tomb[e.id]||tomb[e.noteId]) continue; const ex=await get('entries',e.id);
+          if(ex&&ver(e)<=ver(ex)) continue;
+          for(const k of [e.imageId,e.origId]){ if(k&&data.blobs&&data.blobs[k]&&!(await get('blobs',k))){ const bl=await (await fetch(data.blobs[k])).blob(); await put('blobs',bl,k); } }
+          if(ex){ for(const k of [ex.imageId,ex.origId]) if(k&&k!==e.imageId&&k!==e.origId) await delBlob(k); updated++; }
+          await put('entries',e); }
+        emitNotes(); for(const id of entL.keys()) emitEntries(id);
+        return {added,updated};
+      } finally { quiet=false; }
     }
   };
 }
 
 /* ---------- state ---------- */
-const S={store:null, notes:[], notesLoaded:false, entries:[], entriesLoaded:false, pending:[], noteId:null, unsubE:null, query:'', pv:{items:[],idx:0}, stick:true, installEvt:null};
+const S={store:null, downloads:null, notes:[], notesLoaded:false, entries:[], entriesLoaded:false, pending:[], noteId:null, unsubE:null, query:'', pv:{items:[],idx:0}, stick:true};
 const curNote=()=>S.notes.find(n=>n.id===S.noteId);
 
 /* ---------- list view ---------- */
@@ -376,59 +493,6 @@ $('#fabNew').addEventListener('click', async ()=>{
   catch(e){ toast('לא הצלחתי ליצור פתק'); }
 });
 
-/* list menu: backup / restore / install / share app */
-$('#listMenuBtn').addEventListener('click', async ()=>{
-  const items=[{label:'גיבוי כל הפתקים לקובץ',icon:'img',value:'backup'},{label:'שחזור מקובץ גיבוי',icon:'up',value:'restore'}];
-  if(!isStandalone()) items.push({label:'התקנה כאפליקציה',icon:'phone',value:'install'});
-  if(navigator.share && /^https?:/.test(location.protocol)) items.push({label:'שליחת קישור לאפליקציה',icon:'share',value:'shareapp'});
-  const a=await sheet(items);
-  if(a==='backup') backup();
-  else if(a==='restore') $('#restoreInput').click();
-  else if(a==='install') installApp();
-  else if(a==='shareapp'){ try{ await navigator.share({title:'פתקי תמונות',text:'אפליקציית פתקי תמונות — פתח בדפדפן והוסף למסך הבית:',url:location.href.split('#')[0]}); }catch(e){} }
-});
-async function backup(){
-  busy(true,'מכין גיבוי…');
-  try{
-    const data=await S.store.exportAll((i,n)=>busy(true,`מכין גיבוי… תמונה ${i} מתוך ${n}`));
-    busy(false);
-    const d=new Date();
-    await saveFile(new Blob([JSON.stringify(data)],{type:'application/json'}),`גיבוי-פתקי-תמונות-${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}.json`);
-  }catch(e){ busy(false); toast('הגיבוי נכשל'); console.error(e); }
-}
-$('#restoreInput').addEventListener('change', async e=>{
-  const f=e.target.files[0]; e.target.value=''; if(!f) return;
-  const ok=await ask({title:'שחזור מגיבוי',message:'הפתקים מהקובץ יתווספו לאפליקציה. פתקים קיימים עם אותו מזהה יוחלפו בגרסה שבקובץ.',okText:'שחזור'});
-  if(!ok) return;
-  busy(true,'משחזר…');
-  try{ const data=JSON.parse(await f.text()); const n=await S.store.importAll(data,(i,t)=>busy(true,`משחזר… תמונה ${i} מתוך ${t}`)); busy(false); toast(`שוחזרו ${n} פתקים`); }
-  catch(err){ busy(false); toast(err&&err.message==='format'?'זה לא קובץ גיבוי של פתקי תמונות':'השחזור נכשל'); console.error(err); }
-});
-
-/* install */
-window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); S.installEvt=e; showInstallHint(); });
-window.addEventListener('appinstalled',()=>{ S.installEvt=null; $('#installHint').classList.add('hidden'); toast('האפליקציה הותקנה'); });
-const SHARE_ICON='<svg class="ib" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M8 7l4-4 4 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
-function iosHelp(){ return isIOS && !/Safari/.test(navigator.userAgent.replace(/CriOS|FxiOS|EdgiOS/,'X')) ?
-  'כדי להתקין באייפון — פתח את הקישור בדפדפן <b>Safari</b>, לחץ על כפתור השיתוף '+SHARE_ICON+' ובחר <b>"הוספה למסך הבית"</b>.' :
-  'כדי להתקין באייפון — לחץ על כפתור השיתוף '+SHARE_ICON+' בתחתית Safari ובחר <b>"הוספה למסך הבית"</b>.'; }
-function showInstallHint(force){
-  if(isStandalone()) return;
-  try{ if(!force && localStorage.getItem('pn-hint-off')) return; }catch(e){}
-  const h=$('#installHint');
-  if(S.installEvt) h.innerHTML=`<div style="flex:1"><b>התקן כאפליקציה</b> — אייקון במסך הבית, מסך מלא ועבודה גם בלי אינטרנט.<br><button class="go" id="goInstall">התקנה</button></div><button class="x" aria-label="סגירה">×</button>`;
-  else if(isIOS) h.innerHTML=`<div style="flex:1">${iosHelp()}</div><button class="x" aria-label="סגירה">×</button>`;
-  else return;
-  h.classList.remove('hidden');
-  h.querySelector('.x').onclick=()=>{ h.classList.add('hidden'); try{ localStorage.setItem('pn-hint-off','1'); }catch(e){} };
-  const g=h.querySelector('#goInstall'); if(g) g.onclick=installApp;
-}
-async function installApp(){
-  if(S.installEvt){ S.installEvt.prompt(); try{ await S.installEvt.userChoice; }catch(e){} S.installEvt=null; $('#installHint').classList.add('hidden'); return; }
-  if(isIOS){ showInstallHint(true); return; }
-  await ask({title:'התקנה כאפליקציה',message:'בתפריט הדפדפן (⋮) בחר "התקנת אפליקציה" או "הוספה למסך הבית".',okText:'הבנתי',noCancel:true});
-}
-
 /* ---------- routing ---------- */
 function go(id){ const h=id&&/^[A-Za-z0-9-]+$/.test(id)?'n-'+id:''; if(h){ if(location.hash!=='#'+h) location.hash=h; else route(); } else openNote(id); }
 function route(){
@@ -443,13 +507,13 @@ function openNote(id){
   S.noteId=id; S.entries=[]; S.entriesLoaded=false; S.pending=[]; S.stick=true;
   $('#listView').classList.add('hidden'); $('#noteView').classList.remove('hidden');
   renderHead(); renderFeed();
-  let timer=setTimeout(()=>{ if(!S.entriesLoaded){ $('#feed').innerHTML='<div class="feed-empty">לא ניתן לטעון את הפתק כרגע. נסה שוב בעוד רגע.</div>'; } },10000);
+  let timer=setTimeout(()=>{ if(!S.entriesLoaded){ $('#feed').innerHTML='<div class="feed-empty">לא ניתן להתחבר לנתונים כרגע. נסה שוב בעוד רגע.</div>'; } },10000);
   S.unsubE=S.store.watchEntries(id,(list,meta)=>{
     if(S.noteId!==id) return;
     S.entries=list;
     if(!meta||!meta.fromCache||list.length){ S.entriesLoaded=true; clearTimeout(timer); }
     renderFeed(); renderHead();
-  });
+  }, err=>{ clearTimeout(timer); S.entriesLoaded=true; renderFeed(); toast('שגיאה בטעינת הפתק'); });
   if(matchMedia('(pointer:fine)').matches) setTimeout(()=>$('#msgInput').focus(),50);
 }
 function closeNote(){
@@ -472,7 +536,7 @@ function bubbleHTML(e,{pending=false,failed=false}={}){
   return `<div class="msg"><div class="${cls}" data-id="${esc(e.id||'')}" data-pid="${esc(e.pid||'')}">
     ${hasImg?`<img src="${esc(e._src)}" style="${ratio}" loading="lazy" alt="">`:''}
     ${hasTxt?`<div class="txt">${esc(e.text)}</div>`:''}
-    ${failed?'<div class="failed-note">השמירה נכשלה — הקש לנסות שוב</div>':''}
+    ${failed?'<div class="failed-note">השליחה נכשלה — הקש לנסות שוב</div>':''}
     <div class="meta">${fmtTime(e.createdAt)}${e.editedAt?' · נערך':''}${pending?' ⏳':' ✓✓'}</div>
     ${pending&&!failed&&hasImg?'<div class="spin"><div class="spinner sm"></div></div>':''}
     ${!pending?`<button class="more" aria-label="אפשרויות">${ICON.chev}</button>`:''}
@@ -483,7 +547,7 @@ function renderFeed(){
   const nearBottom=f.scrollHeight-f.scrollTop-f.clientHeight<120;
   if(!S.entriesLoaded && !S.pending.length){ f.innerHTML='<div class="loading">טוען…</div>'; return; }
   const all=[...S.entries.map(e=>({e})),...S.pending.map(p=>({e:p,pending:true,failed:p.failed}))];
-  if(!all.length){ f.innerHTML='<div class="feed-empty">הפתק ריק.<br>צרף תמונה (או צלם) והוסף לה כיתוב — כל שליחה מתווספת לפתק.<br>בסיום: <b>PDF</b> למעלה.</div>'; return; }
+  if(!all.length){ f.innerHTML='<div class="feed-empty">הפתק ריק.<br>צרף תמונה (או צלם) והוסף לה כיתוב — כל שליחה מתווספת לפתק.<br>בסיום: <b>ייצוא</b> למעלה — PDF או Word.</div>'; return; }
   let html='', last=null;
   for(const it of all){ const k=dayKey(it.e.createdAt); if(k!==last){ html+=`<div class="day"><span>${esc(dayLabel(it.e.createdAt))}</span></div>`; last=k; } html+=bubbleHTML(it.e,it); }
   f.innerHTML=html;
@@ -498,6 +562,7 @@ $('#feed').addEventListener('click', async ev=>{
   if(ev.target.tagName==='IMG'){ openLightbox(e); return; }
   if(ev.target.closest('.more')){
     const items=[{label:e._src?'עריכת כיתוב':'עריכת הערה',icon:'edit',value:'edit'}];
+    if(e._src) items.push({label:'סימון וציור על התמונה',icon:'draw',value:'draw'});
     if(e.text) items.push({label:'העתקת טקסט',icon:'copy',value:'copy'});
     if(e._src) items.push({label:'שמירת התמונה',icon:'img',value:'saveimg'});
     items.push({label:'מחיקה',icon:'del',value:'del',danger:true});
@@ -507,10 +572,17 @@ $('#feed').addEventListener('click', async ev=>{
       if(v===null||v===e.text) return;
       try{ await S.store.updateEntry(S.noteId,e.id,{text:v,editedAt:Date.now()}); if(isLast(e)) S.store.updateNote(S.noteId,{lastText:v||'📷 תמונה'}).catch(()=>{}); }
       catch(err){ toast('השמירה נכשלה'); }
+    } else if(a==='draw'){
+      const r=await openEditor({src:e._orig||e._src,ops:e.ops||[],rot:e.rot||0});
+      if(!r||(r.reset&&!e.origId)) return;
+      busy(true,'שומר…');
+      try{ const res=await S.store.setImage(S.noteId,e.id,r); const n=curNote(); if(n&&res.oldId&&n.thumbId===res.oldId) S.store.updateNote(n.id,{thumbId:res.imageId}).catch(()=>{}); }
+      catch(err){ toast('השמירה נכשלה'); }
+      busy(false);
     } else if(a==='copy'){
       try{ await navigator.clipboard.writeText(e.text); toast('הטקסט הועתק'); }catch(err){ toast('ההעתקה לא זמינה כאן'); }
     } else if(a==='saveimg'){
-      try{ const r=await fetch(e._src); const bl=await r.blob(); await saveFile(bl,`תמונה-${fmtDate(e.createdAt).replace(/\./g,'-')}-${fmtTime(e.createdAt).replace(':','')}.jpg`); }
+      try{ const r=await fetch(e._src); const bl=await r.blob(); const nm=`תמונה-${fmtDate(e.createdAt).replace(/\./g,'-')}-${fmtTime(e.createdAt).replace(':','')}.jpg`; if(!(matchMedia('(pointer:coarse)').matches&&await shareFile(bl,nm,'תמונה'))) saveFile(bl,nm); }
       catch(err){ toast('לא ניתן לשמור את התמונה'); }
     } else if(a==='del'){
       const ok=await ask({title:'למחוק את הרשומה?',message:e._src?'התמונה והכיתוב יימחקו מהפתק.':'ההערה תימחק מהפתק.',okText:'מחיקה',danger:true});
@@ -536,9 +608,9 @@ async function renameNote(){
   try{ await S.store.updateNote(n.id,{title:v.trim()}); }catch(e){ toast('לא הצלחתי לשנות שם'); }
 }
 $('#noteMenuBtn').addEventListener('click', async ()=>{
-  const a=await sheet([{label:'שינוי שם',icon:'edit',value:'rename'},{label:'ייצוא ל-PDF',icon:'pdf',value:'pdf'},{label:'מחיקת הפתק',icon:'del',value:'del',danger:true}]);
+  const a=await sheet([{label:'שינוי שם',icon:'edit',value:'rename'},{label:'ייצוא (PDF / Word)',icon:'pdf',value:'pdf'},{label:'מחיקת הפתק',icon:'del',value:'del',danger:true}]);
   if(a==='rename') renameNote();
-  else if(a==='pdf') exportPdf();
+  else if(a==='pdf') exportNote();
   else if(a==='del'){
     const n=curNote(); if(!n) return;
     const ok=await ask({title:'למחוק את הפתק?',message:`"${n.title}" וכל ${S.entries.length} הרשומות שבו יימחקו לצמיתות.`,okText:'מחיקה',danger:true});
@@ -564,18 +636,21 @@ async function sendText(){
 }
 async function sendOne(p){
   try{
-    let blob=null,w=null,h=null;
-    if(p.file){ const c=await compress(p.file); blob=c.blob; w=c.w; h=c.h; }
-    const r=await S.store.addEntry(p.noteId,{text:p.text,blob,w,h,createdAt:p.createdAt});
+    let blob=null,w=null,h=null,extra={};
+    if(p.file){ const c=p.orig||await compress(p.file); p.orig=c;
+      if(p.flat){ blob=p.flat.blob; w=p.flat.w; h=p.flat.h; extra={origBlob:c.blob,ow:c.w,oh:c.h,ops:p.ops,rot:p.rot}; }
+      else { blob=c.blob; w=c.w; h=c.h; } }
+    const r=await S.store.addEntry(p.noteId,{text:p.text,blob,w,h,...extra,createdAt:p.createdAt});
     S.pending=S.pending.filter(x=>x!==p);
     const patch={updatedAt:Date.now(),lastText:p.text||'📷 תמונה'};
     if(r&&r.imageId) patch.thumbId=r.imageId;
+    // count: entries snapshot may or may not include the new one yet
     patch.count=Math.max(S.entries.length,(curNote()&&curNote().count||0)+1);
     if(S.noteId===p.noteId) renderFeed();
     S.store.updateNote(p.noteId,patch).catch(()=>{});
   }catch(e){
     p.failed=true; renderFeed();
-    toast(e&&e.message==='decode'?'פורמט התמונה לא נתמך':(e&&e.name==='QuotaExceededError'?'אין מספיק מקום במכשיר':'השמירה נכשלה'));
+    toast(e&&e.message==='noassets'?'אין הרשאה להעלות תמונות בתצוגה זו':(e&&e.message==='decode'?'פורמט התמונה לא נתמך':'השליחה נכשלה'));
   }
 }
 async function compress(file){
@@ -598,6 +673,7 @@ $('#cameraBtn').addEventListener('click',()=>$('#cameraInput').click());
 function addFiles(files){
   files=files.filter(f=>f.type.startsWith('image/')||/\.(jpe?g|png|webp|gif|heic|heif)$/i.test(f.name));
   if(!files.length) return;
+  if(!S.store.canImages){ toast('אין הרשאה להעלות תמונות בתצוגה זו'); return; }
   const wasOpen=!$('#preview').classList.contains('hidden');
   const items=files.map(f=>({file:f,url:URL.createObjectURL(f),caption:''}));
   if(!wasOpen){ S.pv={items:[],idx:0}; if(mi.value.trim()){ items[0].caption=mi.value.trim(); mi.value=''; autoGrow(mi); $('#sendBtn').disabled=true; } }
@@ -606,20 +682,29 @@ function addFiles(files){
 }
 function renderPv(){
   const {items,idx}=S.pv; const it=items[idx]; if(!it){ closePv(); return; }
-  $('#pvImg').src=it.url; $('#pvCaption').value=it.caption; autoGrow($('#pvCaption'));
+  $('#pvImg').src=it.flatUrl||it.url; $('#pvCaption').value=it.caption; autoGrow($('#pvCaption'));
   $('#pvCount').textContent=items.length>1?`${idx+1} / ${items.length}`:'';
-  $('#pvThumbs').innerHTML=(items.length>1?items.map((x,i)=>`<div class="th ${i===idx?'on':''}" data-i="${i}" style="background-image:url('${x.url}')"></div>`).join(''):'')+'<button class="add" id="pvAdd" aria-label="הוסף">+</button>';
+  $('#pvThumbs').innerHTML=(items.length>1?items.map((x,i)=>`<div class="th ${i===idx?'on':''}" data-i="${i}" style="background-image:url('${x.flatUrl||x.url}')"></div>`).join(''):'')+'<button class="add" id="pvAdd" aria-label="הוסף">+</button>';
 }
-function closePv(revoke=true){ if(revoke) S.pv.items.forEach(x=>URL.revokeObjectURL(x.url)); S.pv={items:[],idx:0}; $('#preview').classList.add('hidden'); $('#pvImg').src=''; }
+function closePv(revoke=true){ if(revoke) S.pv.items.forEach(x=>{ URL.revokeObjectURL(x.url); if(x.origUrl) URL.revokeObjectURL(x.origUrl); if(x.flatUrl) URL.revokeObjectURL(x.flatUrl); }); S.pv={items:[],idx:0}; $('#preview').classList.add('hidden'); $('#pvImg').src=''; }
 $('#pvThumbs').addEventListener('click',e=>{ if(e.target.id==='pvAdd'){ $('#fileInput').click(); return; } const t=e.target.closest('.th'); if(t){ S.pv.idx=+t.dataset.i; renderPv(); } });
 $('#pvCaption').addEventListener('input',e=>{ const it=S.pv.items[S.pv.idx]; if(it) it.caption=e.target.value; autoGrow(e.target); });
 $('#pvCaption').addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.shiftKey&&matchMedia('(pointer:fine)').matches){ e.preventDefault(); $('#pvSend').click(); } });
 $('#pvClose').addEventListener('click',()=>closePv());
+$('#pvEdit').addEventListener('click', async ()=>{
+  const it=S.pv.items[S.pv.idx]; if(!it) return;
+  if(!it.orig){ busy(true,'טוען…'); try{ it.orig=await compress(it.file); it.origUrl=URL.createObjectURL(it.orig.blob); }catch(e){ busy(false); toast('לא ניתן לפתוח את התמונה'); return; } busy(false); }
+  const r=await openEditor({src:it.origUrl,ops:it.ops||[],rot:it.rot||0}); if(!r) return;
+  if(it.flatUrl){ URL.revokeObjectURL(it.flatUrl); it.flatUrl=null; }
+  if(r.reset){ it.flat=null; it.ops=[]; it.rot=0; }
+  else { it.flat=r; it.ops=r.ops; it.rot=r.rot; it.flatUrl=URL.createObjectURL(r.blob); }
+  renderPv();
+});
 $('#pvRemove').addEventListener('click',()=>{ const it=S.pv.items.splice(S.pv.idx,1)[0]; if(it) URL.revokeObjectURL(it.url); S.pv.idx=Math.min(S.pv.idx,S.pv.items.length-1); renderPv(); });
 $('#pvSend').addEventListener('click', async ()=>{
   const items=S.pv.items.slice(); closePv(false); S.stick=true;
   const base=Date.now();
-  const ps=items.map((it,i)=>({pid:genId(),file:it.file,_src:it.url,text:it.caption.trim(),createdAt:base+i,noteId:S.noteId}));
+  const ps=items.map((it,i)=>({pid:genId(),file:it.file,orig:it.orig,flat:it.flat,ops:it.ops,rot:it.rot,_src:it.flatUrl||it.url,text:it.caption.trim(),createdAt:base+i,noteId:S.noteId}));
   S.pending.push(...ps); renderFeed();
   for(const p of ps) await sendOne(p);
 });
@@ -636,99 +721,369 @@ nv.addEventListener('dragleave',()=>{ if(--dragN<=0){ dragN=0; $('#dropHint').cl
 nv.addEventListener('dragover',e=>e.preventDefault());
 nv.addEventListener('drop',e=>{ e.preventDefault(); dragN=0; $('#dropHint').classList.add('hidden'); addFiles([...e.dataTransfer.files]); });
 
-/* ---------- PDF export ---------- */
-$('#pdfBtn').addEventListener('click',exportPdf);
-async function exportPdf(){
+$('#pdfBtn').addEventListener('click',()=>exportNote());
+
+/* ---------- image editor (draw / shapes / marks) ---------- */
+const ED={open:false,ops:[],undo:[],redo:[],rot:0,W:0,H:0,img:null,draft:null,tool:'arrow',color:'#e53935',size:1,resolve:null};
+const svgI=p=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const TOOLS=[
+  {k:'pen',label:'עט',ic:svgI('<path d="M4 20c3-1 4-3 6-6s4-6 7-8"/><path d="M15 4l5 5"/>')},
+  {k:'hl',label:'מרקר',ic:svgI('<path d="M4 20h7"/><path d="M14 4l6 6-8 8H6v-6z"/>')},
+  {k:'arrow',label:'חץ',ic:svgI('<path d="M5 19L19 5M10 5h9v9"/>')},
+  {k:'line',label:'קו',ic:svgI('<path d="M5 19L19 5"/>')},
+  {k:'rect',label:'מלבן',ic:svgI('<rect x="4" y="6" width="16" height="12" rx="1"/>')},
+  {k:'ellipse',label:'עיגול',ic:svgI('<ellipse cx="12" cy="12" rx="8.5" ry="6.5"/>')},
+  {k:'text',label:'טקסט',gl:'T'},
+  {k:'num',label:'מספור',gl:'①'},
+  {k:'ok',label:'תקין',gl:'✓'},
+  {k:'bad',label:'ליקוי',gl:'✗'},
+  {k:'warn',label:'שים לב',gl:'!'}
+];
+const ED_COLORS=['#e53935','#ffb300','#43a047','#1e88e5','#ffffff','#111111'];
+const STROKE=[3,6,11], TEXTS=[30,46,66], STAMPS=[46,70,100];
+const isStamp=t=>t==='num'||t==='ok'||t==='bad'||t==='warn';
+
+function edUnit(){ return Math.max(ED.W,ED.H)/1000; }
+function drawOp(x,o){
+  x.save(); x.lineCap='round'; x.lineJoin='round'; x.strokeStyle=o.c; x.fillStyle=o.c; x.lineWidth=o.w||1;
+  switch(o.t){
+    case 'pen': case 'hl':
+      if(o.t==='hl'){ x.globalAlpha=.38; x.lineCap='butt'; }
+      x.beginPath(); o.pts.forEach(([a,b],i)=>i?x.lineTo(a,b):x.moveTo(a,b));
+      if(o.pts.length===1) x.lineTo(o.pts[0][0]+.1,o.pts[0][1]);
+      x.stroke(); break;
+    case 'line': x.beginPath(); x.moveTo(o.x1,o.y1); x.lineTo(o.x2,o.y2); x.stroke(); break;
+    case 'arrow': {
+      const a=Math.atan2(o.y2-o.y1,o.x2-o.x1), L=Math.max(o.w*4.2,20);
+      x.beginPath(); x.moveTo(o.x1,o.y1); x.lineTo(o.x2-Math.cos(a)*L*.7,o.y2-Math.sin(a)*L*.7); x.stroke();
+      x.beginPath(); x.moveTo(o.x2,o.y2); x.lineTo(o.x2-L*Math.cos(a-.42),o.y2-L*Math.sin(a-.42)); x.lineTo(o.x2-L*Math.cos(a+.42),o.y2-L*Math.sin(a+.42)); x.closePath(); x.fill(); break; }
+    case 'rect': x.strokeRect(Math.min(o.x1,o.x2),Math.min(o.y1,o.y2),Math.abs(o.x2-o.x1),Math.abs(o.y2-o.y1)); break;
+    case 'ellipse': x.beginPath(); x.ellipse((o.x1+o.x2)/2,(o.y1+o.y2)/2,Math.abs(o.x2-o.x1)/2||1,Math.abs(o.y2-o.y1)/2||1,0,0,Math.PI*2); x.stroke(); break;
+    case 'text': {
+      try{ x.direction='rtl'; }catch(e){}
+      x.font=`700 ${o.s}px Heebo, Arial`; x.textAlign='center'; x.textBaseline='middle';
+      const lines=String(o.text).split('\n'), lh=o.s*1.2;
+      lines.forEach((l,i)=>{ const yy=o.y+(i-(lines.length-1)/2)*lh; x.lineWidth=o.s/5; x.strokeStyle=o.c==='#ffffff'?'#000':'#fff'; x.strokeText(l,o.x,yy); x.fillStyle=o.c; x.fillText(l,o.x,yy); });
+      break; }
+    default: if(isStamp(o.t)){
+      const r=o.s/2; x.beginPath(); x.arc(o.x,o.y,r,0,Math.PI*2); x.fill();
+      x.lineWidth=r*.14; x.strokeStyle=o.c==='#ffffff'?'#111':'#fff'; x.stroke();
+      const fg=o.c==='#ffffff'||o.c==='#ffb300'?'#111':'#fff'; x.strokeStyle=fg; x.fillStyle=fg; x.lineWidth=r*.22;
+      if(o.t==='ok'){ x.beginPath(); x.moveTo(o.x-r*.45,o.y+r*.02); x.lineTo(o.x-r*.1,o.y+r*.36); x.lineTo(o.x+r*.46,o.y-r*.3); x.stroke(); }
+      else if(o.t==='bad'){ x.beginPath(); x.moveTo(o.x-r*.36,o.y-r*.36); x.lineTo(o.x+r*.36,o.y+r*.36); x.moveTo(o.x+r*.36,o.y-r*.36); x.lineTo(o.x-r*.36,o.y+r*.36); x.stroke(); }
+      else { x.font=`700 ${r*(o.t==='num'&&o.n>9?1:1.25)}px Heebo, Arial`; x.textAlign='center'; x.textBaseline='middle'; x.fillText(o.t==='warn'?'!':String(o.n),o.x,o.y+r*.07); }
+    }
+  }
+  x.restore();
+}
+function edRender(){
+  const c=$('#edCanvas'), x=c.getContext('2d');
+  if(c.width!==ED.W||c.height!==ED.H){ c.width=ED.W; c.height=ED.H; edFit(); }
+  x.setTransform(1,0,0,1,0,0); x.clearRect(0,0,ED.W,ED.H);
+  x.save();
+  if(ED.rot===90){ x.translate(ED.W,0); x.rotate(Math.PI/2); }
+  else if(ED.rot===180){ x.translate(ED.W,ED.H); x.rotate(Math.PI); }
+  else if(ED.rot===270){ x.translate(0,ED.H); x.rotate(-Math.PI/2); }
+  x.drawImage(ED.img,0,0,ED.img.naturalWidth,ED.img.naturalHeight);
+  x.restore();
+  for(const o of ED.ops) drawOp(x,o);
+  if(ED.draft) drawOp(x,ED.draft);
+  $('#edUndo').disabled=!ED.undo.length; $('#edRedo').disabled=!ED.redo.length;
+}
+function edFit(){
+  const st=$('#edStage').getBoundingClientRect(); if(!ED.W) return;
+  const s=Math.min((st.width-16)/ED.W,(st.height-16)/ED.H);
+  const c=$('#edCanvas'); c.style.width=Math.floor(ED.W*s)+'px'; c.style.height=Math.floor(ED.H*s)+'px';
+}
+window.addEventListener('resize',()=>{ if(ED.open) edFit(); });
+function edSnap(){ ED.undo.push(JSON.stringify({ops:ED.ops,rot:ED.rot,W:ED.W,H:ED.H})); ED.redo=[]; }
+function edApply(s){ const o=JSON.parse(s); ED.ops=o.ops; ED.rot=o.rot; ED.W=o.W; ED.H=o.H; }
+const edState=()=>JSON.stringify({ops:ED.ops,rot:ED.rot,W:ED.W,H:ED.H});
+function renderEdBars(){
+  $('#edTools').innerHTML=TOOLS.map(t=>`<button data-t="${t.k}" class="${ED.tool===t.k?'on':''}" title="${t.label}">${t.ic||`<span class="gl">${t.gl}</span>`}<span>${t.label}</span></button>`).join('');
+  $('#edOpts').innerHTML=ED_COLORS.map(c=>`<button class="sw ${ED.color===c?'on':''}" data-c="${c}" style="background:${c}" aria-label="צבע"></button>`).join('')
+    +'<span class="sep"></span>'+[0,1,2].map(i=>`<button class="wd ${ED.size===i?'on':''}" data-s="${i}" aria-label="עובי"><i style="height:${[3,6,10][i]}px"></i></button>`).join('');
+}
+$('#edTools').addEventListener('click',e=>{ const b=e.target.closest('button'); if(b){ ED.tool=b.dataset.t; renderEdBars(); try{localStorage.setItem('pn-ed',JSON.stringify({tool:ED.tool,color:ED.color,size:ED.size}));}catch(err){} } });
+$('#edOpts').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; if(b.dataset.c) ED.color=b.dataset.c; if(b.dataset.s) ED.size=+b.dataset.s; renderEdBars(); try{localStorage.setItem('pn-ed',JSON.stringify({tool:ED.tool,color:ED.color,size:ED.size}));}catch(err){} });
+function edPoint(e){ const r=$('#edCanvas').getBoundingClientRect(); return [(e.clientX-r.left)*ED.W/r.width,(e.clientY-r.top)*ED.H/r.height]; }
+let edRaf=0; const edLater=()=>{ if(!edRaf) edRaf=requestAnimationFrame(()=>{ edRaf=0; edRender(); }); };
+const cvs=$('#edCanvas');
+cvs.addEventListener('pointerdown', async e=>{
+  if(!ED.open||ED.draft) return; e.preventDefault();
+  const [px,py]=edPoint(e), u=edUnit(), t=ED.tool;
+  if(t==='text'){
+    const v=await ask({title:'הוספת טקסט על התמונה',input:'',okText:'הוספה'});
+    if(v&&v.trim()){ edSnap(); ED.ops.push({t:'text',c:ED.color,s:TEXTS[ED.size]*u,x:px,y:py,text:v.trim()}); edRender(); }
+    return;
+  }
+  if(isStamp(t)){ edSnap(); const o={t,c:ED.color,s:STAMPS[ED.size]*u,x:px,y:py}; if(t==='num') o.n=ED.ops.filter(z=>z.t==='num').length+1; ED.ops.push(o); edRender(); return; }
+  try{ cvs.setPointerCapture(e.pointerId); }catch(err){}
+  const w=STROKE[ED.size]*u*(t==='hl'?3.2:1);
+  ED.draft=(t==='pen'||t==='hl')?{t,c:ED.color,w,pts:[[px,py]]}:{t,c:ED.color,w,x1:px,y1:py,x2:px,y2:py};
+  edLater();
+});
+cvs.addEventListener('pointermove',e=>{
+  const d=ED.draft; if(!d) return; e.preventDefault();
+  const [px,py]=edPoint(e);
+  if(d.pts){ const l=d.pts[d.pts.length-1]; if(Math.hypot(px-l[0],py-l[1])>1.5) d.pts.push([px,py]); }
+  else { d.x2=px; d.y2=py; }
+  edLater();
+});
+function edEnd(){
+  const d=ED.draft; if(!d) return; ED.draft=null;
+  const ok=d.pts?true:Math.hypot(d.x2-d.x1,d.y2-d.y1)>4*edUnit();
+  if(ok){ edSnap(); ED.ops.push(d); }
+  edRender();
+}
+cvs.addEventListener('pointerup',edEnd); cvs.addEventListener('pointercancel',edEnd);
+$('#edUndo').addEventListener('click',()=>{ if(!ED.undo.length) return; ED.redo.push(edState()); edApply(ED.undo.pop()); edRender(); });
+$('#edRedo').addEventListener('click',()=>{ if(!ED.redo.length) return; ED.undo.push(edState()); edApply(ED.redo.pop()); edRender(); });
+$('#edClear').addEventListener('click',()=>{ if(!ED.ops.length) return; edSnap(); ED.ops=[]; edRender(); });
+$('#edRotate').addEventListener('click',()=>{
+  edSnap(); const H=ED.H, P=(x,y)=>[H-y,x];
+  ED.ops=ED.ops.map(o=>{ const n={...o};
+    if(o.pts) n.pts=o.pts.map(([a,b])=>P(a,b));
+    if('x1' in o){ [n.x1,n.y1]=P(o.x1,o.y1); [n.x2,n.y2]=P(o.x2,o.y2); }
+    if('x' in o){ [n.x,n.y]=P(o.x,o.y); }
+    return n; });
+  [ED.W,ED.H]=[ED.H,ED.W]; ED.rot=(ED.rot+90)%360; edRender(); edFit();
+});
+function edClose(v){ ED.open=false; ED.draft=null; $('#editor').classList.add('hidden'); const r=ED.resolve; ED.resolve=null; if(r) r(v); }
+$('#edCancel').addEventListener('click', async ()=>{
+  if(ED.undo.length){ const ok=await ask({title:'לצאת בלי לשמור?',message:'הסימונים שהוספת עכשיו לא יישמרו.',okText:'יציאה',danger:true}); if(!ok) return; }
+  edClose(null);
+});
+$('#edDone').addEventListener('click', async ()=>{
+  if(!ED.undo.length){ edClose(null); return; }
+  if(!ED.ops.length&&!ED.rot){ edClose({reset:true}); return; }
+  ED.draft=null; edRender();
+  const blob=await new Promise(r=>$('#edCanvas').toBlob(r,'image/jpeg',0.88));
+  edClose({blob,w:ED.W,h:ED.H,ops:ED.ops,rot:ED.rot});
+});
+async function openEditor({src,ops=[],rot=0}){
+  let img; try{ img=await loadImg(src); }catch(e){ toast('לא ניתן לפתוח את התמונה'); return null; }
+  try{ const p=JSON.parse(localStorage.getItem('pn-ed')||'{}'); if(p.tool) ED.tool=p.tool; if(p.color) ED.color=p.color; if(p.size!=null) ED.size=p.size; }catch(e){}
+  ED.img=img; ED.rot=rot||0; ED.ops=JSON.parse(JSON.stringify(ops||[])); ED.undo=[]; ED.redo=[]; ED.draft=null;
+  const iw=img.naturalWidth, ih=img.naturalHeight; [ED.W,ED.H]=(ED.rot%180)?[ih,iw]:[iw,ih];
+  ED.open=true; $('#editor').classList.remove('hidden'); renderEdBars();
+  const c=$('#edCanvas'); c.width=ED.W; c.height=ED.H; edFit(); edRender();
+  return new Promise(r=>{ ED.resolve=r; });
+}
+
+/* ---------- export: dialog ---------- */
+const EXP_KEY='pn-export-v1';
+const loadPrefs=()=>{ try{ return JSON.parse(localStorage.getItem(EXP_KEY))||{}; }catch(e){ return {}; } };
+const savePrefs=p=>{ try{ localStorage.setItem(EXP_KEY,JSON.stringify(p)); }catch(e){} };
+const TPLS=[
+  {k:'full',name:'דוח מלא',desc:'תמונה גדולה וכיתוב, לפי ימים',
+   svg:'<svg viewBox="0 0 60 58"><rect x="12" y="3" width="36" height="52" rx="2" fill="#fff" stroke="#c9c2b6"/><rect x="16" y="7" width="20" height="3" fill="#0d6b5e"/><rect x="16" y="13" width="28" height="15" rx="1.5" fill="#b9d9cc"/><rect x="24" y="30" width="20" height="2" fill="#9aa5ab"/><rect x="16" y="35" width="28" height="15" rx="1.5" fill="#b9d9cc"/></svg>'},
+  {k:'grid',name:'קומפקטי',desc:'שתי תמונות בשורה',
+   svg:'<svg viewBox="0 0 60 58"><rect x="12" y="3" width="36" height="52" rx="2" fill="#fff" stroke="#c9c2b6"/><rect x="16" y="7" width="20" height="3" fill="#0d6b5e"/><rect x="31" y="13" width="13" height="11" rx="1.5" fill="#b9d9cc"/><rect x="16" y="13" width="13" height="11" rx="1.5" fill="#b9d9cc"/><rect x="33" y="26" width="11" height="2" fill="#9aa5ab"/><rect x="18" y="26" width="11" height="2" fill="#9aa5ab"/><rect x="31" y="32" width="13" height="11" rx="1.5" fill="#b9d9cc"/><rect x="16" y="32" width="13" height="11" rx="1.5" fill="#b9d9cc"/><rect x="33" y="45" width="11" height="2" fill="#9aa5ab"/><rect x="18" y="45" width="11" height="2" fill="#9aa5ab"/></svg>'},
+  {k:'table',name:'טבלת ליקויים',desc:'מספור, תמונה, תיאור ומילוי',
+   svg:'<svg viewBox="0 0 60 58"><rect x="12" y="3" width="36" height="52" rx="2" fill="#fff" stroke="#c9c2b6"/><rect x="16" y="7" width="20" height="3" fill="#0d6b5e"/><rect x="16" y="13" width="28" height="5" fill="#0d6b5e"/><g stroke="#c9c2b6" fill="none"><rect x="16" y="18" width="28" height="11"/><rect x="16" y="29" width="28" height="11"/><rect x="16" y="40" width="28" height="11"/><path d="M41 18v33M31 18v33M22 18v33"/></g><rect x="32" y="20" width="8" height="7" fill="#b9d9cc"/><rect x="32" y="31" width="8" height="7" fill="#b9d9cc"/><rect x="32" y="42" width="8" height="7" fill="#b9d9cc"/></svg>'}
+];
+function exportDialog(note){
+  return new Promise(resolve=>{
+    const p=Object.assign({fmt:'pdf',tpl:'full',by:'',dates:true,cols:true,nums:true},loadPrefs());
+    const m=$('#modal');
+    m.innerHTML=`<div class="dlg exp" role="dialog"><h3>ייצוא הפתק</h3>
+      <label class="fl">פורמט</label>
+      <div class="seg" id="exFmt"><button data-v="pdf">PDF</button><button data-v="docx">Word</button></div>
+      <label class="fl">תבנית</label>
+      <div class="tpls" id="exTpl">${TPLS.map(t=>`<button class="tpl" data-v="${t.k}">${t.svg}<b>${t.name}</b><small>${t.desc}</small></button>`).join('')}</div>
+      <label class="fl">כותרת</label><input type="text" id="exTitle" value="${esc(note.title||'')}">
+      <label class="fl">פרטים (פרויקט / כתובת / נושא) — לא חובה</label><input type="text" id="exDetails" value="${esc(note.details||'')}">
+      <label class="fl">הוכן ע״י — לא חובה</label><input type="text" id="exBy" value="${esc(p.by||'')}">
+      <label class="chk"><input type="checkbox" id="exNums" ${p.nums?'checked':''}> מספור רשומות</label>
+      <label class="chk"><input type="checkbox" id="exDates" ${p.dates?'checked':''}> הצגת תאריך ושעה</label>
+      <label class="chk" id="exColsRow"><input type="checkbox" id="exCols" ${p.cols?'checked':''}> עמודות למילוי: אחראי · תאריך יעד · סטטוס</label>
+      <div class="dlg-actions"><button class="btn primary" id="exGo">ייצוא</button><button class="btn ghost" id="exCancel">ביטול</button></div></div>`;
+    m.classList.remove('hidden');
+    const sync=()=>{ m.querySelectorAll('#exFmt button').forEach(b=>b.classList.toggle('on',b.dataset.v===p.fmt)); m.querySelectorAll('#exTpl .tpl').forEach(b=>b.classList.toggle('on',b.dataset.v===p.tpl)); $('#exColsRow').classList.toggle('hidden',p.tpl!=='table'); $('#exGo').textContent=p.fmt==='pdf'?'ייצוא ל-PDF':'ייצוא ל-Word'; };
+    sync();
+    $('#exFmt').onclick=e=>{ const b=e.target.closest('button'); if(b){ p.fmt=b.dataset.v; sync(); } };
+    $('#exTpl').onclick=e=>{ const b=e.target.closest('.tpl'); if(b){ p.tpl=b.dataset.v; sync(); } };
+    const done=v=>{ m.classList.add('hidden'); m.innerHTML=''; resolve(v); };
+    $('#exCancel').onclick=()=>done(null);
+    m.onclick=e=>{ if(e.target===m) done(null); };
+    $('#exGo').onclick=()=>{
+      const o={fmt:p.fmt,tpl:p.tpl,title:$('#exTitle').value.trim()||note.title||'פתק',details:$('#exDetails').value.trim(),by:$('#exBy').value.trim(),
+        nums:$('#exNums').checked,dates:$('#exDates').checked,cols:$('#exCols').checked};
+      savePrefs({fmt:o.fmt,tpl:o.tpl,by:o.by,nums:o.nums,dates:o.dates,cols:o.cols});
+      done(o);
+    };
+  });
+}
+async function exportNote(){
   const n=curNote(); if(!n) return;
   if(!S.entries.length){ toast('הפתק ריק — אין מה לייצא'); return; }
-  if(!window.jspdf){ toast('רכיב ה-PDF לא נטען — סגור ופתח את האפליקציה'); return; }
-  busy(true,'מכין PDF…');
+  const o=await exportDialog(n); if(!o) return;
+  if((o.details||'')!==(n.details||'')) S.store.updateNote(n.id,{details:o.details}).catch(()=>{});
+  busy(true,o.fmt==='pdf'?'מכין PDF…':'מכין קובץ Word…');
+  const entries=S.entries.map(e=>({...e}));
   let blob;
-  try{ blob=await buildPdf(n,S.entries); }
-  catch(e){ busy(false); toast('יצירת ה-PDF נכשלה'); console.error(e); return; }
+  try{ blob=o.fmt==='pdf'?await buildPdf(n,entries,o):await buildDocx(n,entries,o); }
+  catch(e){ busy(false); toast('יצירת הקובץ נכשלה'); console.error(e); return; }
   busy(false);
-  const name=((n.title||'פתק').replace(/[\\/:*?"<>|#]+/g,' ').trim()||'פתק')+'.pdf';
-  try{ await saveFile(blob,name); }
-  catch(e){ toast('השמירה לא הושלמה'); }
+  const name=((o.title||'פתק').replace(/[\\/:*?"<>|#]+/g,' ').trim()||'פתק')+(o.fmt==='pdf'?'.pdf':'.docx');
+  const items=[];
+  if(canShareFiles()) items.push({label:'שיתוף (וואטסאפ, מייל…)',icon:'share',value:'share'});
+  items.push({label:'שמירה למכשיר',icon:'pdf',value:'save'});
+  const a=items.length>1?await sheet(items):'save';
+  if(a==='share'){ if(!(await shareFile(blob,name,o.title))) saveFile(blob,name); }
+  else if(a==='save'){ saveFile(blob,name); toast('הקובץ נשמר בהורדות'); }
 }
-async function buildPdf(note,entries){
-  try{ await Promise.all([document.fonts.load('400 30px Heebo','א'),document.fonts.load('500 30px Heebo','א'),document.fonts.load('700 30px Heebo','א')]); }catch(e){}
-  const W=1240,H=1754,M=92,CW=W-2*M,FOOT=70,BOTTOM=H-M-FOOT,LH=45;
-  const F={title:'700 50px Heebo, Arial',sub:'400 24px Heebo, Arial',day:'700 25px Heebo, Arial',meta:'500 22px Heebo, Arial',body:'400 29px Heebo, Arial',foot:'400 20px Heebo, Arial'};
-  const mc=document.createElement('canvas').getContext('2d');
-  function wrap(text,font,maxW){
-    mc.font=font; const out=[];
-    for(const para of String(text).split('\n')){
-      if(!para.trim()){ out.push(''); continue; }
-      let line='';
-      for(const w of para.split(/\s+/).filter(Boolean)){
-        const t=line?line+' '+w:w;
-        if(mc.measureText(t).width<=maxW){ line=t; continue; }
-        if(line) out.push(line);
-        if(mc.measureText(w).width>maxW){ let ch=''; for(const c of w){ if(mc.measureText(ch+c).width>maxW){ out.push(ch); ch=c; } else ch+=c; } line=ch; }
-        else line=w;
-      }
-      out.push(line);
-    }
-    while(out.length&&out[out.length-1]==='') out.pop();
-    return out;
-  }
-  for(const e of entries){ if(e._src&&!(e.w&&e.h)){ try{ const im=await loadImg(e._src); e.w=im.naturalWidth; e.h=im.naturalHeight; }catch(err){} } }
-  const box=e=>{ if(!e._src) return null; const w=e.w||4,h=e.h||3; let dw=CW,dh=dw*h/w; const mx=700; if(dh>mx){ dh=mx; dw=dh*w/h; } return {dw,dh}; };
 
-  const pages=[[]]; let pg=pages[0], y=M;
-  const newPage=()=>{ pg=[]; pages.push(pg); y=M; };
-  const need=h=>{ if(y+h>BOTTOM&&y>M+1) newPage(); };
-  const tl=wrap(note.title||'פתק',F.title,CW);
-  for(const l of tl){ pg.push({t:'text',font:F.title,color:'#111b21',text:l,x:W-M,y:y+50,a:'right'}); y+=66; }
+/* ---------- shared layout helpers ---------- */
+const fitBox=(w,h,mw,mh)=>{ w=w||4; h=h||3; const s=Math.min(mw/w,mh/h); return {w:w*s,h:h*s}; };
+const mctx=document.createElement('canvas').getContext('2d');
+function wrapText(text,font,maxW){
+  mctx.font=font; const out=[];
+  for(const para of String(text).split('\n')){
+    if(!para.trim()){ out.push(''); continue; }
+    let line='';
+    for(const w of para.split(/\s+/).filter(Boolean)){
+      const t=line?line+' '+w:w;
+      if(mctx.measureText(t).width<=maxW){ line=t; continue; }
+      if(line) out.push(line);
+      if(mctx.measureText(w).width>maxW){ let ch=''; for(const c of w){ if(mctx.measureText(ch+c).width>maxW){ out.push(ch); ch=c; } else ch+=c; } line=ch; }
+      else line=w;
+    }
+    out.push(line);
+  }
+  while(out.length&&out[out.length-1]==='') out.pop();
+  return out;
+}
+async function ensureDims(entries){
+  for(const e of entries){ if(e._src&&!(e.w&&e.h)){ try{ const im=await loadImg(e._src); e.w=im.naturalWidth; e.h=im.naturalHeight; }catch(err){} } }
+}
+function headerInfo(note,entries,o){
   const first=entries[0].createdAt,last=entries[entries.length-1].createdAt,now=Date.now();
   const imgs=entries.filter(e=>e._src).length;
-  const range=dayKey(first)===dayKey(last)?fmtDate(first):`${fmtDate(first)} – ${fmtDate(last)}`;
-  pg.push({t:'text',font:F.sub,color:'#667781',text:`${range}  ·  ${entries.length} רשומות${imgs?`, ${imgs} תמונות`:''}  ·  הופק ${fmtDate(now)} ${fmtTime(now)}`,x:W-M,y:y+26,a:'right'});
-  y+=50; pg.push({t:'rect',x:M,y,w:CW,h:4,color:'#1aa37a'}); y+=44;
-  let lastDay=null;
-  for(const e of entries){
-    const b=box(e), lines=e.text&&e.text.trim()?wrap(e.text.trim(),F.body,CW):[];
-    const newDay=dayKey(e.createdAt)!==lastDay;
-    const head=(newDay?72:0)+38+(b?b.dh+20:0)+Math.min(lines.length,2)*LH;
-    need(head);
-    if(newDay){ pg.push({t:'pill',text:fullDay(e.createdAt),y}); y+=72; lastDay=dayKey(e.createdAt); }
-    pg.push({t:'text',font:F.meta,color:'#667781',text:fmtTime(e.createdAt)+(e.editedAt?'  ·  נערך':''),x:W-M,y:y+24,a:'right'}); y+=38;
-    if(b){ pg.push({t:'img',e,x:W-M-b.dw,y,w:b.dw,h:b.dh}); y+=b.dh+20; }
-    for(const l of lines){ need(LH); if(l) pg.push({t:'text',font:F.body,color:'#111b21',text:l,x:W-M,y:y+32,a:'right'}); y+=LH; }
-    y+=22;
-    if(y+40<BOTTOM){ pg.push({t:'rect',x:M+CW*0.3,y,w:CW*0.7,h:2,color:'#e6e1d8'}); }
-    y+=36;
+  const parts=[];
+  if(o.dates) parts.push(dayKey(first)===dayKey(last)?fmtDate(first):`${fmtDate(first)} – ${fmtDate(last)}`);
+  parts.push(`${entries.length} רשומות${imgs?`, ${imgs} תמונות`:''}`);
+  if(o.by) parts.push('הוכן ע״י '+o.by);
+  parts.push('הופק '+fmtDate(now));
+  return parts.join('  ·  ');
+}
+
+/* ---------- PDF ---------- */
+async function buildPdf(note,entries,o){
+  try{ await Promise.all(['400','500','700'].map(w=>document.fonts.load(w+' 30px Heebo'))); }catch(e){}
+  await ensureDims(entries);
+  const W=1240,H=1754,M=84,CW=W-2*M,FOOT=64,BOTTOM=H-M-FOOT;
+  const F={title:'700 48px Heebo, Arial',det:'500 28px Heebo, Arial',sub:'400 23px Heebo, Arial',day:'700 25px Heebo, Arial',meta:'500 22px Heebo, Arial',
+    body:'400 29px Heebo, Arial',cell:'400 26px Heebo, Arial',th:'700 24px Heebo, Arial',num:'700 28px Heebo, Arial',foot:'400 20px Heebo, Arial'};
+  const pages=[[]]; let pg=pages[0], y=M, onNew=null;
+  const newPage=()=>{ pg=[]; pages.push(pg); y=M; if(onNew) onNew(); };
+  const need=h=>{ if(y+h>BOTTOM&&y>M+(onNew?60:1)) newPage(); };
+  const T=(text,font,color,x,yy,a='right')=>pg.push({t:'text',font,color,text,x,y:yy,a});
+
+  // header
+  for(const l of wrapText(o.title,F.title,CW)){ T(l,F.title,'#111b21',W-M,y+46); y+=62; }
+  if(o.details) for(const l of wrapText(o.details,F.det,CW)){ T(l,F.det,'#33424b',W-M,y+30); y+=42; }
+  for(const l of wrapText(headerInfo(note,entries,o),F.sub,CW)){ T(l,F.sub,'#667781',W-M,y+26); y+=36; }
+  y+=12; pg.push({t:'rect',x:M,y,w:CW,h:4,color:'#1aa37a'}); y+=36;
+
+  if(o.tpl==='grid'){
+    const GAP=30, colW=(CW-GAP)/2, P=18, inW=colW-2*P, IMGH=400, LH=37;
+    for(let i=0;i<entries.length;i+=2){
+      const cells=entries.slice(i,i+2).map((e,j)=>{
+        const idx=i+j, b=e._src?fitBox(e.w,e.h,inW,IMGH):null;
+        let lines=e.text&&e.text.trim()?wrapText(e.text.trim(),F.cell,inW):[];
+        if(lines.length>10){ lines=lines.slice(0,10); lines[9]+='…'; }
+        const meta=[o.nums?`#${idx+1}`:'',o.dates?fmtDate(e.createdAt)+' '+fmtTime(e.createdAt):''].filter(Boolean).join('  ·  ');
+        const h=P+(meta?34:0)+(b?IMGH+(lines.length?14:0):0)+lines.length*LH+P;
+        return {e,b,lines,meta,h};
+      });
+      const rowH=Math.max(...cells.map(c=>c.h));
+      need(rowH);
+      cells.forEach((c,j)=>{
+        const cx=j===0?W-M-colW:M;
+        pg.push({t:'rr',x:cx,y,w:colW,h:rowH,r:14,fill:'#fbfaf8',stroke:'#e2ddd4'});
+        let yy=y+P;
+        if(c.meta){ T(c.meta,F.meta,'#0d6b5e',cx+colW-P,yy+24); yy+=34; }
+        if(c.b){ pg.push({t:'img',e:c.e,x:cx+P+(inW-c.b.w)/2,y:yy+(IMGH-c.b.h)/2,w:c.b.w,h:c.b.h,r:10}); yy+=IMGH+14; }
+        for(const l of c.lines){ if(l) T(l,F.cell,'#111b21',cx+colW-P,yy+27); yy+=LH; }
+      });
+      y+=rowH+GAP;
+    }
+  } else if(o.tpl==='table'){
+    const cols=[];
+    if(o.nums) cols.push({k:'num',w:66,h:'#'});
+    cols.push({k:'img',w:o.cols?300:340,h:'תמונה'});
+    cols.push({k:'desc',w:0,h:'תיאור'});
+    if(o.cols) cols.push({k:'x',w:150,h:'אחראי'},{k:'x',w:135,h:'תאריך יעד'},{k:'x',w:125,h:'סטטוס'});
+    const dsc=cols.find(c=>c.k==='desc'); dsc.w=CW-cols.reduce((s,c)=>s+c.w,0);
+    let xr=W-M; for(const c of cols){ c.x=xr-c.w; xr=c.x; }
+    const HR=54, P=14, LH=36;
+    const headRow=()=>{ pg.push({t:'rect',x:M,y,w:CW,h:HR,color:'#0d6b5e'});
+      for(const c of cols){ T(c.h,F.th,'#ffffff',c.x+c.w/2,y+36,'center'); if(c.x>M) pg.push({t:'rect',x:c.x,y,w:2,h:HR,color:'#3d8a7e'}); }
+      y+=HR; };
+    headRow(); onNew=headRow;
+    const maxBody=BOTTOM-M-HR-2*P;
+    entries.forEach((e,i)=>{
+      const imgC=cols.find(c=>c.k==='img');
+      const b=e._src?fitBox(e.w,e.h,imgC.w-2*P,280):null;
+      const meta=o.dates?fmtDate(e.createdAt)+'  '+fmtTime(e.createdAt):'';
+      let lines=e.text&&e.text.trim()?wrapText(e.text.trim(),F.cell,dsc.w-2*P):[];
+      const maxL=Math.floor((maxBody-(meta?32:0))/LH);
+      if(lines.length>maxL){ lines=lines.slice(0,maxL); lines[maxL-1]+='…'; }
+      const rowH=Math.max(b?b.h+2*P:0,2*P+(meta?32:0)+lines.length*LH,84);
+      need(rowH);
+      if(i%2) pg.push({t:'rect',x:M,y,w:CW,h:rowH,color:'#f7f5f1'});
+      for(const c of cols){
+        pg.push({t:'srect',x:c.x,y,w:c.w,h:rowH,color:'#d6d0c6'});
+        if(c.k==='num') T(String(i+1),F.num,'#0d6b5e',c.x+c.w/2,y+P+30,'center');
+        else if(c.k==='img'&&b) pg.push({t:'img',e,x:c.x+(c.w-b.w)/2,y:y+(rowH-b.h)/2,w:b.w,h:b.h,r:6});
+        else if(c.k==='desc'){ let yy=y+P; if(meta){ T(meta,F.meta,'#667781',c.x+c.w-P,yy+22); yy+=32; } for(const l of lines){ if(l) T(l,F.cell,'#111b21',c.x+c.w-P,yy+27); yy+=LH; } }
+      }
+      y+=rowH;
+    });
+  } else {
+    const LH=45; let lastDay=null;
+    entries.forEach((e,i)=>{
+      const b=e._src?fitBox(e.w,e.h,CW,700):null, lines=e.text&&e.text.trim()?wrapText(e.text.trim(),F.body,CW):[];
+      const newDay=o.dates&&dayKey(e.createdAt)!==lastDay;
+      const meta=[o.nums?`#${i+1}`:'',o.dates?fmtTime(e.createdAt):''].filter(Boolean).join('  ·  ');
+      need((newDay?72:0)+(meta?38:0)+(b?b.h+20:0)+Math.min(lines.length,2)*LH);
+      if(newDay){ pg.push({t:'pill',text:fullDay(e.createdAt),y}); y+=72; lastDay=dayKey(e.createdAt); }
+      if(meta){ T(meta,F.meta,'#667781',W-M,y+24); y+=38; }
+      if(b){ pg.push({t:'img',e,x:W-M-b.w,y,w:b.w,h:b.h,r:14}); y+=b.h+20; }
+      for(const l of lines){ need(LH); if(l) T(l,F.body,'#111b21',W-M,y+32); y+=LH; }
+      y+=22; if(y+40<BOTTOM) pg.push({t:'rect',x:M+CW*.3,y,w:CW*.7,h:2,color:'#e6e1d8'}); y+=36;
+    });
   }
 
+  // draw
   const total=pages.length;
   const pdf=new window.jspdf.jsPDF({unit:'pt',format:'a4',compress:true});
   const c=document.createElement('canvas'); c.width=W; c.height=H; c.setAttribute('dir','rtl');
   const x=c.getContext('2d'); try{ x.direction='rtl'; }catch(e){}
   const rr=(X,Y,w,h,r)=>{ x.beginPath(); x.moveTo(X+r,Y); x.arcTo(X+w,Y,X+w,Y+h,r); x.arcTo(X+w,Y+h,X,Y+h,r); x.arcTo(X,Y+h,X,Y,r); x.arcTo(X,Y,X+w,Y,r); x.closePath(); };
-  const imgCache=new Map();
-  async function getImg(src){
-    if(imgCache.has(src)) return imgCache.get(src);
-    let im=null; try{ im=await loadImg(src); }catch(e){ im=null; }
-    imgCache.set(src,im); return im;
-  }
+  const cache=new Map();
+  const getImg=async src=>{ if(cache.has(src)) return cache.get(src); let im=null; try{ im=await loadImg(src); }catch(e){} cache.set(src,im); return im; };
   for(let i=0;i<total;i++){
     busy(true,`מכין PDF… עמוד ${i+1} מתוך ${total}`);
     x.setTransform(1,0,0,1,0,0); x.fillStyle='#fff'; x.fillRect(0,0,W,H); x.textBaseline='alphabetic';
-    for(const o of pages[i]){
-      if(o.t==='text'){ x.font=o.font; x.fillStyle=o.color; x.textAlign=o.a; x.fillText(o.text,o.x,o.y); }
-      else if(o.t==='rect'){ x.fillStyle=o.color; x.fillRect(o.x,o.y,o.w,o.h); }
-      else if(o.t==='pill'){ x.font=F.day; const tw=x.measureText(o.text).width+44; const px=W-M-tw; x.fillStyle='#e9f6f0'; rr(px,o.y+4,tw,48,24); x.fill(); x.fillStyle='#0d6b5e'; x.textAlign='center'; x.fillText(o.text,px+tw/2,o.y+37); }
-      else if(o.t==='img'){
-        const im=await getImg(o.e._src);
-        x.save(); rr(o.x,o.y,o.w,o.h,14); x.clip();
-        if(im){ x.drawImage(im,o.x,o.y,o.w,o.h); } else { x.fillStyle='#eee'; x.fillRect(o.x,o.y,o.w,o.h); }
-        x.restore(); x.strokeStyle='#dedad2'; x.lineWidth=2; rr(o.x,o.y,o.w,o.h,14); x.stroke();
+    for(const op of pages[i]){
+      if(op.t==='text'){ x.font=op.font; x.fillStyle=op.color; x.textAlign=op.a; x.fillText(op.text,op.x,op.y); }
+      else if(op.t==='rect'){ x.fillStyle=op.color; x.fillRect(op.x,op.y,op.w,op.h); }
+      else if(op.t==='srect'){ x.strokeStyle=op.color; x.lineWidth=2; x.strokeRect(op.x,op.y,op.w,op.h); }
+      else if(op.t==='rr'){ rr(op.x,op.y,op.w,op.h,op.r); if(op.fill){ x.fillStyle=op.fill; x.fill(); } if(op.stroke){ x.strokeStyle=op.stroke; x.lineWidth=2; x.stroke(); } }
+      else if(op.t==='pill'){ x.font=F.day; const tw=x.measureText(op.text).width+44, px=W-M-tw; x.fillStyle='#e9f6f0'; rr(px,op.y+4,tw,48,24); x.fill(); x.fillStyle='#0d6b5e'; x.textAlign='center'; x.fillText(op.text,px+tw/2,op.y+37); }
+      else if(op.t==='img'){
+        const im=await getImg(op.e._src);
+        x.save(); rr(op.x,op.y,op.w,op.h,op.r||0); x.clip();
+        if(im) x.drawImage(im,op.x,op.y,op.w,op.h); else { x.fillStyle='#eee'; x.fillRect(op.x,op.y,op.w,op.h); }
+        x.restore(); x.strokeStyle='#dedad2'; x.lineWidth=2; rr(op.x,op.y,op.w,op.h,op.r||0); x.stroke();
       }
     }
     x.fillStyle='#e6e1d8'; x.fillRect(M,H-M-28,CW,2);
     x.font=F.foot; x.fillStyle='#8a969d';
-    x.textAlign='right'; x.fillText(note.title||'פתק',W-M,H-M+6);
+    x.textAlign='right'; x.fillText(o.title,W-M,H-M+6);
     x.textAlign='left'; x.fillText(`עמוד ${i+1} מתוך ${total}`,M,H-M+6);
     if(i) pdf.addPage();
     pdf.addImage(c.toDataURL('image/jpeg',0.86),'JPEG',0,0,595.28,841.89,undefined,'FAST');
@@ -737,21 +1092,196 @@ async function buildPdf(note,entries){
   return pdf.output('blob');
 }
 
+/* ---------- Word (.docx), built in the browser ---------- */
+const CRC_T=(()=>{ const t=new Uint32Array(256); for(let n=0;n<256;n++){ let c=n; for(let k=0;k<8;k++) c=c&1?0xEDB88320^(c>>>1):c>>>1; t[n]=c>>>0; } return t; })();
+function crc32(u){ let c=0xFFFFFFFF; for(let i=0;i<u.length;i++) c=CRC_T[(c^u[i])&255]^(c>>>8); return (c^0xFFFFFFFF)>>>0; }
+function makeZip(files,mime){
+  const enc=new TextEncoder(), chunks=[], central=[]; let off=0;
+  const d=new Date(), dt=((d.getFullYear()-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate(), tm=(d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1);
+  for(const f of files){
+    const name=enc.encode(f.name), data=typeof f.data==='string'?enc.encode(f.data):f.data, crc=crc32(data);
+    const lh=new DataView(new ArrayBuffer(30));
+    lh.setUint32(0,0x04034b50,true); lh.setUint16(4,20,true); lh.setUint16(6,0x0800,true); lh.setUint16(8,0,true);
+    lh.setUint16(10,tm,true); lh.setUint16(12,dt,true); lh.setUint32(14,crc,true); lh.setUint32(18,data.length,true); lh.setUint32(22,data.length,true);
+    lh.setUint16(26,name.length,true); lh.setUint16(28,0,true);
+    chunks.push(lh.buffer,name,data);
+    const ch=new DataView(new ArrayBuffer(46));
+    ch.setUint32(0,0x02014b50,true); ch.setUint16(4,20,true); ch.setUint16(6,20,true); ch.setUint16(8,0x0800,true); ch.setUint16(10,0,true);
+    ch.setUint16(12,tm,true); ch.setUint16(14,dt,true); ch.setUint32(16,crc,true); ch.setUint32(20,data.length,true); ch.setUint32(24,data.length,true);
+    ch.setUint16(28,name.length,true); ch.setUint16(30,0,true); ch.setUint16(32,0,true); ch.setUint16(34,0,true); ch.setUint16(36,0,true); ch.setUint32(38,0,true); ch.setUint32(42,off,true);
+    central.push(ch.buffer,name);
+    off+=30+name.length+data.length;
+  }
+  const cd=central.reduce((s,b)=>s+b.byteLength,0);
+  const end=new DataView(new ArrayBuffer(22));
+  end.setUint32(0,0x06054b50,true); end.setUint16(8,files.length,true); end.setUint16(10,files.length,true); end.setUint32(12,cd,true); end.setUint32(16,off,true);
+  return new Blob([...chunks,...central,end.buffer],{type:mime});
+}
+async function buildDocx(note,entries,o){
+  await ensureDims(entries);
+  const X=s=>String(s??'').replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const media=[], rels=[]; let pid=1;
+  const CM=360000, TW_CM=567;
+  async function jpegBytes(src){
+    let b=await (await fetch(src)).blob();
+    if(b.type!=='image/jpeg'){ const im=await loadImg(src); const c=document.createElement('canvas'); c.width=im.naturalWidth; c.height=im.naturalHeight; const g=c.getContext('2d'); g.fillStyle='#fff'; g.fillRect(0,0,c.width,c.height); g.drawImage(im,0,0); b=await new Promise(r=>c.toBlob(r,'image/jpeg',0.9)); }
+    return new Uint8Array(await b.arrayBuffer());
+  }
+  const rPr=({b=false,sz=22,color=null}={})=>`<w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/>${b?'<w:b/><w:bCs/>':''}${color?`<w:color w:val="${color}"/>`:''}<w:sz w:val="${sz}"/><w:szCs w:val="${sz}"/><w:rtl/></w:rPr>`;
+  const run=(text,st={})=>{ const rp=rPr(st); return String(text).split('\n').map((l,i)=>(i?`<w:r>${rp}<w:br/></w:r>`:'')+`<w:r>${rp}<w:t xml:space="preserve">${X(l)}</w:t></w:r>`).join(''); };
+  const para=(inner,{jc=null,after=120,before=0,border=null,keep=false}={})=>`<w:p><w:pPr>${keep?'<w:keepNext/>':''}${border?`<w:pBdr><w:bottom w:val="single" w:sz="${border.sz}" w:space="4" w:color="${border.color}"/></w:pBdr>`:''}<w:spacing w:before="${before}" w:after="${after}"/><w:bidi/>${jc?`<w:jc w:val="${jc}"/>`:''}</w:pPr>${inner}</w:p>`;
+  async function pic(e,maxWcm,maxHcm){
+    const data=await jpegBytes(e._src), n=media.length+1, name=`image${n}.jpeg`, rid='rIdImg'+n;
+    media.push({name:'word/media/'+name,data});
+    rels.push(`<Relationship Id="${rid}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/${name}"/>`);
+    const s=fitBox(e.w,e.h,maxWcm*CM,maxHcm*CM), cx=Math.round(s.w), cy=Math.round(s.h), id=pid++;
+    return `<w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="${cx}" cy="${cy}"/><wp:effectExtent l="0" t="0" r="0" b="0"/><wp:docPr id="${id}" name="Picture ${id}"/><wp:cNvGraphicFramePr><a:graphicFrameLocks noChangeAspect="1"/></wp:cNvGraphicFramePr><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic><pic:nvPicPr><pic:cNvPr id="${id}" name="${name}"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="${rid}"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${cx}" cy="${cy}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>`;
+  }
+  const borders=(c,sz=4)=>`<w:tblBorders>${['top','left','bottom','right','insideH','insideV'].map(s=>`<w:${s} w:val="single" w:sz="${sz}" w:space="0" w:color="${c}"/>`).join('')}</w:tblBorders>`;
+  const tc=(w,inner,{fill=null,vAlign='top'}={})=>`<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/>${fill?`<w:shd w:val="clear" w:color="auto" w:fill="${fill}"/>`:''}<w:vAlign w:val="${vAlign}"/></w:tcPr>${inner||'<w:p><w:pPr><w:bidi/></w:pPr></w:p>'}</w:tc>`;
+  const TOTAL=9638;
+
+  let body='';
+  body+=para(run(o.title,{b:true,sz:36}),{after:60});
+  if(o.details) body+=para(run(o.details,{sz:24,color:'33424B'}),{after:40});
+  body+=para(run(headerInfo(note,entries,o),{sz:18,color:'667781'}),{after:280,border:{sz:12,color:'1AA37A'}});
+
+  if(o.tpl==='grid'){
+    const cw=TOTAL/2;
+    let rows='';
+    for(let i=0;i<entries.length;i+=2){
+      let cells='';
+      for(let j=0;j<2;j++){
+        const e=entries[i+j]; if(!e){ cells+=tc(cw,''); continue; }
+        const meta=[o.nums?`#${i+j+1}`:'',o.dates?fmtDate(e.createdAt)+' '+fmtTime(e.createdAt):''].filter(Boolean).join('  ·  ');
+        let inner='';
+        if(meta) inner+=para(run(meta,{b:true,sz:18,color:'0D6B5E'}),{after:60});
+        if(e._src) inner+=para(await pic(e,7.7,6.2),{jc:'center',after:80});
+        if(e.text&&e.text.trim()) inner+=para(run(e.text.trim(),{sz:20}),{after:60});
+        cells+=tc(cw,inner||'');
+      }
+      rows+=`<w:tr><w:trPr><w:cantSplit/></w:trPr>${cells}</w:tr>`;
+      busy(true,`מכין קובץ Word… ${Math.min(i+2,entries.length)}/${entries.length}`);
+    }
+    body+=`<w:tbl><w:tblPr><w:bidiVisual/><w:tblW w:w="${TOTAL}" w:type="dxa"/><w:tblLayout w:type="fixed"/>${borders('E2DDD4')}<w:tblCellMar><w:top w:w="100" w:type="dxa"/><w:left w:w="120" w:type="dxa"/><w:bottom w:w="100" w:type="dxa"/><w:right w:w="120" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid><w:gridCol w:w="${cw}"/><w:gridCol w:w="${cw}"/></w:tblGrid>${rows}</w:tbl>`+para('',{after:0});
+  } else if(o.tpl==='table'){
+    const cols=[];
+    if(o.nums) cols.push({k:'num',w:600,h:'#'});
+    cols.push({k:'img',w:o.cols?2600:3100,h:'תמונה'});
+    cols.push({k:'desc',w:0,h:'תיאור'});
+    if(o.cols) cols.push({k:'x',w:1150,h:'אחראי'},{k:'x',w:1100,h:'תאריך יעד'},{k:'x',w:1000,h:'סטטוס'});
+    const d=cols.find(c=>c.k==='desc'); d.w=TOTAL-cols.reduce((s,c)=>s+c.w,0);
+    let rows=`<w:tr><w:trPr><w:tblHeader/><w:cantSplit/></w:trPr>${cols.map(c=>tc(c.w,para(run(c.h,{b:true,sz:20,color:'FFFFFF'}),{jc:'center',after:0}),{fill:'0D6B5E',vAlign:'center'})).join('')}</w:tr>`;
+    for(let i=0;i<entries.length;i++){
+      const e=entries[i]; let cells='';
+      for(const c of cols){
+        if(c.k==='num') cells+=tc(c.w,para(run(String(i+1),{b:true,sz:22,color:'0D6B5E'}),{jc:'center',after:0}),{vAlign:'center',fill:i%2?'F7F5F1':null});
+        else if(c.k==='img') cells+=tc(c.w,e._src?para(await pic(e,(c.w-240)/TW_CM,5.2),{jc:'center',after:0}):'',{vAlign:'center',fill:i%2?'F7F5F1':null});
+        else if(c.k==='desc'){ let inner=''; if(o.dates) inner+=para(run(fmtDate(e.createdAt)+'  '+fmtTime(e.createdAt),{sz:16,color:'667781'}),{after:40}); if(e.text&&e.text.trim()) inner+=para(run(e.text.trim(),{sz:20}),{after:0}); cells+=tc(c.w,inner,{fill:i%2?'F7F5F1':null}); }
+        else cells+=tc(c.w,'',{fill:i%2?'F7F5F1':null});
+      }
+      rows+=`<w:tr><w:trPr><w:cantSplit/></w:trPr>${cells}</w:tr>`;
+      busy(true,`מכין קובץ Word… ${i+1}/${entries.length}`);
+    }
+    body+=`<w:tbl><w:tblPr><w:bidiVisual/><w:tblW w:w="${TOTAL}" w:type="dxa"/><w:tblLayout w:type="fixed"/>${borders('BFB8AD')}<w:tblCellMar><w:top w:w="80" w:type="dxa"/><w:left w:w="100" w:type="dxa"/><w:bottom w:w="80" w:type="dxa"/><w:right w:w="100" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>${cols.map(c=>`<w:gridCol w:w="${c.w}"/>`).join('')}</w:tblGrid>${rows}</w:tbl>`+para('',{after:0});
+  } else {
+    let lastDay=null;
+    for(let i=0;i<entries.length;i++){
+      const e=entries[i], hasT=!!(e.text&&e.text.trim());
+      if(o.dates&&dayKey(e.createdAt)!==lastDay){ body+=para(run(fullDay(e.createdAt),{b:true,sz:22,color:'0D6B5E'}),{before:200,after:100,keep:true}); lastDay=dayKey(e.createdAt); }
+      const meta=[o.nums?`#${i+1}`:'',o.dates?fmtTime(e.createdAt):''].filter(Boolean).join('  ·  ');
+      if(meta) body+=para(run(meta,{sz:18,color:'667781'}),{after:40,keep:true});
+      if(e._src) body+=para(await pic(e,16,11.5),{after:80,keep:hasT});
+      if(hasT) body+=para(run(e.text.trim(),{sz:22}),{after:80});
+      body+=para('',{after:200,border:{sz:4,color:'E6E1D8'}});
+      busy(true,`מכין קובץ Word… ${i+1}/${entries.length}`);
+    }
+  }
+  const NS='xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"';
+  const HEAD='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n';
+  const doc=`${HEAD}<w:document ${NS}><w:body>${body}<w:sectPr><w:footerReference w:type="default" r:id="rIdFooter"/><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134" w:header="567" w:footer="567" w:gutter="0"/><w:bidi/></w:sectPr></w:body></w:document>`;
+  const fr=rPr({sz:16,color:'8A969D'});
+  const fld=instr=>`<w:fldSimple w:instr=" ${instr} "><w:r>${fr}<w:t>1</w:t></w:r></w:fldSimple>`;
+  const footer=`${HEAD}<w:ftr ${NS}><w:p><w:pPr><w:bidi/><w:jc w:val="center"/></w:pPr>${run(o.title+'   ·   עמוד ',{sz:16,color:'8A969D'})}${fld('PAGE')}${run(' מתוך ',{sz:16,color:'8A969D'})}${fld('NUMPAGES')}</w:p></w:ftr>`;
+  const styles=`${HEAD}<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Arial" w:eastAsia="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:sz w:val="22"/><w:szCs w:val="22"/><w:lang w:val="he-IL" w:eastAsia="en-US" w:bidi="he-IL"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:bidi/><w:spacing w:after="120" w:line="264" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style><w:style w:type="table" w:default="1" w:styleId="TableNormal"><w:name w:val="Normal Table"/><w:tblPr><w:tblInd w:w="0" w:type="dxa"/><w:tblCellMar><w:top w:w="0" w:type="dxa"/><w:left w:w="108" w:type="dxa"/><w:bottom w:w="0" w:type="dxa"/><w:right w:w="108" w:type="dxa"/></w:tblCellMar></w:tblPr></w:style></w:styles>`;
+  const ct=`${HEAD}<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="jpeg" ContentType="image/jpeg"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/><Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/><Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/></Types>`;
+  const iso=new Date().toISOString().replace(/\.\d+Z$/,'Z');
+  const core=`${HEAD}<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dc:title>${X(o.title)}</dc:title><dc:creator>${X(o.by||'')}</dc:creator><dcterms:created xsi:type="dcterms:W3CDTF">${iso}</dcterms:created><dcterms:modified xsi:type="dcterms:W3CDTF">${iso}</dcterms:modified></cp:coreProperties>`;
+  const rootRels=`${HEAD}<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/></Relationships>`;
+  const docRels=`${HEAD}<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rIdStyles" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/><Relationship Id="rIdFooter" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/>${rels.join('')}</Relationships>`;
+  return makeZip([
+    {name:'[Content_Types].xml',data:ct},{name:'_rels/.rels',data:rootRels},{name:'docProps/core.xml',data:core},
+    {name:'word/document.xml',data:doc},{name:'word/styles.xml',data:styles},{name:'word/footer1.xml',data:footer},
+    {name:'word/_rels/document.xml.rels',data:docRels},...media
+  ],'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+}
+
+/* ---------- backup / restore ---------- */
+$('#listMenuBtn').addEventListener('click', async ()=>{
+  const mItems=[{label:'גיבוי כל הפתקים לקובץ',icon:'backup',value:'backup'},{label:'שחזור מקובץ גיבוי',icon:'restore',value:'restore'}];
+  if(!isStandalone()) mItems.push({label:'התקנה כאפליקציה',icon:'phone',value:'install'});
+  if(navigator.share&&/^https?:/.test(location.protocol)) mItems.push({label:'שליחת קישור לאפליקציה',icon:'share',value:'shareapp'});
+  const a=await sheet(mItems);
+  if(a==='install'){ installApp(); return; }
+  if(a==='shareapp'){ try{ await navigator.share({title:'פתקי תמונות',text:'אפליקציית פתקי תמונות — פתח בדפדפן והוסף למסך הבית:',url:location.href.split('#')[0]}); }catch(e){} return; }
+  if(a==='backup'){
+    busy(true,'מכין גיבוי…');
+    try{ const d=await S.store.exportAll(); const blob=new Blob([JSON.stringify(d)],{type:'application/json'});
+      busy(false); const name=`גיבוי-פתקים-${fmtDate(Date.now()).replace(/\./g,'-')}.json`;
+      const items=[]; if(canShareFiles()) items.push({label:'שיתוף (Drive, מייל, וואטסאפ…)',icon:'share',value:'share'}); items.push({label:'שמירה למכשיר',icon:'backup',value:'save'});
+      const c=items.length>1?await sheet(items):'save';
+      if(c==='share'){ if(!(await shareFile(blob,name,'גיבוי פתקים'))) saveFile(blob,name); } else if(c==='save'){ saveFile(blob,name); toast('הגיבוי נשמר בהורדות'); }
+    }catch(e){ busy(false); toast('הגיבוי נכשל'); }
+  } else if(a==='restore') $('#restoreInput').click();
+});
+$('#restoreInput').addEventListener('change', async e=>{
+  const f=e.target.files[0]; e.target.value=''; if(!f) return;
+  busy(true,'משחזר…');
+  try{ const txt=await f.text(); let data;
+    if(/^\s*</.test(txt)){ const m=txt.match(/<script id="pn-data" type="application\/json">([\s\S]*?)<\/script>/); if(!m||!m[1].trim()) throw new Error('nodata'); data=JSON.parse(m[1]); }
+    else data=JSON.parse(txt);
+    const r=await S.store.importAll(data); busy(false); toast(r.added||r.updated?`שוחזרו ${r.added} פתקים${r.updated?`, ${r.updated} עדכונים`:''}`:'כל הפתקים בקובץ כבר קיימים'); }
+  catch(err){ busy(false); toast('קובץ הגיבוי לא תקין'); }
+});
+
+/* ---------- install (PWA) ---------- */
+const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const isStandalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+let installEvt=null;
+window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); installEvt=e; showInstallHint(); });
+window.addEventListener('appinstalled',()=>{ installEvt=null; $('#installHint').classList.add('hidden'); toast('האפליקציה הותקנה'); });
+const SHARE_IC='<svg class="ib" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M8 7l4-4 4 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
+function showInstallHint(force){
+  if(isStandalone()) return;
+  if(!force&&LS.get('pn-hint-off')) return;
+  const h=$('#installHint');
+  const inApp=isIOS&&/CriOS|FxiOS|EdgiOS|FBAN|FBAV|Instagram|WhatsApp/.test(navigator.userAgent);
+  if(installEvt) h.innerHTML=`<div style="flex:1"><b>התקן כאפליקציה</b> — אייקון במסך הבית, מסך מלא ועבודה גם בלי אינטרנט.<br><button class="go" id="goInstall">התקנה</button></div><button class="x" aria-label="סגירה">×</button>`;
+  else if(isIOS) h.innerHTML=`<div style="flex:1">${inApp?'כדי להתקין באייפון — פתח את הקישור ב-<b>Safari</b>, ואז ':'כדי להתקין באייפון — '}לחץ על כפתור השיתוף ${SHARE_IC} ובחר <b>"הוספה למסך הבית"</b>.</div><button class="x" aria-label="סגירה">×</button>`;
+  else return;
+  h.classList.remove('hidden');
+  h.querySelector('.x').onclick=()=>{ h.classList.add('hidden'); LS.set('pn-hint-off','1'); };
+  const g=h.querySelector('#goInstall'); if(g) g.onclick=installApp;
+}
+async function installApp(){
+  if(installEvt){ installEvt.prompt(); try{ await installEvt.userChoice; }catch(e){} installEvt=null; $('#installHint').classList.add('hidden'); return; }
+  if(isIOS){ showInstallHint(true); return; }
+  await ask({title:'התקנה כאפליקציה',message:'בתפריט הדפדפן (⋮) בחר "התקנת אפליקציה" או "הוספה למסך הבית".',okText:'הבנתי',noCancel:true});
+}
+
 /* ---------- boot ---------- */
 async function boot(){
   S.store=await makeLocalStore();
   $('#syncBadge').textContent=S.store.kind==='local'?'💾 נשמר במכשיר':'⚠ ללא שמירה';
-  try{ if(navigator.storage&&navigator.storage.persist) await navigator.storage.persist(); }catch(e){}
+  showInstallHint();
+  if('serviceWorker' in navigator&&/^https?:/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(()=>{});
+  try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persist(); }catch(e){}
   let routed=false;
   S.store.watchNotes(list=>{
     S.notes=list; S.notesLoaded=true;
     renderList(); if(S.noteId) renderHead();
     if(!routed){ routed=true; route(); }
   });
-  showInstallHint();
-  if('serviceWorker' in navigator && /^https?:/.test(location.protocol)){
-    window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
-  }
 }
 boot();
 })();
