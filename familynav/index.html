@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FamilyNav – ניווט משפחתי</title>
+<meta name="theme-color" content="#0f766e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="FamilyNav">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-512.png">
+<link rel="icon" href="icon-512.png">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/mqtt@5.10.1/dist/mqtt.min.js"></script>
+<style>
+  :root{--bg:#f5f7f6;--card:#fff;--ink:#16211f;--mut:#6b7a77;--acc:#0f766e;--acc2:#14b8a6;--warn:#b45309;--bad:#b91c1c;--line:#e3e8e6}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+  header{position:sticky;top:0;z-index:10;background:var(--acc);color:#fff;padding:calc(env(safe-area-inset-top) + 12px) 16px 12px;display:flex;align-items:center;gap:10px}
+  header h1{font-size:19px;margin:0;flex:1}
+  header button{background:rgba(255,255,255,.18);color:#fff;border:0;border-radius:10px;padding:8px 11px;font-size:15px}
+  .dot{width:10px;height:10px;border-radius:50%;background:#facc15;display:inline-block}
+  .dot.on{background:#4ade80}.dot.off{background:#f87171}
+  main{max-width:640px;margin:0 auto;padding:14px 14px 90px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
+  label{display:block;font-size:14px;color:var(--mut);margin:12px 0 6px}
+  input,select{width:100%;font-size:17px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+  .row{display:flex;gap:8px;align-items:center}
+  .btn{display:inline-flex;justify-content:center;align-items:center;gap:6px;border:0;border-radius:12px;padding:13px 16px;font-size:16px;font-weight:600;background:var(--acc);color:#fff;cursor:pointer}
+  .btn.sec{background:#e6f2f0;color:var(--acc)}
+  .btn.ghost{background:transparent;color:var(--mut);border:1px solid var(--line)}
+  .btn.full{width:100%;margin-top:14px}
+  .btn.danger{background:#fde8e8;color:var(--bad)}
+  .emojis{display:flex;flex-wrap:wrap;gap:6px}
+  .emojis span{font-size:26px;padding:6px;border-radius:10px;border:2px solid transparent;cursor:pointer}
+  .emojis span.sel{border-color:var(--acc);background:#e6f2f0}
+  .note{font-size:13px;color:var(--mut);line-height:1.5}
+  .warn{background:#fff7ed;border-color:#fed7aa;color:#7c2d12}
+  .dev{display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid var(--line);cursor:pointer}
+  .dev:last-child{border-bottom:0}
+  .dev .em{font-size:30px;width:46px;height:46px;border-radius:50%;background:#eef4f3;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .dev .nm{font-weight:700;font-size:17px}
+  .dev .sub{font-size:13px;color:var(--mut);margin-top:2px}
+  .dev .dist{margin-inline-start:auto;text-align:left;font-weight:700;font-size:17px;color:var(--acc);white-space:nowrap}
+  .fresh{color:#15803d}.stale{color:var(--warn)}.old{color:var(--bad)}
+  .me-strip{display:flex;align-items:center;gap:10px;font-size:14px}
+  #navView{position:fixed;inset:0;z-index:20;background:var(--bg);display:none;flex-direction:column}
+  #navView.show{display:flex}
+  #navTop{background:var(--acc);color:#fff;padding:calc(env(safe-area-inset-top) + 10px) 12px 10px;display:flex;align-items:center;gap:10px}
+  #navTop button{background:rgba(255,255,255,.18);color:#fff;border:0;border-radius:10px;padding:8px 12px;font-size:16px}
+  #navTop .t{flex:1;font-weight:700;font-size:18px}
+  #map{flex:1;min-height:200px}
+  #compassBox{background:var(--card);border-top:1px solid var(--line);padding:12px 16px calc(env(safe-area-inset-bottom) + 12px);display:flex;align-items:center;gap:16px}
+  #compass{width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,#fff 55%,#e6f2f0 56%);border:3px solid var(--acc);position:relative;flex-shrink:0}
+  #compass .n{position:absolute;top:2px;left:50%;transform:translateX(-50%);font-size:12px;font-weight:700;color:var(--bad)}
+  #arrow{position:absolute;inset:0;transition:transform .25s linear}
+  #arrow svg{width:100%;height:100%}
+  #navInfo .big{font-size:34px;font-weight:800;color:var(--acc)}
+  #navInfo .s{font-size:14px;color:var(--mut);margin-top:3px}
+  .pill{display:inline-block;font-size:12px;padding:3px 8px;border-radius:99px;background:#eef4f3;color:var(--mut);margin-top:6px}
+  .emIcon{font-size:28px;line-height:28px;text-align:center;filter:drop-shadow(0 1px 2px rgba(0,0,0,.45))}
+  .meIcon{width:18px;height:18px;border-radius:50%;background:#2563eb;border:3px solid #fff;box-shadow:0 0 0 2px rgba(37,99,235,.35)}
+  .hidden{display:none!important}
+  .toast{position:fixed;bottom:calc(env(safe-area-inset-bottom) + 20px);left:50%;transform:translateX(-50%);background:#16211f;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;z-index:50;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90%}
+  .toast.show{opacity:1}
+  .codebox{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:20px;letter-spacing:2px;text-align:center;padding:12px;background:#eef4f3;border-radius:12px;direction:ltr;user-select:all}
+</style>
+</head>
+<body>
+
+<header>
+  <span id="connDot" class="dot" title="חיבור"></span>
+  <h1>FamilyNav</h1>
+  <button id="btnRefresh" class="hidden" title="בקש מיקום עדכני מכולם">⟳ רענון</button>
+  <button id="btnSettings" class="hidden">⚙</button>
+</header>
+
+<main>
+  <!-- הגדרה ראשונית -->
+  <section id="setupView" class="hidden">
+    <div class="card">
+      <h2 style="margin:0 0 6px">הגדרת המכשיר</h2>
+      <div class="note">כל המכשירים במשפחה משתמשים באותו <b>קוד משפחה</b>. המיקום מוצפן בקוד הזה – מי שאין לו את הקוד לא יכול לראות כלום.</div>
+      <label>שם המכשיר (מה שיופיע לאחרים)</label>
+      <input id="inName" placeholder="למשל: עידן, מילנה, יובל">
+      <label>אייקון</label>
+      <div class="emojis" id="emojiPick"></div>
+      <label>קוד משפחה</label>
+      <div class="row">
+        <input id="inCode" placeholder="הדבק קוד קיים או צור חדש" style="direction:ltr;text-align:center;letter-spacing:1px">
+        <button class="btn sec" id="btnGen" style="white-space:nowrap">צור חדש</button>
+      </div>
+      <button class="btn full" id="btnSave">שמור והתחל</button>
+    </div>
+    <div class="card warn note">
+      <b>חשוב לדעת:</b> זו אפליקציית ווב – המיקום מתעדכן רק כשהאפליקציה פתוחה על המסך. כשהיא סגורה, האחרים רואים את <b>המיקום האחרון הידוע</b> ומתי עודכן. כפתור "רענון" מבקש מכל המכשירים הפתוחים לשלוח מיקום עדכני.
+    </div>
+  </section>
+
+  <!-- רשימת המשפחה -->
+  <section id="listView" class="hidden">
+    <div class="card">
+      <div class="me-strip">
+        <span id="meEmoji" style="font-size:24px"></span>
+        <div style="flex:1">
+          <div style="font-weight:700" id="meName"></div>
+          <div class="note" id="meStatus">מאתר מיקום…</div>
+        </div>
+        <label style="margin:0;display:flex;align-items:center;gap:6px;color:var(--ink)">
+          <input type="checkbox" id="chkShare" style="width:22px;height:22px" checked> משתף
+        </label>
+      </div>
+    </div>
+    <div class="card" id="devList"><div class="note" style="text-align:center;padding:14px">ממתין למכשירים נוספים…<br>הזמן את בני המשפחה דרך ⚙ ← "הזמנה".</div></div>
+    <div class="note" style="text-align:center">לחיצה על בן משפחה פותחת מפה וחץ ניווט אליו</div>
+  </section>
+
+  <!-- הגדרות -->
+  <section id="settingsView" class="hidden">
+    <div class="card">
+      <h2 style="margin:0 0 10px">הזמנת בני משפחה</h2>
+      <div class="note">שלח את הקישור. מי שפותח אותו מצטרף אוטומטית עם קוד המשפחה.</div>
+      <div class="codebox" id="codeShow" style="margin-top:10px"></div>
+      <div class="row" style="margin-top:10px">
+        <button class="btn" id="btnInviteWa" style="flex:1">שלח בוואטסאפ</button>
+        <button class="btn sec" id="btnInviteCopy" style="flex:1">העתק קישור</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2 style="margin:0 0 6px">המכשיר שלי</h2>
+      <label>שם</label><input id="setName">
+      <label>אייקון</label><div class="emojis" id="emojiPick2"></div>
+      <label>תדירות שליחה</label>
+      <select id="setFreq">
+        <option value="5">כל 5 שניות (ניווט צמוד)</option>
+        <option value="15">כל 15 שניות</option>
+        <option value="30">כל 30 שניות (חוסך סוללה)</option>
+      </select>
+      <label>שרת העברה</label>
+      <select id="setBroker"></select>
+      <button class="btn full" id="btnSaveSettings">שמור</button>
+    </div>
+    <div class="card">
+      <button class="btn danger full" id="btnLeave" style="margin-top:0">הסר את המכשיר הזה מהמשפחה</button>
+      <div class="note" style="margin-top:8px">מוחק את המיקום שלך מהשרת ומנתק את המכשיר.</div>
+    </div>
+    <button class="btn ghost full" id="btnBack">חזרה</button>
+  </section>
+</main>
+
+<!-- מסך ניווט -->
+<div id="navView">
+  <div id="navTop">
+    <button id="btnNavBack">→ חזרה</button>
+    <div class="t" id="navTitle"></div>
+    <button id="btnFit" title="הצג את שנינו">⤢</button>
+  </div>
+  <div id="map"></div>
+  <div id="compassBox">
+    <div id="compass">
+      <span class="n">צ</span>
+      <div id="arrow"><svg viewBox="0 0 100 100"><polygon points="50,10 66,62 50,52 34,62" fill="#0f766e"/><circle cx="50" cy="50" r="4" fill="#0f766e"/></svg></div>
+    </div>
+    <div id="navInfo" style="flex:1">
+      <div class="big" id="navDist">—</div>
+      <div class="s" id="navDir"></div>
+      <div class="s" id="navSeen"></div>
+      <button class="btn sec" id="btnCompass" style="margin-top:8px;padding:8px 12px;font-size:14px">הפעל מצפן</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  'use strict';
+  // ---------- קבועים ----------
+  const BROKERS = [
+    {id:'hivemq', name:'HiveMQ (ברירת מחדל)', url:'wss://broker.hivemq.com:8884/mqtt'},
+    {id:'emqx',   name:'EMQX',                url:'wss://broker.emqx.io:8084/mqtt'},
+    {id:'mosq',   name:'Mosquitto',           url:'wss://test.mosquitto.org:8081/mqtt'}
+  ];
+  const EMOJIS = ['👨','👩','👦','👧','🧔','👵','👴','🧒','🐶','🚗','📱','⭐'];
+  const LS = 'familynav.v1';
+  const $ = id => document.getElementById(id);
+
+  // ---------- מצב ----------
+  let cfg = load();
+  let key = null, topicBase = null, client = null;
+  let me = null;               // {lat,lng,acc,ts}
+  let lastSent = {t:0, lat:0, lng:0};
+  let watchId = null;
+  const devices = {};          // id -> data
+  let navTarget = null, map = null, mkMe = null, mkT = null, line = null, accCircle = null, fitted = false;
+  let heading = null, compassOn = false, wakeLock = null;
+
+  function load(){ try{ return JSON.parse(localStorage.getItem(LS)) || {}; }catch(e){ return {}; } }
+  function save(){ try{ localStorage.setItem(LS, JSON.stringify(cfg)); }catch(e){} }
+  function toast(t){ const el=$('toast'); el.textContent=t; el.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(()=>el.classList.remove('show'),2600); }
+  function show(view){
+    ['setupView','listView','settingsView'].forEach(v => $(v).classList.toggle('hidden', v!==view));
+    const inApp = view!=='setupView';
+    $('btnSettings').classList.toggle('hidden', !inApp);
+    $('btnRefresh').classList.toggle('hidden', !inApp);
+  }
+
+  // ---------- קריפטו ----------
+  const enc = new TextEncoder(), dec = new TextDecoder();
+  const b64 = buf => btoa(String.fromCharCode(...new Uint8Array(buf)));
+  const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  async function deriveKeys(code){
+    const norm = code.trim().toUpperCase().replace(/\s+/g,'');
+    const h = await crypto.subtle.digest('SHA-256', enc.encode('fnav-topic:'+norm));
+    topicBase = 'fnav1/' + [...new Uint8Array(h)].slice(0,12).map(b=>b.toString(16).padStart(2,'0')).join('');
+    const base = await crypto.subtle.importKey('raw', enc.encode(norm), 'PBKDF2', false, ['deriveKey']);
+    key = await crypto.subtle.deriveKey({name:'PBKDF2', salt:enc.encode('familynav-salt-v1'), iterations:150000, hash:'SHA-256'},
+      base, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']);
+  }
+  async function seal(obj){
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const ct = await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, enc.encode(JSON.stringify(obj)));
+    const out = new Uint8Array(12 + ct.byteLength); out.set(iv); out.set(new Uint8Array(ct), 12);
+    return b64(out);
+  }
+  async function open(str){
+    const raw = unb64(str);
+    const pt = await crypto.subtle.decrypt({name:'AES-GCM', iv:raw.slice(0,12)}, key, raw.slice(12));
+    return JSON.parse(dec.decode(pt));
+  }
+  function genCode(){
+    const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789', r=crypto.getRandomValues(new Uint8Array(12));
+    let s=''; r.forEach((b,i)=>{ s+=A[b%A.length]; if(i===3||i===7) s+='-'; }); return s;
+  }
+
+  // ---------- גאו ----------
+  const R = 6371000, rad = d => d*Math.PI/180, deg = r => r*180/Math.PI;
+  function dist(a,b){ const dLat=rad(b.lat-a.lat), dLng=rad(b.lng-a.lng);
+    const x=Math.sin(dLat/2)**2+Math.cos(rad(a.lat))*Math.cos(rad(b.lat))*Math.sin(dLng/2)**2; return 2*R*Math.asin(Math.sqrt(x)); }
+  function bearing(a,b){ const y=Math.sin(rad(b.lng-a.lng))*Math.cos(rad(b.lat));
+    const x=Math.cos(rad(a.lat))*Math.sin(rad(b.lat))-Math.sin(rad(a.lat))*Math.cos(rad(b.lat))*Math.cos(rad(b.lng-a.lng));
+    return (deg(Math.atan2(y,x))+360)%360; }
+  const fmtDist = m => m<1000 ? Math.round(m)+' מ׳' : (m<10000 ? (m/1000).toFixed(1) : Math.round(m/1000))+' ק״מ';
+  const DIRS = ['צפון','צפון-מזרח','מזרח','דרום-מזרח','דרום','דרום-מערב','מערב','צפון-מערב'];
+  const dirName = b => DIRS[Math.round(b/45)%8];
+  function ago(ts){
+    const s = Math.max(0, (Date.now()-ts)/1000);
+    if (s<45) return {t:'עכשיו', c:'fresh'};
+    if (s<3600) return {t:'לפני '+Math.round(s/60)+' דק׳', c: s<600?'fresh':'stale'};
+    if (s<86400) return {t:'לפני '+Math.round(s/3600)+' שע׳', c:'old'};
+    return {t:'לפני '+Math.round(s/86400)+' ימים', c:'old'};
+  }
+
+  // ---------- MQTT ----------
+  function brokerUrl(){ return (BROKERS.find(b=>b.id===cfg.broker)||BROKERS[0]).url; }
+  function connect(){
+    if (client) { try{ client.end(true); }catch(e){} }
+    setConn('');
+    client = mqtt.connect(brokerUrl(), {clientId:'fnav_'+cfg.id+'_'+Math.random().toString(16).slice(2,6), clean:true, reconnectPeriod:4000, connectTimeout:10000, keepalive:30});
+    client.on('connect', () => {
+      setConn('on');
+      client.subscribe([topicBase+'/dev/+', topicBase+'/ping'], {qos:1});
+      if (me) publishMe(true);
+    });
+    client.on('reconnect', () => setConn(''));
+    client.on('offline', () => setConn('off'));
+    client.on('error', () => setConn('off'));
+    client.on('message', onMessage);
+  }
+  function setConn(s){ $('connDot').className = 'dot ' + s; }
+  async function onMessage(topic, payload){
+    const msg = payload.toString();
+    if (topic.endsWith('/ping')) {
+      try{ const p = await open(msg); if (p.from!==cfg.id) { publishMe(true); if (p.name) toast(p.name+' ביקש מיקום עדכני'); } }catch(e){}
+      return;
+    }
+    const id = topic.split('/').pop();
+    if (id===cfg.id) return;
+    if (!msg) { delete devices[id]; render(); return; }       // מכשיר עזב
+    try { const d = await open(msg); if (d && d.lat!=null) { devices[id]=d; render(); if (navTarget===id) updateNav(); } } catch(e){ /* קוד אחר */ }
+  }
+  async function publishMe(force){
+    if (!client || !client.connected || !me || !key || !$('chkShare').checked) return;
+    const now = Date.now(), freq = (cfg.freq||15)*1000;
+    const moved = dist(me, lastSent);
+    if (!force && now-lastSent.t < freq && moved < 25) return;
+    const data = {id:cfg.id, name:cfg.name, emoji:cfg.emoji, lat:+me.lat.toFixed(6), lng:+me.lng.toFixed(6), acc:Math.round(me.acc), ts:now};
+    try { const b = await (navigator.getBattery?.()); if (b) data.bat = Math.round(b.level*100); } catch(e){}
+    client.publish(topicBase+'/dev/'+cfg.id, await seal(data), {qos:1, retain:true});
+    lastSent = {t:now, lat:me.lat, lng:me.lng};
+  }
+  async function ping(){
+    if (!client?.connected) return toast('אין חיבור לשרת');
+    client.publish(topicBase+'/ping', await seal({from:cfg.id, name:cfg.name, ts:Date.now()}), {qos:0});
+    publishMe(true);
+    toast('נשלחה בקשת מיקום לכל המכשירים הפתוחים');
+  }
+
+  // ---------- מיקום ----------
+  function startGeo(){
+    if (!('geolocation' in navigator)) { $('meStatus').textContent='המכשיר לא תומך במיקום'; return; }
+    if (watchId!=null) navigator.geolocation.clearWatch(watchId);
+    watchId = navigator.geolocation.watchPosition(p => {
+      me = {lat:p.coords.latitude, lng:p.coords.longitude, acc:p.coords.accuracy, ts:Date.now()};
+      if (p.coords.heading!=null && !isNaN(p.coords.heading) && p.coords.speed>1 && !compassOn) heading = p.coords.heading;
+      $('meStatus').textContent = 'מיקום פעיל · דיוק ±'+Math.round(me.acc)+' מ׳';
+      publishMe(false); render(); if (navTarget) updateNav();
+    }, err => {
+      $('meStatus').textContent = err.code===1 ? 'אין הרשאת מיקום – אפשר בהגדרות הדפדפן' : 'לא מצליח לאתר מיקום';
+    }, {enableHighAccuracy:true, maximumAge:5000, timeout:20000});
+  }
+
+  // ---------- רשימה ----------
+  function render(){
+    const list = Object.entries(devices).sort((a,b)=> (b[1].ts||0)-(a[1].ts||0));
+    const box = $('devList');
+    if (!list.length) { box.innerHTML = '<div class="note" style="text-align:center;padding:14px">ממתין למכשירים נוספים…<br>הזמן את בני המשפחה דרך ⚙ ← "הזמנה".</div>'; return; }
+    box.innerHTML = '';
+    list.forEach(([id,d]) => {
+      const a = ago(d.ts), el = document.createElement('div');
+      el.className='dev';
+      const dm = me ? fmtDist(dist(me,d)) : '';
+      el.innerHTML = `<div class="em">${esc(d.emoji||'📱')}</div>
+        <div><div class="nm">${esc(d.name||'ללא שם')}</div>
+        <div class="sub"><span class="${a.c}">● ${a.t}</span>${d.bat!=null?' · 🔋'+d.bat+'%':''}</div></div>
+        <div class="dist">${dm}${me?'<div class="sub" style="font-weight:400">'+dirName(bearing(me,d))+'</div>':''}</div>`;
+      el.onclick = () => openNav(id);
+      box.appendChild(el);
+    });
+  }
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  setInterval(() => { if (!navTarget) render(); else updateNav(); }, 20000);
+
+  // ---------- ניווט ----------
+  function openNav(id){
+    navTarget = id; fitted = false;
+    $('navView').classList.add('show');
+    if (!map) {
+      map = L.map('map', {zoomControl:false, attributionControl:true}).setView([32.17,34.9], 14);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19, attribution:'© OpenStreetMap'}).addTo(map);
+    }
+    setTimeout(() => { map.invalidateSize(); updateNav(); }, 60);
+    requestWake();
+  }
+  function closeNav(){
+    navTarget = null; $('navView').classList.remove('show');
+    [mkT,line].forEach(l => l && map.removeLayer(l)); mkT = line = null;
+    if (wakeLock) { wakeLock.release().catch(()=>{}); wakeLock = null; }
+    render();
+  }
+  function updateNav(){
+    const d = devices[navTarget]; if (!d) { $('navTitle').textContent='המכשיר לא זמין'; return; }
+    $('navTitle').textContent = (d.emoji||'📱')+' '+d.name;
+    const a = ago(d.ts);
+    $('navSeen').innerHTML = `<span class="${a.c}">● עודכן ${a.t}</span>${d.acc?' · ±'+d.acc+' מ׳':''}`;
+    const tIcon = L.divIcon({className:'', html:`<div class="emIcon">${esc(d.emoji||'📱')}</div>`, iconSize:[30,30], iconAnchor:[15,15]});
+    if (!mkT) mkT = L.marker([d.lat,d.lng], {icon:tIcon}).addTo(map); else mkT.setLatLng([d.lat,d.lng]);
+    if (me) {
+      if (!mkMe) mkMe = L.marker([me.lat,me.lng], {icon:L.divIcon({className:'', html:'<div class="meIcon"></div>', iconSize:[18,18], iconAnchor:[9,9]})}).addTo(map);
+      else mkMe.setLatLng([me.lat,me.lng]);
+      if (!accCircle) accCircle = L.circle([me.lat,me.lng], {radius:me.acc, weight:1, color:'#2563eb', fillOpacity:.08}).addTo(map);
+      else { accCircle.setLatLng([me.lat,me.lng]); accCircle.setRadius(me.acc); }
+      const pts = [[me.lat,me.lng],[d.lat,d.lng]];
+      if (!line) line = L.polyline(pts, {color:'#0f766e', weight:4, dashArray:'8 8'}).addTo(map); else line.setLatLngs(pts);
+      const m = dist(me,d), b = bearing(me,d);
+      $('navDist').textContent = m < 15 ? 'הגעת! 🎉' : fmtDist(m);
+      $('navDir').textContent = 'כיוון: ' + dirName(b) + ' (' + Math.round(b) + '°)';
+      rotateArrow();
+      if (!fitted) { map.fitBounds(pts, {padding:[50,50], maxZoom:17}); fitted = true; }
+    } else {
+      $('navDist').textContent = '—'; $('navDir').textContent = 'ממתין למיקום שלך…';
+      if (!fitted) { map.setView([d.lat,d.lng], 16); fitted = true; }
+    }
+  }
+  function rotateArrow(){
+    const d = devices[navTarget]; if (!d || !me) return;
+    const b = bearing(me,d);
+    // אם יש מצפן/כיוון תנועה – החץ מצביע ביחס לכיוון הטלפון; אחרת ביחס לצפון
+    const rot = heading!=null ? b - heading : b;
+    $('arrow').style.transform = `rotate(${rot}deg)`;
+    $('compass').querySelector('.n').style.transform = `translateX(-50%)`;
+    $('compass').style.transform = heading!=null ? `rotate(0deg)` : '';
+  }
+  async function enableCompass(){
+    try {
+      if (typeof DeviceOrientationEvent!=='undefined' && typeof DeviceOrientationEvent.requestPermission==='function') {
+        const r = await DeviceOrientationEvent.requestPermission(); if (r!=='granted') return toast('לא ניתנה הרשאה למצפן');
+      }
+    } catch(e){ return toast('לא ניתן להפעיל מצפן'); }
+    const handler = e => {
+      let h = null;
+      if (e.webkitCompassHeading!=null) h = e.webkitCompassHeading;                // iOS
+      else if (e.absolute && e.alpha!=null) h = 360 - e.alpha;                      // Android
+      if (h==null) return;
+      const so = (screen.orientation && screen.orientation.angle) || window.orientation || 0;
+      heading = (h + so + 360) % 360; compassOn = true; rotateArrow();
+    };
+    if ('ondeviceorientationabsolute' in window) window.addEventListener('deviceorientationabsolute', handler);
+    else window.addEventListener('deviceorientation', handler);
+    $('btnCompass').textContent = 'מצפן פעיל – החזק את הטלפון שטוח';
+    $('btnCompass').disabled = true;
+  }
+  async function requestWake(){ try { if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); } catch(e){} }
+
+  // ---------- הגדרות / הזמנה ----------
+  function emojiPicker(elId, cur, onPick){
+    const el = $(elId); el.innerHTML='';
+    EMOJIS.forEach(e => { const s=document.createElement('span'); s.textContent=e; if(e===cur) s.classList.add('sel');
+      s.onclick=()=>{ el.querySelectorAll('span').forEach(x=>x.classList.remove('sel')); s.classList.add('sel'); onPick(e); }; el.appendChild(s); });
+  }
+  function inviteLink(){ return location.origin + location.pathname + '#join=' + encodeURIComponent(cfg.code); }
+
+  let pickEmoji = cfg.emoji || EMOJIS[0];
+  function initSetup(){
+    show('setupView');
+    $('inName').value = cfg.name || '';
+    const j = new URLSearchParams(location.hash.slice(1)).get('join');
+    $('inCode').value = j || cfg.code || '';
+    emojiPicker('emojiPick', pickEmoji, e => pickEmoji = e);
+  }
+  $('btnGen').onclick = () => { $('inCode').value = genCode(); };
+  $('btnSave').onclick = async () => {
+    const name = $('inName').value.trim(), code = $('inCode').value.trim().toUpperCase();
+    if (!name) return toast('הכנס שם למכשיר');
+    if (code.replace(/-/g,'').length < 8) return toast('קוד משפחה קצר מדי – לחץ "צור חדש"');
+    cfg.name = name; cfg.code = code; cfg.emoji = pickEmoji; cfg.id = cfg.id || genCode().replace(/-/g,'').toLowerCase();
+    cfg.freq = cfg.freq || 15; cfg.broker = cfg.broker || BROKERS[0].id;
+    save(); history.replaceState(null,'',location.pathname);
+    await start();
+  };
+  $('btnSettings').onclick = () => {
+    if (!$('settingsView').classList.contains('hidden')) return show('listView');
+    $('codeShow').textContent = cfg.code; $('setName').value = cfg.name; $('setFreq').value = String(cfg.freq||15);
+    $('setBroker').innerHTML = BROKERS.map(b=>`<option value="${b.id}">${b.name}</option>`).join(''); $('setBroker').value = cfg.broker;
+    let e2 = cfg.emoji; emojiPicker('emojiPick2', e2, e => e2 = e);
+    $('btnSaveSettings').onclick = () => {
+      const brokerChanged = $('setBroker').value !== cfg.broker;
+      cfg.name = $('setName').value.trim() || cfg.name; cfg.emoji = e2; cfg.freq = +$('setFreq').value; cfg.broker = $('setBroker').value;
+      save(); paintMe(); if (brokerChanged) { Object.keys(devices).forEach(k=>delete devices[k]); connect(); } else publishMe(true);
+      toast('נשמר'); show('listView');
+    };
+    show('settingsView');
+  };
+  $('btnBack').onclick = () => show('listView');
+  $('btnInviteWa').onclick = () => {
+    const t = `הצטרפו ל-FamilyNav כדי שנוכל למצוא ולנווט אחד לשני:\n${inviteLink()}`;
+    location.href = 'https://wa.me/?text=' + encodeURIComponent(t);
+  };
+  $('btnInviteCopy').onclick = async () => { try { await navigator.clipboard.writeText(inviteLink()); toast('הקישור הועתק'); } catch(e){ prompt('העתק את הקישור:', inviteLink()); } };
+  $('btnLeave').onclick = () => {
+    if (!confirm('להסיר את המכשיר מהמשפחה ולמחוק את המיקום שלו?')) return;
+    if (client?.connected) client.publish(topicBase+'/dev/'+cfg.id, '', {qos:1, retain:true});
+    setTimeout(() => { localStorage.removeItem(LS); location.reload(); }, 600);
+  };
+  $('btnRefresh').onclick = ping;
+  $('btnNavBack').onclick = closeNav;
+  $('btnFit').onclick = () => { fitted = false; updateNav(); };
+  $('btnCompass').onclick = enableCompass;
+  $('chkShare').onchange = () => { if ($('chkShare').checked) publishMe(true); toast($('chkShare').checked ? 'שיתוף מיקום פעיל' : 'שיתוף מיקום הושהה'); };
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState==='visible') { publishMe(true); if (navTarget) requestWake(); } });
+
+  function paintMe(){ $('meEmoji').textContent = cfg.emoji; $('meName').textContent = cfg.name + ' (אני)'; }
+
+  async function start(){
+    await deriveKeys(cfg.code);
+    paintMe(); show('listView'); render();
+    connect(); startGeo();
+  }
+
+  // ---------- הפעלה ----------
+  const joinCode = new URLSearchParams(location.hash.slice(1)).get('join');
+  if (cfg.code && cfg.name && (!joinCode || joinCode.toUpperCase()===cfg.code)) { history.replaceState(null,'',location.pathname); start(); }
+  else initSetup();
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js', {scope:'./'}).catch(()=>{});
+})();
+</script>
+</body>
+</html>

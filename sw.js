@@ -1,10 +1,10 @@
-const CACHE='photo-notes-v6';
+const CACHE='photo-notes-v7';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./lib/jspdf.umd.min.js',
  './icons/icon-192.png','./icons/icon-512.png','./icons/apple-touch-icon.png',
  './fonts/heebo-hebrew-400-normal.woff2','./fonts/heebo-hebrew-500-normal.woff2','./fonts/heebo-hebrew-700-normal.woff2',
  './fonts/heebo-latin-400-normal.woff2','./fonts/heebo-latin-500-normal.woff2','./fonts/heebo-latin-700-normal.woff2'];
 self.addEventListener('install',e=>{ e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())); });
-self.addEventListener('activate',e=>{ e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE&&k!=='pn-share').map(k=>caches.delete(k)))).then(()=>self.clients.claim())); });
+self.addEventListener('activate',e=>{ e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE&&k!=='pn-share'&&!k.startsWith('familynav-')).map(k=>caches.delete(k)))).then(()=>self.clients.claim())); });
 self.addEventListener('fetch',e=>{
   const r=e.request, u=new URL(r.url);
   // Android share target: WhatsApp "Export chat" → Notesapp
@@ -19,6 +19,7 @@ self.addEventListener('fetch',e=>{
     })());
     return;
   }
+  if(u.pathname.includes('/familynav/')) return; // separate app
   if(r.method!=='GET'||u.origin!==location.origin) return;
   if(r.mode==='navigate'){
     e.respondWith(fetch(r).then(res=>{ const cp=res.clone(); caches.open(CACHE).then(c=>c.put('./index.html',cp)); return res; }).catch(()=>caches.match('./index.html')));
