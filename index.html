@@ -244,6 +244,7 @@ body{background:var(--bar)}
 .sheet{padding-bottom:calc(14px + var(--sb))}
 #toast{bottom:calc(90px + var(--sb))}
 #search{font-size:16px;-webkit-appearance:none}
+.dlg p{white-space:pre-line}
 @media (hover:none){.bubble.textonly{padding-left:36px}}
 .install{margin:10px 14px 0;background:#fff8dc;border:1px solid #f0e2a8;border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.5;color:#54500f;display:flex;gap:10px;align-items:flex-start}
 .install b{color:#3c3a10}
@@ -329,6 +330,7 @@ body{background:var(--bar)}
 
 <div id="lightbox" class="overlay lightbox hidden"><img id="lbImg" alt=""><div id="lbCap" class="lb-cap"></div></div>
 <input type="file" id="restoreInput" accept=".json,.html,.htm,application/json,text/html" hidden>
+<input type="file" id="waInput" accept=".zip,.txt,application/zip,text/plain,image/*" multiple hidden>
 <div id="modal" class="modal hidden"></div>
 <div id="sheetBack" class="sheet-back hidden"><div id="sheet" class="sheet"></div></div>
 <div id="toast"></div>
@@ -386,6 +388,7 @@ const ICON = {
   after:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="8" height="14" rx="1.5"/><rect x="13" y="5" width="8" height="14" rx="1.5"/><path d="M15 12l1.5 1.5L19 10.5"/></svg>',
   flag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4h11l-2 4 2 4H5"/></svg>',
   draw:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg>',
+  wa:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/><path d="M9 10h6M9 13.5h4"/></svg>',
   phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg>',
   chev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>',
   note:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h5"/></svg>'
@@ -1538,10 +1541,11 @@ async function buildDocx(note,entries,o){
 
 /* ---------- backup / restore ---------- */
 $('#listMenuBtn').addEventListener('click', async ()=>{
-  const mItems=[{label:'גיבוי כל הפתקים לקובץ',icon:'backup',value:'backup'},{label:'שחזור מקובץ גיבוי',icon:'restore',value:'restore'}];
+  const mItems=[{label:'גיבוי כל הפתקים לקובץ',icon:'backup',value:'backup'},{label:'שחזור מקובץ גיבוי',icon:'restore',value:'restore'},{label:'ייבוא צ׳אט מוואטסאפ',icon:'wa',value:'wa'}];
   if(!isStandalone()) mItems.push({label:'התקנה כאפליקציה',icon:'phone',value:'install'});
   if(navigator.share&&/^https?:/.test(location.protocol)) mItems.push({label:'שליחת קישור לאפליקציה',icon:'share',value:'shareapp'});
   const a=await sheet(mItems);
+  if(a==='wa'){ const ok=await ask({title:'ייבוא צ׳אט מוואטסאפ',message:'בוואטסאפ: פתח את הצ׳אט ← שם הקבוצה/איש הקשר ← "ייצוא צ׳אט" ← "צרף מדיה" ושמור את הקובץ (באייפון: "שמירה בקבצים").\nאחר כך בחר כאן את קובץ ה-ZIP.\n\nבאנדרואיד אפשר גם לשתף את הייצוא ישירות ל-Notesapp.',okText:'בחירת קובץ'}); if(ok) $('#waInput').click(); return; }
   if(a==='install'){ installApp(); return; }
   if(a==='shareapp'){ try{ await navigator.share({title:'Notesapp',text:'Notesapp — פתקי תמונות — פתח בדפדפן והוסף למסך הבית:',url:location.href.split('#')[0]}); }catch(e){} return; }
   if(a==='backup'){
@@ -1563,6 +1567,174 @@ $('#restoreInput').addEventListener('change', async e=>{
     const r=await S.store.importAll(data); busy(false); toast(r.added||r.updated?`שוחזרו ${r.added} פתקים${r.updated?`, ${r.updated} עדכונים`:''}`:'כל הפתקים בקובץ כבר קיימים'); }
   catch(err){ busy(false); toast('קובץ הגיבוי לא תקין'); }
 });
+
+/* ---------- WhatsApp chat import ---------- */
+const WA_IMG=/\.(jpe?g|png|webp|gif|heic|heif)$/i;
+const WA_MIME={jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',webp:'image/webp',gif:'image/gif',heic:'image/heic',heif:'image/heif'};
+async function waUnzip(file){
+  const buf=new Uint8Array(await file.arrayBuffer()), dv=new DataView(buf.buffer,buf.byteOffset,buf.byteLength);
+  let eocd=-1; for(let i=buf.length-22;i>=Math.max(0,buf.length-65557);i--){ if(dv.getUint32(i,true)===0x06054b50){ eocd=i; break; } }
+  if(eocd<0) throw new Error('zip');
+  const n=dv.getUint16(eocd+10,true); let off=dv.getUint32(eocd+16,true); const list=[]; const td=new TextDecoder('utf-8');
+  for(let k=0;k<n;k++){
+    if(dv.getUint32(off,true)!==0x02014b50) break;
+    const method=dv.getUint16(off+10,true), csize=dv.getUint32(off+20,true), nl=dv.getUint16(off+28,true), el=dv.getUint16(off+30,true), cl=dv.getUint16(off+32,true), lho=dv.getUint32(off+42,true);
+    const name=td.decode(buf.subarray(off+46,off+46+nl));
+    if(!name.endsWith('/')) list.push({name,method,csize,lho});
+    off+=46+nl+el+cl;
+  }
+  const read=async e=>{
+    const l=e.lho, nl=dv.getUint16(l+26,true), el=dv.getUint16(l+28,true), start=l+30+nl+el, data=buf.subarray(start,start+e.csize);
+    if(e.method===0) return data;
+    if(e.method===8){ if(typeof DecompressionStream==='undefined') throw new Error('nodecomp'); return new Uint8Array(await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer()); }
+    throw new Error('method');
+  };
+  return {list,read};
+}
+const waBase=n=>String(n).split(/[\\/]/).pop();
+const waClean=s=>String(s).replace(/[‎‏‪-‮⁦-⁩﻿]/g,'').replace(/[  ]/g,' ');
+const WA_HEAD=/^\[?(\d{1,4})[.\/-](\d{1,2})[.\/-](\d{1,4}),?\s+(\d{1,2}):(\d{2})(?::(\d{2}))?([^\]\n]{0,14}?)(?:\]\s?|\s[-–]\s)(.*)$/;
+function waParse(raw){
+  const lines=waClean(raw).replace(/\r\n?/g,'\n').split('\n');
+  const msgs=[]; let cur=null;
+  for(const line of lines){
+    const m=line.match(WA_HEAD);
+    if(m){ cur={a:+m[1],b:+m[2],c:+m[3],H:+m[4],M:+m[5],s:+(m[6]||0),ap:(m[7]||'').trim(),rest:m[8]}; msgs.push(cur); }
+    else if(cur) cur.rest+='\n'+line;
+  }
+  // date order: day-first unless the data proves month-first
+  let dmy=true; if(msgs.some(x=>x.a<=31&&x.b>12)) dmy=false; if(msgs.some(x=>x.a>12&&x.a<=31)) dmy=true;
+  const out=[];
+  for(const x of msgs){
+    let y,mo,d;
+    if(x.a>31){ y=x.a; mo=x.b; d=x.c; } else { y=x.c; if(dmy){ d=x.a; mo=x.b; } else { mo=x.a; d=x.b; } }
+    if(y<100) y+=2000;
+    let H=x.H; const ap=x.ap.toLowerCase();
+    if(/p|אחה|ערב|אחר/.test(ap)&&H<12) H+=12; else if(/a|לפנה|בוקר/.test(ap)&&H===12) H=0;
+    const t=new Date(y,mo-1,d,H,x.M,x.s).getTime();
+    const sm=x.rest.match(/^([^\n]+?):\s([\s\S]*)$/);
+    if(!sm) continue; // system message (no sender)
+    out.push({t,from:sm[1].trim(),text:sm[2].replace(/\s+$/,'')});
+  }
+  return out;
+}
+const WA_SKIP=/^(this message was deleted|you deleted this message|הודעה זו נמחקה|מחקת את ההודעה הזו|waiting for this message|null)$|end-to-end encrypted|מוצפנות מקצה לקצה/i;
+const WA_OMIT=/^<?[^<>\n]{0,30}(omitted|הושמט|הושמטה|לא נכלל)[^<>\n]{0,10}>?$/i;
+function waAttachment(text,files){
+  const first=text.split('\n')[0].trim();
+  let m=first.match(/<[^<>:]+:\s*([^<>]+?\.\w{2,5})\s*>/);
+  let name=m&&m[1];
+  if(!name){ m=first.match(/^(.+?\.\w{2,5})\s*\([^)]*\)\s*$/); name=m&&m[1]; }
+  if(!name && files.has(first.toLowerCase())) name=first;
+  if(!name) return null;
+  const rest=(m?text.replace(m[0],''):text.split('\n').slice(1).join('\n')).trim();
+  return {name:name.trim(),caption:rest};
+}
+function waTitle(fileNames){
+  for(const n of fileNames){
+    let t=waBase(n).replace(/\.(zip|txt)$/i,'');
+    if(/^_?chat$/i.test(t)) continue;
+    t=t.replace(/^(WhatsApp Chat( with| -)?|צ['׳]אט WhatsApp( עם)?|שיחת WhatsApp( עם)?|WhatsApp)\s*[-–:]?\s*/i,'').trim();
+    if(t) return t;
+  }
+  return 'צ׳אט וואטסאפ';
+}
+async function waCollect(input){
+  const files=new Map(); let txt=null; const names=[];
+  for(const f of input){
+    names.push(f.name||'');
+    if(/\.zip$/i.test(f.name||'')||/zip/.test(f.type||'')){
+      const z=await waUnzip(f);
+      for(const e of z.list){
+        const b=waBase(e.name);
+        if(/\.txt$/i.test(b)&&(!txt||/chat/i.test(b))){ txt={name:b,data:await z.read(e)}; names.push(b); }
+        else files.set(b.toLowerCase(),{name:b,get:()=>z.read(e)});
+      }
+    } else if(/\.txt$/i.test(f.name||'')||f.type==='text/plain'){ txt={name:f.name,data:new Uint8Array(await f.arrayBuffer())}; }
+    else files.set(waBase(f.name||'').toLowerCase(),{name:waBase(f.name||''),get:async()=>new Uint8Array(await f.arrayBuffer())});
+  }
+  if(!txt) throw new Error('notxt');
+  return {text:new TextDecoder('utf-8').decode(txt.data),files,title:waTitle(names)};
+}
+function waDialog(info){
+  return new Promise(resolve=>{
+    const m=$('#modal');
+    m.innerHTML=`<div class="dlg" role="dialog"><h3>ייבוא צ׳אט מוואטסאפ</h3>
+      <p>${info.count} הודעות${info.imgs?` · ${info.imgs} תמונות`:''}${info.missing?` · ${info.missing} תמונות לא נכללו בייצוא`:''}<br>${esc(info.range)}${info.senders.length?`<br>משתתפים: ${esc(info.senders.slice(0,6).join(', '))}${info.senders.length>6?'…':''}`:''}</p>
+      <label class="fl">שם הפתק</label><input id="waTitle" value="${esc(info.title)}">
+      <label class="chk"><input type="checkbox" id="waText" checked> לייבא גם הודעות טקסט בלי תמונה</label>
+      <label class="chk"><input type="checkbox" id="waFrom" ${info.senders.length>1?'checked':''}> להוסיף את שם השולח לכל רשומה</label>
+      ${info.missing?'<p style="margin-top:10px;font-size:13px">כדי לקבל גם את התמונות — בוואטסאפ בחר "ייצוא צ׳אט" ← <b>"צרף מדיה"</b>.</p>':''}
+      <div class="dlg-actions" style="margin-top:16px"><button class="btn primary" id="waOk">ייבוא</button><button class="btn ghost" id="waCancel">ביטול</button></div></div>`;
+    m.classList.remove('hidden');
+    const done=v=>{ m.classList.add('hidden'); m.innerHTML=''; resolve(v); };
+    $('#waCancel').onclick=()=>done(null); m.onclick=e=>{ if(e.target===m) done(null); };
+    $('#waOk').onclick=()=>done({title:$('#waTitle').value.trim()||info.title,text:$('#waText').checked,from:$('#waFrom').checked});
+  });
+}
+async function importWhatsApp(input){
+  input=[...input].filter(Boolean); if(!input.length) return;
+  busy(true,'קורא את הצ׳אט…');
+  let col, msgs;
+  try{ col=await waCollect(input); msgs=waParse(col.text); }
+  catch(e){ busy(false); console.error(e);
+    toast(e.message==='notxt'?'לא נמצא קובץ צ׳אט — בחר את קובץ ה-ZIP או ה-TXT שוואטסאפ ייצא':e.message==='zip'?'קובץ ה-ZIP לא תקין':e.message==='nodecomp'?'הדפדפן לא תומך בפתיחת ZIP — עדכן את מערכת ההפעלה':'לא הצלחתי לקרוא את הקובץ'); return; }
+  busy(false);
+  const items=[]; let imgs=0, missing=0; const senders=new Set();
+  for(const x of msgs){
+    if(!x.text||WA_SKIP.test(x.text.trim())) continue;
+    senders.add(x.from);
+    if(WA_OMIT.test(x.text.trim())){ missing++; continue; }
+    const att=waAttachment(x.text,col.files);
+    if(att){ const f=col.files.get(waBase(att.name).toLowerCase());
+      if(f&&WA_IMG.test(f.name)){ imgs++; items.push({...x,file:f,caption:att.caption}); }
+      else items.push({...x,text:(f?'📎 '+f.name:'📎 '+att.name+' (לא נכלל בייצוא)')+(att.caption?'\n'+att.caption:''),isText:true});
+      continue; }
+    items.push({...x,isText:true});
+  }
+  if(!items.length){ toast('לא נמצאו הודעות בקובץ'); return; }
+  items.sort((a,b)=>a.t-b.t);
+  const range=dayKey(items[0].t)===dayKey(items[items.length-1].t)?fmtDate(items[0].t):`${fmtDate(items[0].t)} – ${fmtDate(items[items.length-1].t)}`;
+  const o=await waDialog({count:items.length,imgs,missing,senders:[...senders],title:col.title,range}); if(!o) return;
+  const list=items.filter(x=>o.text||!x.isText);
+  if(!list.length){ toast('אין הודעות לייבוא בבחירה הזו'); return; }
+  let noteId;
+  try{ noteId=await S.store.createNote(o.title); }catch(e){ toast('לא הצלחתי ליצור פתק'); return; }
+  let done=0, last=null, thumb=null, failed=0;
+  for(const x of list){
+    busy(true,`מייבא… ${++done} מתוך ${list.length}`);
+    const body=x.isText?x.text:x.caption;
+    const text=o.from?(body?`${x.from}: ${body}`:x.from):(body||'');
+    try{
+      if(x.file){
+        const ext=(x.file.name.split('.').pop()||'').toLowerCase();
+        const data=await x.file.get();
+        let c=null; try{ c=await compress(new File([data],x.file.name,{type:WA_MIME[ext]||'image/jpeg'})); }catch(err){ c=null; }
+        if(c){ const r=await S.store.addEntry(noteId,{text,blob:c.blob,w:c.w,h:c.h,createdAt:x.t}); thumb=r&&r.imageId||thumb; }
+        else { failed++; await S.store.addEntry(noteId,{text:(text?text+'\n':'')+'📷 '+x.file.name+' (פורמט לא נתמך)',createdAt:x.t}); }
+      } else await S.store.addEntry(noteId,{text,createdAt:x.t});
+      last={text:text||'📷 תמונה'};
+    }catch(err){ failed++; console.error(err); }
+  }
+  try{ await S.store.updateNote(noteId,{count:list.length,updatedAt:Date.now(),lastText:last?last.text:'',thumbId:thumb,details:'ייבוא מוואטסאפ · '+range}); }catch(e){}
+  busy(false);
+  toast(`יובאו ${list.length-failed} רשומות${failed?` (${failed} נכשלו)`:''}`);
+  go(noteId);
+}
+$('#waInput').addEventListener('change',e=>{ const fs=[...e.target.files]; e.target.value=''; importWhatsApp(fs); });
+/* files shared into the app (Android: WhatsApp → Export chat → Notesapp) */
+async function checkShared(){
+  if(!/[?&]share=1/.test(location.search)) return;
+  history.replaceState(null,'',location.pathname+location.hash);
+  try{
+    const c=await caches.open('pn-share'); const keys=await c.keys(); const files=[];
+    for(const k of keys){ const r=await c.match(k); const b=await r.blob(); files.push(new File([b],decodeURIComponent(r.headers.get('x-name')||'file'),{type:b.type})); }
+    await Promise.all(keys.map(k=>c.delete(k)));
+    if(!files.length){ toast('לא התקבלו קבצים'); return; }
+    if(files.some(f=>/\.(zip|txt)$/i.test(f.name)||/zip|text\/plain/.test(f.type))) await importWhatsApp(files);
+    else { toast('פתח פתק כדי להוסיף את התמונות'); }
+  }catch(e){ console.error(e); toast('קבלת הקבצים נכשלה'); }
+}
 
 /* ---------- install (PWA) ---------- */
 const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
@@ -1594,6 +1766,7 @@ async function boot(){
   S.store=await makeLocalStore();
   $('#syncBadge').textContent=S.store.kind==='local'?'💾 נשמר במכשיר':'⚠ ללא שמירה';
   showInstallHint();
+  checkShared();
   if('serviceWorker' in navigator&&/^https?:/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(()=>{});
   try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persist(); }catch(e){}
   let routed=false;
